@@ -1,6 +1,6 @@
-# Akeneo PHP Client sandbox
+# Akeneo PHP API Client sandbox
 
-Play with the Akeneo php client
+Playing with the (upcoming) Akeneo PHP API client :rocket:
 
 ## Requirements
 
@@ -24,10 +24,10 @@ client_id: myClientId
 secret: mySecret
 ```
 
-## Running the web api sandbox
+## Running the web api sandbox
 
 - Run `bin/console.sh` to run the `app/console` script.
-- Run `bin/console.sh nidup:sandbox 192.168.7.175 8080 myClientId mySecret`
+- Run `bin/console.sh nidup:sandbox 192.168.7.175 8080 myClientId mySecret` to run the sandbox command.
 
 ## Thanks
 
