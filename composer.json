@@ -1,0 +1,28 @@
+{
+    "require": {
+        "symfony/console": "3.2.*",
+        "akeneo/api-php-client": "dev-master@dev",
+        "php-http/guzzle6-adapter": "1.1.*"
+    },
+    "require-dev": {
+        "php": "^7.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nicolas Dupont",
+            "email": "nicolas@akeneo.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:akeneo/php-api-client.git"
+        }
+    ]
+}
