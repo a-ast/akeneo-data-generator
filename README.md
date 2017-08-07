@@ -27,15 +27,15 @@ secret: mySecret
 
 - Clone this repository and `cd` into it.
 - Run `docker-compose pull`.
-- Run `bin/composer.sh install --prefer-dist` to install the project's dependencies.
+- Run `bin/docker/composer.sh install --prefer-dist` to install the project's dependencies.
 
 ## Use the web api sandbox
 
-- Run `bin/console.sh` to run the `app/console` script.
+- Run `bin/docker/console.sh` to run the `bin/console` script.
 
 ## Run the test command
 
-- Run `bin/console.sh nidup:sandbox:test myIp myPort myClientId mySecret` to run the sandbox command.
+- Run `bin/docker/console.sh nidup:sandbox:test myIp myPort myClientId mySecret` to run the sandbox command.
 
 ## Thanks
 
