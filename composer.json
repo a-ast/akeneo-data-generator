@@ -18,11 +18,5 @@
         "psr-4": {
             "": "src/"
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:akeneo/php-api-client.git"
-        }
-    ]
+    }
 }

@@ -2,7 +2,9 @@
 
 namespace Nidup\Sandbox;
 
-use Akeneo\Pim\Client\AkeneoPimClientBuilder;
+
+use Akeneo\Pim\AkeneoPimClientBuilder;
+use Akeneo\Pim\AkeneoPimClientInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,7 +14,7 @@ class ApiCommand extends Command
 {
     protected function configure()
     {
-        $this->setName('nidup:sandbox')
+        $this->setName('nidup:sandbox:test')
             ->setDescription('Test the Akeneo PIM API cli')
             ->addArgument('host', InputArgument::REQUIRED, 'PIM host')
             ->addArgument('port', InputArgument::REQUIRED, 'PIM port')
@@ -30,17 +32,23 @@ class ApiCommand extends Command
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
 
-        $clientBuilder = new AkeneoPimClientBuilder(
-            $baseUri,
+        $client = $this->getClient($baseUri, $clientId, $secret, $username, $password);
+
+        $products = $client->getProductApi()->all();
+        foreach ($products as $product) {
+            var_dump($product);
+            die();
+        }
+    }
+
+    private function getClient(string $baseUri, string $clientId, string $secret, string $username, string $password): AkeneoPimClientInterface
+    {
+        $clientBuilder = new AkeneoPimClientBuilder($baseUri);
+        return $clientBuilder->buildAuthenticatedByPassword(
             $clientId,
             $secret,
             $username,
             $password
         );
-        $client = $clientBuilder->build();
-
-        $categories = $client->getCategoryApi()->all();
-
-        var_dump($categories);
     }
 }
