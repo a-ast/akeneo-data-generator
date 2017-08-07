@@ -27,7 +27,8 @@ secret: mySecret
 
 - Clone this repository and `cd` into it.
 - Run `docker-compose pull`.
-- Run `bin/docker/composer.sh install --prefer-dist` to install the project's dependencies.
+- Run `docker-compose up -d`.
+- Run `bin/docker/composer.sh update --prefer-dist` to install the project's dependencies.
 
 ## Use the web api sandbox
 
@@ -37,6 +38,10 @@ secret: mySecret
 
 - Run `bin/docker/console.sh nidup:sandbox:test myIp myPort myClientId mySecret` to run the sandbox command.
 
+## Run the import command
+
+- Run `bin/docker/console.sh nidup:sandbox:import icecat_demo_dev` to run the install command.
+
 ## Thanks
 
-@matthiasnoback for the nice devtools docker images ;)
+@matthiasnoback for the great devtools docker images ;)

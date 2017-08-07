@@ -1,7 +1,6 @@
 <?php
 
-namespace Nidup\Sandbox;
-
+namespace Nidup\Sandbox\Infrastructure\Cli;
 
 use Akeneo\Pim\AkeneoPimClientBuilder;
 use Akeneo\Pim\AkeneoPimClientInterface;
@@ -10,12 +9,12 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ApiCommand extends Command
+class TestCommand extends Command
 {
     protected function configure()
     {
         $this->setName('nidup:sandbox:test')
-            ->setDescription('Test the Akeneo PIM API cli')
+            ->setDescription('Test the Akeneo PIM Web API cli')
             ->addArgument('host', InputArgument::REQUIRED, 'PIM host')
             ->addArgument('port', InputArgument::REQUIRED, 'PIM port')
             ->addArgument('clientId', InputArgument::REQUIRED, 'PIM API client id credential')

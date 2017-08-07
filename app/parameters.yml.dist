@@ -1,0 +1,8 @@
+config:
+    host: 192.168.7.175
+    port: 8080
+    client_id: myClient
+    secret: mySecret
+    username: admin
+    password: admin
+    fixtures: icecat_demo_dev
