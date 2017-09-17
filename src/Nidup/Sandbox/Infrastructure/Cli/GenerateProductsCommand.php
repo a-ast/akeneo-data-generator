@@ -8,17 +8,23 @@ use Nidup\Sandbox\Application\ConfigProvider;
 use Nidup\Sandbox\Application\ProductGenerator;
 use Nidup\Sandbox\Domain\AttributeRepository;
 use Nidup\Sandbox\Domain\ChannelRepository;
+use Nidup\Sandbox\Domain\CurrencyRepository;
 use Nidup\Sandbox\Domain\FamilyRepository;
 use Nidup\Sandbox\Domain\LocaleRepository;
+use Nidup\Sandbox\Domain\MeasureFamilyRepository;
 use Nidup\Sandbox\Domain\Product;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryAttributeRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryChannelRepository;
+use Nidup\Sandbox\Infrastructure\Database\InMemoryCurrencyRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryFamilyRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryLocaleRepository;
+use Nidup\Sandbox\Infrastructure\Database\InMemoryMeasureFamilyRepository;
 use Nidup\Sandbox\Infrastructure\Pim\AttributeRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\Pim\ChannelRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\Pim\CurrencyRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\Pim\FamilyRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\Pim\LocaleRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\Pim\MeasureFamilyRepositoryInitializer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -70,11 +76,18 @@ class GenerateProductsCommand extends Command
     private function getGenerator(): ProductGenerator
     {
         $localeRepository = $this->buildLocaleRepository();
-        $channelRepository = $this->buildChannelRepository($localeRepository);
+        $currencyRepository = $this->buildCurrencyRepository();
+        $measureRepository = $this->buildMeasureFamilyRepository();
+        $channelRepository = $this->buildChannelRepository($localeRepository, $currencyRepository);
         $attributeRepository = $this->buildAttributeRepository();
         $familyRepository = $this->buildFamilyRepository($attributeRepository);
 
-        return new ProductGenerator($channelRepository, $localeRepository, $familyRepository);
+        return new ProductGenerator(
+            $channelRepository,
+            $localeRepository,
+            $currencyRepository,
+            $familyRepository
+        );
     }
 
     private function buildFamilyRepository(AttributeRepository $attributeRepository): FamilyRepository
@@ -107,11 +120,34 @@ class GenerateProductsCommand extends Command
         return $repository;
     }
 
-    private function buildChannelRepository(LocaleRepository $localeRepository): ChannelRepository
+    private function buildCurrencyRepository(): CurrencyRepository
     {
         $client = $this->getClient();
-        $initializer = new ChannelRepositoryInitializer($client, $localeRepository);
+        $initializer = new CurrencyRepositoryInitializer($client);
+        $repository = new InMemoryCurrencyRepository();
+        $initializer->initialize($repository);
+
+        return $repository;
+    }
+
+    private function buildChannelRepository(
+        LocaleRepository $localeRepository,
+        CurrencyRepository $currencyRepository
+    ): ChannelRepository
+    {
+        $client = $this->getClient();
+        $initializer = new ChannelRepositoryInitializer($client, $localeRepository, $currencyRepository);
         $repository = new InMemoryChannelRepository();
+        $initializer->initialize($repository);
+
+        return $repository;
+    }
+
+    private function buildMeasureFamilyRepository(): MeasureFamilyRepository
+    {
+        $client = $this->getClient();
+        $initializer = new MeasureFamilyRepositoryInitializer($client);
+        $repository = new InMemoryMeasureFamilyRepository();
         $initializer->initialize($repository);
 
         return $repository;

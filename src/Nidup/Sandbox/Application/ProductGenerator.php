@@ -5,13 +5,12 @@ namespace Nidup\Sandbox\Application;
 use Faker\Factory;
 use Faker\Generator;
 use Nidup\Sandbox\Domain\Attribute;
-use Nidup\Sandbox\Domain\AttributeTypes;
 use Nidup\Sandbox\Domain\ChannelRepository;
+use Nidup\Sandbox\Domain\CurrencyRepository;
 use Nidup\Sandbox\Domain\Family;
 use Nidup\Sandbox\Domain\FamilyRepository;
 use Nidup\Sandbox\Domain\LocaleRepository;
 use Nidup\Sandbox\Domain\Product;
-use Nidup\Sandbox\Domain\ProductValue;
 use Nidup\Sandbox\Domain\ProductValues;
 
 class ProductGenerator
@@ -20,6 +19,8 @@ class ProductGenerator
     private $channelRepository;
     /** @var LocaleRepository */
     private $localeRepository;
+    /** @var CurrencyRepository */
+    private $currencyRepository;
     /** @var FamilyRepository */
     private $familyRepository;
     /** @var  Generator */
@@ -30,13 +31,15 @@ class ProductGenerator
     public function __construct(
         ChannelRepository $channelRepository,
         LocaleRepository $localeRepository,
+        CurrencyRepository $currencyRepository,
         FamilyRepository $familyRepository
     ) {
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
+        $this->currencyRepository = $currencyRepository;
         $this->familyRepository = $familyRepository;
         $this->identifierGenerator = Factory::create();
-        $this->valueGeneratorRegistry = new ProductValueGeneratorRegistry();
+        $this->valueGeneratorRegistry = new ProductValueGeneratorRegistry($currencyRepository);
     }
 
     public function generate(): Product

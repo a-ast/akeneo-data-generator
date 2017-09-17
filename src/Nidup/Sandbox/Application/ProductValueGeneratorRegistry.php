@@ -4,12 +4,13 @@ namespace Nidup\Sandbox\Application;
 
 use Nidup\Sandbox\Domain\Attribute;
 use Nidup\Sandbox\Domain\AttributeTypes;
+use Nidup\Sandbox\Domain\CurrencyRepository;
 
 class ProductValueGeneratorRegistry
 {
     private $generators = [];
 
-    public function __construct()
+    public function __construct(CurrencyRepository $currencyRepository)
     {
         $this->generators = [];
         $textGenerator = new ProductValueTextGenerator();
@@ -19,6 +20,8 @@ class ProductValueGeneratorRegistry
         $this->generators[AttributeTypes::OPTION_MULTI_SELECT] = new ProductValueOptionsGenerator();
         $this->generators[AttributeTypes::BOOLEAN] = new ProductValueBooleanGenerator();
         $this->generators[AttributeTypes::DATE] = new ProductValueDateGenerator();
+        $this->generators[AttributeTypes::PRICE_COLLECTION] = new ProductValuePriceGenerator($currencyRepository);
+        $this->generators[AttributeTypes::METRIC] = new ProductValueMetricGenerator();
     }
 
     public function support(Attribute $attribute): bool
