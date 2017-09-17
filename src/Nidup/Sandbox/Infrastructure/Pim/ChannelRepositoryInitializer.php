@@ -5,6 +5,7 @@ namespace Nidup\Sandbox\Infrastructure\Pim;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Nidup\Sandbox\Domain\Channel;
 use Nidup\Sandbox\Domain\ChannelRepository;
+use Nidup\Sandbox\Domain\Currency;
 use Nidup\Sandbox\Domain\LocaleRepository;
 
 class ChannelRepositoryInitializer
@@ -22,11 +23,17 @@ class ChannelRepositoryInitializer
     {
         $cursor = $this->client->getChannelApi()->all();
         foreach ($cursor as $itemData) {
+
             $locales = [];
             foreach ($itemData['locales'] as $localeCode) {
                 $locales[] = $this->localeRepository->get($localeCode);
             }
-            $repository->add(new Channel($itemData['code'], $locales));
+            $currencies = [];
+            foreach ($itemData['currencies'] as $currencyCode) {
+                $currencies[] = new Currency($currencyCode);
+            }
+
+            $repository->add(new Channel($itemData['code'], $locales, $currencies));
         }
     }
 }

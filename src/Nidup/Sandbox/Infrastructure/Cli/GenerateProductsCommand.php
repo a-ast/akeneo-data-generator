@@ -22,6 +22,7 @@ use Nidup\Sandbox\Infrastructure\Pim\LocaleRepositoryInitializer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateProductsCommand extends Command
@@ -30,26 +31,42 @@ class GenerateProductsCommand extends Command
     {
         $this->setName('nidup:sandbox:generate-products')
             ->setDescription('Import generated products through the Akeneo PIM Web API')
-            ->addArgument('number', InputArgument::REQUIRED, 'Number of products to generate');
+            ->addArgument('number', InputArgument::REQUIRED, 'Number of products to generate')
+            ->addOption('debug', null, InputOption::VALUE_NONE, 'Enable debug mode');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $generator = $this->getGenerator();
         $number = $input->getArgument('number');
+        $debug = $input->getOption('debug');
+
+        $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
             $product = $generator->generate();
-            $this->importProduct($product);
+            $this->importProduct($product, $debug);
+            if ($index % $batchInfo === 1) {
+                $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $batchInfo));
+            }
         }
         $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $number));
     }
 
-    private function importProduct(Product $product)
+    private function importProduct(Product $product, bool $debug)
     {
         $client = $this->getClient();
         $productData = $product->toArray();
-        //var_dump($productData);
-        $client->getProductApi()->upsert($product->getIdentifier(), $productData);
+        try {
+            if ($debug) {
+                var_dump($productData);
+                //var_dump($productData['values']);
+            }
+            $client->getProductApi()->upsert($product->getIdentifier(), $productData);
+        } catch (\Exception $e) {
+            var_dump($productData);
+            var_dump($productData['values']);
+            throw $e;
+        }
     }
 
     private function getGenerator(): ProductGenerator

@@ -9,19 +9,22 @@ class Attribute
     private $localizable;
     private $scopable;
     private $properties;
+    private $attributeOptions;
 
     public function __construct(
         string $code,
         string $type,
         bool $localizable,
         bool $scopable,
-        AttributeProperties $properties
+        AttributeProperties $properties,
+        AttributeOptions $attributeOptions
     ) {
         $this->code = $code;
         $this->type = $type;
         $this->localizable = $localizable;
         $this->scopable = $scopable;
         $this->properties = $properties;
+        $this->attributeOptions = $attributeOptions;
     }
 
     /**
@@ -62,5 +65,13 @@ class Attribute
     public function getProperties(): AttributeProperties
     {
         return $this->properties;
+    }
+
+    /**
+     * @return AttributeOptions
+     */
+    public function getAttributeOptions(): AttributeOptions
+    {
+        return $this->attributeOptions;
     }
 }
