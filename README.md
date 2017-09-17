@@ -38,9 +38,9 @@ Complete app/parameters.yml with the credentials.
 
 - Run `bin/docker/console.sh nidup:sandbox:get-first-product`
 
-## Run the import command
+## Import generated products
 
-- Run `bin/docker/console.sh nidup:sandbox:import icecat_demo_dev` to run the install command.
+- Run `bin/docker/console.sh nidup:sandbox:generate-products 100`
 
 ## Thanks
 

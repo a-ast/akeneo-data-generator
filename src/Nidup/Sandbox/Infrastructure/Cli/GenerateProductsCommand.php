@@ -6,61 +6,68 @@ use Akeneo\Pim\AkeneoPimClientBuilder;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Nidup\Sandbox\Application\ConfigProvider;
 use Nidup\Sandbox\Application\ProductGenerator;
-use Nidup\Sandbox\Domain\Attribute;
 use Nidup\Sandbox\Domain\AttributeRepository;
-use Nidup\Sandbox\Domain\Family;
+use Nidup\Sandbox\Domain\ChannelRepository;
 use Nidup\Sandbox\Domain\FamilyRepository;
+use Nidup\Sandbox\Domain\LocaleRepository;
 use Nidup\Sandbox\Domain\Product;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryAttributeRepository;
+use Nidup\Sandbox\Infrastructure\Database\InMemoryChannelRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryFamilyRepository;
+use Nidup\Sandbox\Infrastructure\Database\InMemoryLocaleRepository;
+use Nidup\Sandbox\Infrastructure\Pim\AttributeRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\Pim\ChannelRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\Pim\FamilyRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\Pim\LocaleRepositoryInitializer;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ImportCommand extends Command
+class GenerateProductsCommand extends Command
 {
     protected function configure()
     {
-        $this->setName('nidup:sandbox:import')
-            ->setDescription('Import through the Akeneo PIM Web API');
+        $this->setName('nidup:sandbox:generate-products')
+            ->setDescription('Import generated products through the Akeneo PIM Web API')
+            ->addArgument('number', InputArgument::REQUIRED, 'Number of products to generate');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $generator = $this->getGenerator();
-        $product = $generator->generate();
-        $this->importProduct($product);
+        $number = $input->getArgument('number');
+        for ($index = 0; $index < $number; $index++) {
+            $product = $generator->generate();
+            $this->importProduct($product);
+        }
+        $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $number));
     }
 
     private function importProduct(Product $product)
     {
         $client = $this->getClient();
         $productData = $product->toArray();
-        var_dump($productData);
+        //var_dump($productData);
         $client->getProductApi()->upsert($product->getIdentifier(), $productData);
     }
 
     private function getGenerator(): ProductGenerator
     {
+        $localeRepository = $this->buildLocaleRepository();
+        $channelRepository = $this->buildChannelRepository($localeRepository);
         $attributeRepository = $this->buildAttributeRepository();
         $familyRepository = $this->buildFamilyRepository($attributeRepository);
 
-        return new ProductGenerator($familyRepository);
+        return new ProductGenerator($channelRepository, $localeRepository, $familyRepository);
     }
 
     private function buildFamilyRepository(AttributeRepository $attributeRepository): FamilyRepository
     {
         $client = $this->getClient();
-        $cursor = $client->getFamilyApi()->all();
         $repository = new InMemoryFamilyRepository();
-        foreach ($cursor as $familyData) {
-            $attributeCodes = $familyData['attributes'];
-            $attributes = [];
-            foreach ($attributeCodes as $attributeCode) {
-                $attributes[] = $attributeRepository->get($attributeCode);
-            }
-            $repository->add(new Family($familyData['code'], $attributes));
-        }
+        $initializer = new FamilyRepositoryInitializer($client, $attributeRepository);
+        $initializer->initialize($repository);
 
         return $repository;
     }
@@ -68,18 +75,29 @@ class ImportCommand extends Command
     private function buildAttributeRepository(): AttributeRepository
     {
         $client = $this->getClient();
-        $cursor = $client->getAttributeApi()->all();
+        $initializer = new AttributeRepositoryInitializer($client);
         $repository = new InMemoryAttributeRepository();
-        foreach ($cursor as $attributeData) {
-            $repository->add(
-                new Attribute(
-                    $attributeData['code'],
-                    $attributeData['type'],
-                    $attributeData['localizable'],
-                    $attributeData['scopable']
-                )
-            );
-        }
+        $initializer->initialize($repository);
+
+        return $repository;
+    }
+
+    private function buildLocaleRepository(): LocaleRepository
+    {
+        $client = $this->getClient();
+        $initializer = new LocaleRepositoryInitializer($client);
+        $repository = new InMemoryLocaleRepository();
+        $initializer->initialize($repository);
+
+        return $repository;
+    }
+
+    private function buildChannelRepository(LocaleRepository $localeRepository): ChannelRepository
+    {
+        $client = $this->getClient();
+        $initializer = new ChannelRepositoryInitializer($client, $localeRepository);
+        $repository = new InMemoryChannelRepository();
+        $initializer->initialize($repository);
 
         return $repository;
     }

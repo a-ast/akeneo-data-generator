@@ -2,10 +2,10 @@
 
 namespace Nidup\Sandbox\Infrastructure\Database;
 
-use Nidup\Sandbox\Domain\Family;
-use Nidup\Sandbox\Domain\FamilyRepository;
+use Nidup\Sandbox\Domain\Channel;
+use Nidup\Sandbox\Domain\ChannelRepository;
 
-class InMemoryFamilyRepository implements FamilyRepository
+class InMemoryChannelRepository implements ChannelRepository
 {
     private $items = [];
 
@@ -14,16 +14,16 @@ class InMemoryFamilyRepository implements FamilyRepository
         $this->items = [];
     }
 
-    public function get(string $code): Family
+    public function get(string $code): Channel
     {
         if (!isset($this->items[$code])) {
-            throw new \Exception(sprintf("Family %s does not exists", $code));
+            throw new \Exception(sprintf("Channel %s does not exists", $code));
         }
 
         return $this->items[$code];
     }
 
-    public function add(Family $item)
+    public function add(Channel $item)
     {
         $this->items[$item->getCode()] = $item;
     }

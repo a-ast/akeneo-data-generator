@@ -8,13 +8,20 @@ class Attribute
     private $type;
     private $localizable;
     private $scopable;
+    private $properties;
 
-    public function __construct(string $code, string $type, bool $localizable, bool $scopable)
-    {
+    public function __construct(
+        string $code,
+        string $type,
+        bool $localizable,
+        bool $scopable,
+        AttributeProperties $properties
+    ) {
         $this->code = $code;
         $this->type = $type;
         $this->localizable = $localizable;
         $this->scopable = $scopable;
+        $this->properties = $properties;
     }
 
     /**
@@ -47,5 +54,13 @@ class Attribute
     public function isScopable(): bool
     {
         return $this->scopable;
+    }
+
+    /**
+     * @return AttributeProperties
+     */
+    public function getProperties(): AttributeProperties
+    {
+        return $this->properties;
     }
 }

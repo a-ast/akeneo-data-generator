@@ -17,15 +17,35 @@ class ProductValue
         $this->channel = $channel;
     }
 
-    public function toArray(): array
+    /**
+     * @return Attribute
+     */
+    public function getAttribute(): Attribute
     {
-        return [
-            $this->attribute->getCode() =>
-                [[
-                    'data' => $this->data,
-                    'locale' => $this->locale,
-                    'scope' => $this->channel,
-                ]]
-        ];
+        return $this->attribute;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChannel()
+    {
+        return $this->channel;
     }
 }

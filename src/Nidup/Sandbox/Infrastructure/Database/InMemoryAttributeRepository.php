@@ -7,34 +7,34 @@ use Nidup\Sandbox\Domain\AttributeRepository;
 
 class InMemoryAttributeRepository implements AttributeRepository
 {
-    private $attributes = [];
+    private $items = [];
 
     public function __construct()
     {
-        $this->attributes = [];
+        $this->items = [];
     }
 
     public function get(string $code): Attribute
     {
-        if (!isset($this->attributes[$code])) {
+        if (!isset($this->items[$code])) {
             throw new \Exception(sprintf("Attribute %s does not exists", $code));
         }
 
-        return $this->attributes[$code];
+        return $this->items[$code];
     }
 
-    public function add(Attribute $attribute)
+    public function add(Attribute $item)
     {
-        $this->attributes[$attribute->getCode()] = $attribute;
+        $this->items[$item->getCode()] = $item;
     }
 
     public function count(): int
     {
-        return count($this->attributes);
+        return count($this->items);
     }
 
     public function all(): array
     {
-        return array_values($this->families);
+        return array_values($this->items);
     }
 }

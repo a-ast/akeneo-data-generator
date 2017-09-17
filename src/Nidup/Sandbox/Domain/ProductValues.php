@@ -18,11 +18,18 @@ class ProductValues
 
     public function toArray()
     {
-        // TODO: merge when several per attribute
-
         $data = [];
+        /** @var ProductValue $value */
         foreach ($this->values as $value) {
-            $data = array_merge($data, $value->toArray());
+
+            if (!isset($data[$value->getAttribute()->getCode()])) {
+                $data[$value->getAttribute()->getCode()] = [];
+            }
+            $data[$value->getAttribute()->getCode()][] = [
+                'data' => $value->getData(),
+                'locale' => $value->getLocale(),
+                'scope' => $value->getChannel(),
+            ];
         }
 
         return $data;
