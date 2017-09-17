@@ -4,9 +4,11 @@ namespace Nidup\Sandbox\Infrastructure\Cli;
 
 use Akeneo\Pim\AkeneoPimClientBuilder;
 use Akeneo\Pim\AkeneoPimClientInterface;
+use Faker\Factory;
 use Nidup\Sandbox\Application\ConfigProvider;
 use Nidup\Sandbox\Application\ProductGenerator;
 use Nidup\Sandbox\Domain\AttributeRepository;
+use Nidup\Sandbox\Domain\AttributeTypes;
 use Nidup\Sandbox\Domain\CategoryRepository;
 use Nidup\Sandbox\Domain\ChannelRepository;
 use Nidup\Sandbox\Domain\CurrencyRepository;
@@ -41,6 +43,7 @@ class GenerateProductsCommand extends Command
         $this->setName('nidup:sandbox:generate-products')
             ->setDescription('Import generated products through the Akeneo PIM Web API')
             ->addArgument('number', InputArgument::REQUIRED, 'Number of products to generate')
+            ->addOption('with-images', null, InputOption::VALUE_NONE, 'Generate image files')
             ->addOption('debug', null, InputOption::VALUE_NONE, 'Enable debug mode');
     }
 
@@ -49,11 +52,39 @@ class GenerateProductsCommand extends Command
         $generator = $this->getGenerator();
         $number = $input->getArgument('number');
         $debug = $input->getOption('debug');
+        $withImages = $input->getOption('with-images');
+
+        $imageGenerator = Factory::create();
+        $apiClient = $this->getClient();
 
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
             $product = $generator->generate();
             $this->importProduct($product, $debug);
+
+            // TODO: to be extracted + handle localizable / scopable medias
+            if ($withImages) {
+                $attributes = $product->getFamily()->getAttributes();
+                foreach ($attributes as $attribute) {
+                    if ($attribute->getType() === AttributeTypes::IMAGE) {
+
+                        $imagePath = $imageGenerator->image('/tmp/', 640, 480);
+                        $api = $apiClient->getProductMediaFileApi();
+                        $code = $api->create(
+                            $imagePath,
+                            [
+                                'identifier' => $product->getIdentifier(),
+                                'attribute' => $attribute->getCode(),
+                                'locale' => null,
+                                'scope' => null
+                            ]
+                        );
+                        //echo $code;
+                    }
+                }
+            }
+
+
             if ($index !== 0 && $index % $batchInfo === 0) {
                 $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $index));
             }
@@ -74,6 +105,7 @@ class GenerateProductsCommand extends Command
             echo $e->getMessage();
         }
     }
+
 
     private function getGenerator(): ProductGenerator
     {

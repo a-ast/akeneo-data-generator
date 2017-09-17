@@ -22,6 +22,11 @@ class Product
         return $this->identifier;
     }
 
+    public function getFamily()
+    {
+        return $this->family;
+    }
+
     public function toArray(): array
     {
         return [
