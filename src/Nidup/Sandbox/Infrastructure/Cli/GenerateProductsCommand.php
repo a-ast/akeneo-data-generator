@@ -45,8 +45,8 @@ class GenerateProductsCommand extends Command
         for ($index = 0; $index < $number; $index++) {
             $product = $generator->generate();
             $this->importProduct($product, $debug);
-            if ($index % $batchInfo === 1) {
-                $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $batchInfo));
+            if ($index !== 0 && $index % $batchInfo === 0) {
+                $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $index));
             }
         }
         $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $number));
@@ -59,13 +59,11 @@ class GenerateProductsCommand extends Command
         try {
             if ($debug) {
                 var_dump($productData);
-                //var_dump($productData['values']);
+                var_dump($productData['values']);
             }
             $client->getProductApi()->upsert($product->getIdentifier(), $productData);
         } catch (\Exception $e) {
-            var_dump($productData);
-            var_dump($productData['values']);
-            throw $e;
+            echo $e->getMessage();
         }
     }
 
