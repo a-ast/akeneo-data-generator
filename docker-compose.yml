@@ -2,8 +2,7 @@ version: '3'
 
 services:
     devtools:
-        build: docker/devtools/
-        image: nidup/akeneo-php-client-sandbox-devtools
+        image: matthiasnoback/php_workshop_tools_base
         volumes:
             - ./:/opt
             - ${COMPOSER_HOME}:/home/.composer

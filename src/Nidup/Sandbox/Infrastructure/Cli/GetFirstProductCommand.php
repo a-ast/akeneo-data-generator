@@ -9,12 +9,12 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ImportCommand extends Command
+class GetFirstProductCommand extends Command
 {
     protected function configure()
     {
-        $this->setName('nidup:sandbox:import')
-            ->setDescription('Import through the Akeneo PIM Web API');
+        $this->setName('nidup:sandbox:get-first-product')
+            ->setDescription('Get the first product data through the Akeneo PIM Web API');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -23,7 +23,7 @@ class ImportCommand extends Command
         $products = $client->getProductApi()->all();
         foreach ($products as $product) {
             var_dump($product);
-            die();
+            break;
         }
     }
 
