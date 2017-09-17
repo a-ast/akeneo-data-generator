@@ -11,7 +11,7 @@ class ProductValues
         $this->values = [];
     }
 
-    public function addValue(ProductValue $value)
+    public function add(ProductValue $value)
     {
         $this->values[] = $value;
     }

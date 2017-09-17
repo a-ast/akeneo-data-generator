@@ -9,7 +9,7 @@ class Product
     private $categories;
     private $values;
 
-    public function __construct(string $identifier, Family $family, ProductValues $values, array $categories)
+    public function __construct(string $identifier, Family $family, ProductValues $values, ProductCategories $categories)
     {
         $this->identifier = $identifier;
         $this->family = $family;
@@ -28,7 +28,7 @@ class Product
             'identifier' => $this->identifier,
             'family' => $this->family->getCode(),
             'values' => $this->values->toArray(),
-            'categories' => $this->categories
+            'categories' => $this->categories->toArray()
         ];
     }
 }

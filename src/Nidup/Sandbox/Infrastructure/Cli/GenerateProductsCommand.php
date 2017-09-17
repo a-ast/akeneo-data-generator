@@ -7,6 +7,7 @@ use Akeneo\Pim\AkeneoPimClientInterface;
 use Nidup\Sandbox\Application\ConfigProvider;
 use Nidup\Sandbox\Application\ProductGenerator;
 use Nidup\Sandbox\Domain\AttributeRepository;
+use Nidup\Sandbox\Domain\CategoryRepository;
 use Nidup\Sandbox\Domain\ChannelRepository;
 use Nidup\Sandbox\Domain\CurrencyRepository;
 use Nidup\Sandbox\Domain\FamilyRepository;
@@ -14,12 +15,14 @@ use Nidup\Sandbox\Domain\LocaleRepository;
 use Nidup\Sandbox\Domain\MeasureFamilyRepository;
 use Nidup\Sandbox\Domain\Product;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryAttributeRepository;
+use Nidup\Sandbox\Infrastructure\Database\InMemoryCategoryRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryChannelRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryCurrencyRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryFamilyRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryLocaleRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryMeasureFamilyRepository;
 use Nidup\Sandbox\Infrastructure\Pim\AttributeRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\Pim\CategoryRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\Pim\ChannelRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\Pim\CurrencyRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\Pim\FamilyRepositoryInitializer;
@@ -65,7 +68,6 @@ class GenerateProductsCommand extends Command
         try {
             if ($debug) {
                 var_dump($productData);
-                var_dump($productData['values']);
             }
             $client->getProductApi()->upsert($product->getIdentifier(), $productData);
         } catch (\Exception $e) {
@@ -78,6 +80,7 @@ class GenerateProductsCommand extends Command
         $localeRepository = $this->buildLocaleRepository();
         $currencyRepository = $this->buildCurrencyRepository();
         $measureRepository = $this->buildMeasureFamilyRepository();
+        $categoryRepository = $this->buildCategoryRepository();
         $channelRepository = $this->buildChannelRepository($localeRepository, $currencyRepository);
         $attributeRepository = $this->buildAttributeRepository();
         $familyRepository = $this->buildFamilyRepository($attributeRepository);
@@ -86,8 +89,19 @@ class GenerateProductsCommand extends Command
             $channelRepository,
             $localeRepository,
             $currencyRepository,
-            $familyRepository
+            $familyRepository,
+            $categoryRepository
         );
+    }
+
+    private function buildCategoryRepository(): CategoryRepository
+    {
+        $client = $this->getClient();
+        $repository = new InMemoryCategoryRepository();
+        $initializer = new CategoryRepositoryInitializer($client);
+        $initializer->initialize($repository);
+
+        return $repository;
     }
 
     private function buildFamilyRepository(AttributeRepository $attributeRepository): FamilyRepository
