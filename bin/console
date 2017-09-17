@@ -3,8 +3,8 @@
 <?php
 require __DIR__.'/../vendor/autoload.php';
 
-use Nidup\Sandbox\Infrastructure\Cli\TestCommand;
-use Nidup\Sandbox\Infrastructure\Cli\ImportCommand;
+use Nidup\Sandbox\Infrastructure\Cli\GetFirstProductCommand;
+use Nidup\Sandbox\Infrastructure\Cli\GenerateProductsCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,9 +12,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 $application = new Application('nidup-api-sandbox', '1.0.0');
-$command = new TestCommand();
+$command = new GetFirstProductCommand();
 $application->add($command);
-$command = new ImportCommand();
+$command = new GenerateProductsCommand();
 $application->add($command);
 
 $application->run();
