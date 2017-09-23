@@ -7,38 +7,36 @@ Playing with the Akeneo PHP API client :rocket:
 - [Docker Engine](https://docs.docker.com/engine/installation/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Getting started
+## Getting Started
 
-Have a Akeneo PIM 1.8 installed.
+Have a Akeneo PIM 2.0 installed.
 
-## Install this repository
+## Install the Sandbox
 
 - Clone this repository and `cd` into it.
 - Run `docker-compose pull`.
 - Run `docker-compose up -d`.
 - Run `bin/docker/composer.sh update --prefer-dist` to install the project's dependencies.
 
-## Generate a web api token from your PIM
+## Configure the Sandbox
 
-Connect to your Akeneo PIM UI, then go to System > API Connections.
+Connect to Akeneo PIM UI, then go to System > API Connections.
 
 Create new credentials (client_id & secret).
 
-## Configure the sandbox
-
-Copy / paste app/parameters.yml.dist to app/parameters.yml.
+Copy & paste app/parameters.yml.dist to app/parameters.yml.
 
 Complete app/parameters.yml with the credentials.
 
-## Use the web api sandbox
+## Use the Sandbox
 
 - Run `bin/docker/console.sh` to run the `bin/console` script.
 
-## Get first product data
+## Get First Product Data
 
 - Run `bin/docker/console.sh nidup:sandbox:get-first-product`
 
-## Import generated products
+## Generate Products
 
 - Run `bin/docker/console.sh nidup:sandbox:generate-products 100`
 
