@@ -1,10 +1,10 @@
 <?php
 
-namespace Nidup\Sandbox\Infrastructure\Pim;
+namespace Nidup\Sandbox\Infrastructure\WebApi;
 
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Nidup\Sandbox\Domain\Category;
-use Nidup\Sandbox\Domain\CategoryRepository;
+use Nidup\Sandbox\Domain\Model\Category;
+use Nidup\Sandbox\Domain\Model\CategoryRepository;
 
 class CategoryRepositoryInitializer
 {

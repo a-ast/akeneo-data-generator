@@ -1,10 +1,10 @@
 <?php
 
-namespace Nidup\Sandbox\Infrastructure\Pim;
+namespace Nidup\Sandbox\Infrastructure\WebApi;
 
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Nidup\Sandbox\Domain\Currency;
-use Nidup\Sandbox\Domain\CurrencyRepository;
+use Nidup\Sandbox\Domain\Model\Currency;
+use Nidup\Sandbox\Domain\Model\CurrencyRepository;
 
 class CurrencyRepositoryInitializer
 {

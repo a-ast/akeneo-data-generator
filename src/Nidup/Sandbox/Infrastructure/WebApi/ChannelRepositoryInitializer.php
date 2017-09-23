@@ -1,12 +1,12 @@
 <?php
 
-namespace Nidup\Sandbox\Infrastructure\Pim;
+namespace Nidup\Sandbox\Infrastructure\WebApi;
 
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Nidup\Sandbox\Domain\Channel;
-use Nidup\Sandbox\Domain\ChannelRepository;
-use Nidup\Sandbox\Domain\CurrencyRepository;
-use Nidup\Sandbox\Domain\LocaleRepository;
+use Nidup\Sandbox\Domain\Model\Channel;
+use Nidup\Sandbox\Domain\Model\ChannelRepository;
+use Nidup\Sandbox\Domain\Model\CurrencyRepository;
+use Nidup\Sandbox\Domain\Model\LocaleRepository;
 
 class ChannelRepositoryInitializer
 {

@@ -2,8 +2,8 @@
 
 namespace Nidup\Sandbox\Infrastructure\Database;
 
-use Nidup\Sandbox\Domain\Attribute;
-use Nidup\Sandbox\Domain\AttributeRepository;
+use Nidup\Sandbox\Domain\Model\Attribute;
+use Nidup\Sandbox\Domain\Model\AttributeRepository;
 
 class InMemoryAttributeRepository implements AttributeRepository
 {

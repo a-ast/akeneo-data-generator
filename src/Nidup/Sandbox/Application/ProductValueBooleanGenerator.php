@@ -2,8 +2,8 @@
 
 namespace Nidup\Sandbox\Application;
 
-use Nidup\Sandbox\Domain\Attribute;
-use Nidup\Sandbox\Domain\ProductValue;
+use Nidup\Sandbox\Domain\Model\Attribute;
+use Nidup\Sandbox\Domain\Model\ProductValue;
 
 class ProductValueBooleanGenerator implements ProductValueGenerator
 {

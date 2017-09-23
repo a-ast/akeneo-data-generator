@@ -1,10 +1,10 @@
 <?php
 
-namespace Nidup\Sandbox\Infrastructure\Pim;
+namespace Nidup\Sandbox\Infrastructure\WebApi;
 
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Nidup\Sandbox\Domain\Locale;
-use Nidup\Sandbox\Domain\LocaleRepository;
+use Nidup\Sandbox\Domain\Model\Locale;
+use Nidup\Sandbox\Domain\Model\LocaleRepository;
 
 class LocaleRepositoryInitializer
 {

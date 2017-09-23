@@ -1,8 +1,8 @@
 <?php
 
-namespace Nidup\Sandbox\Domain;
+namespace Nidup\Sandbox\Domain\Model;
 
-class AttributeOption
+class Currency
 {
     /** @var string */
     private $code;

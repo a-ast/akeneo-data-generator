@@ -4,17 +4,17 @@ namespace Nidup\Sandbox\Application;
 
 use Faker\Factory;
 use Faker\Generator;
-use Nidup\Sandbox\Domain\Attribute;
-use Nidup\Sandbox\Domain\Category;
-use Nidup\Sandbox\Domain\CategoryRepository;
-use Nidup\Sandbox\Domain\ChannelRepository;
-use Nidup\Sandbox\Domain\CurrencyRepository;
-use Nidup\Sandbox\Domain\Family;
-use Nidup\Sandbox\Domain\FamilyRepository;
-use Nidup\Sandbox\Domain\LocaleRepository;
-use Nidup\Sandbox\Domain\Product;
-use Nidup\Sandbox\Domain\ProductCategories;
-use Nidup\Sandbox\Domain\ProductValues;
+use Nidup\Sandbox\Domain\Model\Attribute;
+use Nidup\Sandbox\Domain\Model\Category;
+use Nidup\Sandbox\Domain\Model\CategoryRepository;
+use Nidup\Sandbox\Domain\Model\ChannelRepository;
+use Nidup\Sandbox\Domain\Model\CurrencyRepository;
+use Nidup\Sandbox\Domain\Model\Family;
+use Nidup\Sandbox\Domain\Model\FamilyRepository;
+use Nidup\Sandbox\Domain\Model\LocaleRepository;
+use Nidup\Sandbox\Domain\Model\Product;
+use Nidup\Sandbox\Domain\Model\ProductCategories;
+use Nidup\Sandbox\Domain\Model\ProductValues;
 
 class ProductGenerator
 {

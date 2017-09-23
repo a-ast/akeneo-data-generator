@@ -2,8 +2,8 @@
 
 namespace Nidup\Sandbox\Infrastructure\Database;
 
-use Nidup\Sandbox\Domain\Locale;
-use Nidup\Sandbox\Domain\LocaleRepository;
+use Nidup\Sandbox\Domain\Model\Locale;
+use Nidup\Sandbox\Domain\Model\LocaleRepository;
 
 class InMemoryLocaleRepository implements LocaleRepository
 {

@@ -4,8 +4,8 @@ namespace Nidup\Sandbox\Application;
 
 use Faker\Factory;
 use Faker\Generator;
-use Nidup\Sandbox\Domain\Attribute;
-use Nidup\Sandbox\Domain\ProductValue;
+use Nidup\Sandbox\Domain\Model\Attribute;
+use Nidup\Sandbox\Domain\Model\ProductValue;
 
 class ProductValueMetricGenerator implements ProductValueGenerator
 {

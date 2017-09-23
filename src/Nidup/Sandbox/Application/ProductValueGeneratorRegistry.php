@@ -2,9 +2,9 @@
 
 namespace Nidup\Sandbox\Application;
 
-use Nidup\Sandbox\Domain\Attribute;
-use Nidup\Sandbox\Domain\AttributeTypes;
-use Nidup\Sandbox\Domain\CurrencyRepository;
+use Nidup\Sandbox\Domain\Model\Attribute;
+use Nidup\Sandbox\Domain\Model\AttributeTypes;
+use Nidup\Sandbox\Domain\Model\CurrencyRepository;
 
 class ProductValueGeneratorRegistry
 {

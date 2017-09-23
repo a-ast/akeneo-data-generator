@@ -2,8 +2,8 @@
 
 namespace Nidup\Sandbox\Infrastructure\Database;
 
-use Nidup\Sandbox\Domain\Currency;
-use Nidup\Sandbox\Domain\CurrencyRepository;
+use Nidup\Sandbox\Domain\Model\Currency;
+use Nidup\Sandbox\Domain\Model\CurrencyRepository;
 
 class InMemoryCurrencyRepository implements CurrencyRepository
 {

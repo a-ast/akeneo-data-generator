@@ -1,11 +1,11 @@
 <?php
 
-namespace Nidup\Sandbox\Infrastructure\Pim;
+namespace Nidup\Sandbox\Infrastructure\WebApi;
 
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Nidup\Sandbox\Domain\AttributeRepository;
-use Nidup\Sandbox\Domain\Family;
-use Nidup\Sandbox\Domain\FamilyRepository;
+use Nidup\Sandbox\Domain\Model\AttributeRepository;
+use Nidup\Sandbox\Domain\Model\Family;
+use Nidup\Sandbox\Domain\Model\FamilyRepository;
 
 class FamilyRepositoryInitializer
 {

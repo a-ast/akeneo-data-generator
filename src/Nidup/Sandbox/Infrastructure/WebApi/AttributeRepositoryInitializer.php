@@ -1,14 +1,14 @@
 <?php
 
-namespace Nidup\Sandbox\Infrastructure\Pim;
+namespace Nidup\Sandbox\Infrastructure\WebApi;
 
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Nidup\Sandbox\Domain\Attribute;
-use Nidup\Sandbox\Domain\AttributeOption;
-use Nidup\Sandbox\Domain\AttributeOptions;
-use Nidup\Sandbox\Domain\AttributeProperties;
-use Nidup\Sandbox\Domain\AttributeRepository;
-use Nidup\Sandbox\Domain\AttributeTypes;
+use Nidup\Sandbox\Domain\Model\Attribute;
+use Nidup\Sandbox\Domain\Model\AttributeOption;
+use Nidup\Sandbox\Domain\Model\AttributeOptions;
+use Nidup\Sandbox\Domain\Model\AttributeProperties;
+use Nidup\Sandbox\Domain\Model\AttributeRepository;
+use Nidup\Sandbox\Domain\Model\AttributeTypes;
 
 class AttributeRepositoryInitializer
 {

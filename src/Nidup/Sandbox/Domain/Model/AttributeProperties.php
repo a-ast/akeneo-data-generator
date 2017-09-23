@@ -1,6 +1,6 @@
 <?php
 
-namespace Nidup\Sandbox\Domain;
+namespace Nidup\Sandbox\Domain\Model;
 
 class AttributeProperties
 {
