@@ -5,6 +5,7 @@ namespace Nidup\Sandbox\Domain;
 use Faker\Factory;
 use Faker\Generator;
 use Nidup\Sandbox\Domain\Model\Attribute;
+use Nidup\Sandbox\Domain\Model\AttributeTypes;
 use Nidup\Sandbox\Domain\Model\Category;
 use Nidup\Sandbox\Domain\Model\CategoryRepository;
 use Nidup\Sandbox\Domain\Model\ChannelRepository;
@@ -50,11 +51,21 @@ class ProductGenerator
         $this->valueGeneratorRegistry = new ProductValueGeneratorRegistry($currencyRepository);
     }
 
-    public function generate(): Product
+    public function generateWithImages(): Product
     {
         $identifier = $this->identifierGenerator->ean13();
         $family = $this->getRandomFamily();
         $values = $this->getRandomValues($family);
+        $categories = $this->getRandomCategories();
+
+        return new Product($identifier, $family, $values, $categories);
+    }
+
+    public function generateWithoutImages(): Product
+    {
+        $identifier = $this->identifierGenerator->ean13();
+        $family = $this->getRandomFamily();
+        $values = $this->getRandomValuesExceptImages($family);
         $categories = $this->getRandomCategories();
 
         return new Product($identifier, $family, $values, $categories);
@@ -91,6 +102,20 @@ class ProductGenerator
         /** @var Attribute $attribute */
         foreach ($attributes as $attribute) {
             $this->generateValues($values, $attribute);
+        }
+
+        return $values;
+    }
+
+    private function getRandomValuesExceptImages(Family $family): ProductValues
+    {
+        $attributes = $family->getAttributes();
+        $values = new ProductValues();
+        /** @var Attribute $attribute */
+        foreach ($attributes as $attribute) {
+            if ($attribute->getType() !== AttributeTypes::IMAGE) {
+                $this->generateValues($values, $attribute);
+            }
         }
 
         return $values;

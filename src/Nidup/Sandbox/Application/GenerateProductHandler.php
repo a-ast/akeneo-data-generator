@@ -18,7 +18,11 @@ class GenerateProductHandler
 
     public function handle(GenerateProduct $command)
     {
-        $product = $this->generator->generate();
+        if ($command->withImages()) {
+            $product = $this->generator->generateWithImages();
+        } else {
+            $product = $this->generator->generateWithoutImages();
+        }
         $this->repository->add($product);
     }
 }

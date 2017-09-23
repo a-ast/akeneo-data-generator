@@ -15,14 +15,27 @@ class GenerateProductHandlerSpec extends ObjectBehavior
         $this->beConstructedWith($generator, $repository);
     }
 
-    function it_generates_a_product(
+    function it_generates_a_product_with_images(
         $generator,
         $repository,
         GenerateProduct $command,
         Product $product
-    )
-    {
-        $generator->generate()->willReturn($product);
+    ) {
+        $command->withImages()->willReturn(true);
+        $generator->generateWithImages()->willReturn($product);
+        $repository->add($product)->shouldBeCalled();
+
+        $this->handle($command);
+    }
+
+    function it_generates_a_product_without_images(
+        $generator,
+        $repository,
+        GenerateProduct $command,
+        Product $product
+    ) {
+        $command->withImages()->willReturn(false);
+        $generator->generateWithoutImages()->willReturn($product);
         $repository->add($product)->shouldBeCalled();
 
         $this->handle($command);
