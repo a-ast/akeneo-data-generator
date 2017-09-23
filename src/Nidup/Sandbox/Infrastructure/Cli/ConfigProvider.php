@@ -1,6 +1,6 @@
 <?php
 
-namespace Nidup\Sandbox\Application;
+namespace Nidup\Sandbox\Infrastructure\Cli;
 
 use Symfony\Component\Yaml\Yaml;
 
