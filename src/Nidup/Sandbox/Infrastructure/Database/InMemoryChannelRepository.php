@@ -2,8 +2,8 @@
 
 namespace Nidup\Sandbox\Infrastructure\Database;
 
-use Nidup\Sandbox\Domain\Channel;
-use Nidup\Sandbox\Domain\ChannelRepository;
+use Nidup\Sandbox\Domain\Model\Channel;
+use Nidup\Sandbox\Domain\Model\ChannelRepository;
 
 class InMemoryChannelRepository implements ChannelRepository
 {

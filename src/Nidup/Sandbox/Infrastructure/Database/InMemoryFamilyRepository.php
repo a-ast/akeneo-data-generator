@@ -2,8 +2,8 @@
 
 namespace Nidup\Sandbox\Infrastructure\Database;
 
-use Nidup\Sandbox\Domain\Family;
-use Nidup\Sandbox\Domain\FamilyRepository;
+use Nidup\Sandbox\Domain\Model\Family;
+use Nidup\Sandbox\Domain\Model\FamilyRepository;
 
 class InMemoryFamilyRepository implements FamilyRepository
 {

@@ -2,8 +2,8 @@
 
 namespace Nidup\Sandbox\Infrastructure\Database;
 
-use Nidup\Sandbox\Domain\Category;
-use Nidup\Sandbox\Domain\CategoryRepository;
+use Nidup\Sandbox\Domain\Model\Category;
+use Nidup\Sandbox\Domain\Model\CategoryRepository;
 
 class InMemoryCategoryRepository implements CategoryRepository
 {

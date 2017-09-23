@@ -4,7 +4,7 @@ namespace Nidup\Sandbox\Infrastructure\Cli;
 
 use Akeneo\Pim\AkeneoPimClientBuilder;
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Nidup\Sandbox\Application\ConfigProvider;
+use Nidup\Sandbox\Infrastructure\Cli\ConfigProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

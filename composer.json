@@ -1,24 +1,36 @@
 {
-    "require": {
-        "symfony/console": "3.3.*",
-        "symfony/yaml": "3.3.*",
-        "akeneo/api-php-client": "dev-master",
-        "php-http/guzzle6-adapter": "1.1.*",
-        "fzaninotto/faker": "1.7.1"
-    },
-    "require-dev": {
-        "php": "^7.1"
-    },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Nicolas Dupont",
-            "email": "nicolas@akeneo.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "": "src/"
-        }
+  "name": "nidup/akeneo-php-client-sandbox",
+  "description": "Akeneo PIM web api sandbox",
+  "license": "OSL-3.0",
+  "authors": [
+     {
+       "name": "Nicolas Dupont",
+       "email": "nicolas@akeneo.com"
+     }
+  ],
+  "require": {
+    "php": "^7.1",
+    "symfony/console": "3.3.*",
+    "symfony/yaml": "3.3.*",
+    "akeneo/api-php-client": "dev-master",
+    "php-http/guzzle6-adapter": "1.1.*",
+    "fzaninotto/faker": "1.7.1"
+  },
+  "require-dev": {
+    "akeneo/php-coupling-detector": "0.2.0",
+    "phpspec/phpspec": "4.0.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "": "src/"
     }
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
 }

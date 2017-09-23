@@ -4,16 +4,20 @@ namespace Nidup\Sandbox\Infrastructure\Cli;
 
 use Akeneo\Pim\AkeneoPimClientBuilder;
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Nidup\Sandbox\Application\ConfigProvider;
-use Nidup\Sandbox\Application\ProductGenerator;
-use Nidup\Sandbox\Domain\AttributeRepository;
-use Nidup\Sandbox\Domain\CategoryRepository;
-use Nidup\Sandbox\Domain\ChannelRepository;
-use Nidup\Sandbox\Domain\CurrencyRepository;
-use Nidup\Sandbox\Domain\FamilyRepository;
-use Nidup\Sandbox\Domain\LocaleRepository;
-use Nidup\Sandbox\Domain\MeasureFamilyRepository;
-use Nidup\Sandbox\Domain\Product;
+use Faker\Factory;
+use Nidup\Sandbox\Application\GenerateProduct;
+use Nidup\Sandbox\Application\GenerateProductHandler;
+use Nidup\Sandbox\Domain\Model\ProductRepository;
+use Nidup\Sandbox\Domain\ProductGenerator;
+use Nidup\Sandbox\Domain\Model\AttributeRepository;
+use Nidup\Sandbox\Domain\Model\AttributeTypes;
+use Nidup\Sandbox\Domain\Model\CategoryRepository;
+use Nidup\Sandbox\Domain\Model\ChannelRepository;
+use Nidup\Sandbox\Domain\Model\CurrencyRepository;
+use Nidup\Sandbox\Domain\Model\FamilyRepository;
+use Nidup\Sandbox\Domain\Model\LocaleRepository;
+use Nidup\Sandbox\Domain\Model\MeasureFamilyRepository;
+use Nidup\Sandbox\Domain\Model\Product;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryAttributeRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryCategoryRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryChannelRepository;
@@ -21,13 +25,14 @@ use Nidup\Sandbox\Infrastructure\Database\InMemoryCurrencyRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryFamilyRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryLocaleRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryMeasureFamilyRepository;
-use Nidup\Sandbox\Infrastructure\Pim\AttributeRepositoryInitializer;
-use Nidup\Sandbox\Infrastructure\Pim\CategoryRepositoryInitializer;
-use Nidup\Sandbox\Infrastructure\Pim\ChannelRepositoryInitializer;
-use Nidup\Sandbox\Infrastructure\Pim\CurrencyRepositoryInitializer;
-use Nidup\Sandbox\Infrastructure\Pim\FamilyRepositoryInitializer;
-use Nidup\Sandbox\Infrastructure\Pim\LocaleRepositoryInitializer;
-use Nidup\Sandbox\Infrastructure\Pim\MeasureFamilyRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\WebApi\AttributeRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\WebApi\CategoryRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\WebApi\ChannelRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\WebApi\CurrencyRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\WebApi\FamilyRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\WebApi\LocaleRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\WebApi\MeasureFamilyRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\WebApi\WebApiProductRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,38 +46,33 @@ class GenerateProductsCommand extends Command
         $this->setName('nidup:sandbox:generate-products')
             ->setDescription('Import generated products through the Akeneo PIM Web API')
             ->addArgument('number', InputArgument::REQUIRED, 'Number of products to generate')
+            ->addOption('with-images', null, InputOption::VALUE_NONE, 'Generate image files')
             ->addOption('debug', null, InputOption::VALUE_NONE, 'Enable debug mode');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $generator = $this->getGenerator();
         $number = $input->getArgument('number');
-        $debug = $input->getOption('debug');
+        $debug = $input->getOption('debug'); // TODO: to handle?
+        $withImages = $input->getOption('with-images'); // TODO: to handle?
 
+        $handler = new GenerateProductHandler($this->getGenerator(), $this->getProductRepository());
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
-            $product = $generator->generate();
-            $this->importProduct($product, $debug);
+
+            $command = new GenerateProduct($withImages);
+            $handler->handle($command);
+            try {
+                $handler->handle($command);
+            } catch (\Exception $e) {
+                echo $e->getMessage();
+            }
+
             if ($index !== 0 && $index % $batchInfo === 0) {
                 $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $index));
             }
         }
         $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $number));
-    }
-
-    private function importProduct(Product $product, bool $debug)
-    {
-        $client = $this->getClient();
-        $productData = $product->toArray();
-        try {
-            if ($debug) {
-                var_dump($productData);
-            }
-            $client->getProductApi()->upsert($product->getIdentifier(), $productData);
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
     }
 
     private function getGenerator(): ProductGenerator
@@ -92,6 +92,13 @@ class GenerateProductsCommand extends Command
             $familyRepository,
             $categoryRepository
         );
+    }
+
+    private function getProductRepository(): ProductRepository
+    {
+        $client = $this->getClient();
+
+        return new WebApiProductRepository($client);
     }
 
     private function buildCategoryRepository(): CategoryRepository

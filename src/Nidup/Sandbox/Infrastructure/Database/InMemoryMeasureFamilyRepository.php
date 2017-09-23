@@ -2,8 +2,8 @@
 
 namespace Nidup\Sandbox\Infrastructure\Database;
 
-use Nidup\Sandbox\Domain\MeasureFamily;
-use Nidup\Sandbox\Domain\MeasureFamilyRepository;
+use Nidup\Sandbox\Domain\Model\MeasureFamily;
+use Nidup\Sandbox\Domain\Model\MeasureFamilyRepository;
 
 class InMemoryMeasureFamilyRepository implements MeasureFamilyRepository
 {
