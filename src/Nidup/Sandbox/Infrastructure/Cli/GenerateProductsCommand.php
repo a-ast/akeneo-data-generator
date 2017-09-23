@@ -5,6 +5,9 @@ namespace Nidup\Sandbox\Infrastructure\Cli;
 use Akeneo\Pim\AkeneoPimClientBuilder;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Faker\Factory;
+use Nidup\Sandbox\Application\GenerateProduct;
+use Nidup\Sandbox\Application\GenerateProductHandler;
+use Nidup\Sandbox\Domain\Model\ProductRepository;
 use Nidup\Sandbox\Domain\ProductGenerator;
 use Nidup\Sandbox\Domain\Model\AttributeRepository;
 use Nidup\Sandbox\Domain\Model\AttributeTypes;
@@ -29,6 +32,7 @@ use Nidup\Sandbox\Infrastructure\WebApi\CurrencyRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\WebApi\FamilyRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\WebApi\LocaleRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\WebApi\MeasureFamilyRepositoryInitializer;
+use Nidup\Sandbox\Infrastructure\WebApi\WebApiProductRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -48,41 +52,21 @@ class GenerateProductsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $generator = $this->getGenerator();
         $number = $input->getArgument('number');
-        $debug = $input->getOption('debug');
-        $withImages = $input->getOption('with-images');
+        $debug = $input->getOption('debug'); // TODO: to handle?
+        $withImages = $input->getOption('with-images'); // TODO: to handle?
 
-        $imageGenerator = Factory::create();
-        $apiClient = $this->getClient();
-
+        $handler = new GenerateProductHandler($this->getGenerator(), $this->getProductRepository());
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
-            $product = $generator->generate();
-            $this->importProduct($product, $debug);
 
-            // TODO: to be extracted + handle localizable / scopable medias
-            if ($withImages) {
-                $attributes = $product->getFamily()->getAttributes();
-                foreach ($attributes as $attribute) {
-                    if ($attribute->getType() === AttributeTypes::IMAGE) {
-
-                        $imagePath = $imageGenerator->image('/tmp/', 640, 480);
-                        $api = $apiClient->getProductMediaFileApi();
-                        $code = $api->create(
-                            $imagePath,
-                            [
-                                'identifier' => $product->getIdentifier(),
-                                'attribute' => $attribute->getCode(),
-                                'locale' => null,
-                                'scope' => null
-                            ]
-                        );
-                        //echo $code;
-                    }
-                }
+            $command = new GenerateProduct($withImages);
+            $handler->handle($command);
+            try {
+                $handler->handle($command);
+            } catch (\Exception $e) {
+                echo $e->getMessage();
             }
-
 
             if ($index !== 0 && $index % $batchInfo === 0) {
                 $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $index));
@@ -90,21 +74,6 @@ class GenerateProductsCommand extends Command
         }
         $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $number));
     }
-
-    private function importProduct(Product $product, bool $debug)
-    {
-        $client = $this->getClient();
-        $productData = $product->toArray();
-        try {
-            if ($debug) {
-                var_dump($productData);
-            }
-            $client->getProductApi()->upsert($product->getIdentifier(), $productData);
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
-    }
-
 
     private function getGenerator(): ProductGenerator
     {
@@ -123,6 +92,13 @@ class GenerateProductsCommand extends Command
             $familyRepository,
             $categoryRepository
         );
+    }
+
+    private function getProductRepository(): ProductRepository
+    {
+        $client = $this->getClient();
+
+        return new WebApiProductRepository($client);
     }
 
     private function buildCategoryRepository(): CategoryRepository

@@ -11,12 +11,12 @@ $finder->in('src');
 $rules = [
     new Rule(
         'Nidup\Sandbox\Domain',
-        ['Nidup\Sandbox\Domain'],
+        ['Nidup\Sandbox\Domain', 'Faker'],
         RuleInterface::TYPE_ONLY
     ),
     new Rule(
         'Nidup\Sandbox\Application',
-        ['Nidup\Sandbox\Domain', 'Nidup\Sandbox\Application', 'Faker'],
+        ['Nidup\Sandbox\Domain', 'Nidup\Sandbox\Application'],
         RuleInterface::TYPE_ONLY
     ),
     new Rule(

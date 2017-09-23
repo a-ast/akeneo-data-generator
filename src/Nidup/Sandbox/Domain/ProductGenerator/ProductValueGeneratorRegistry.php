@@ -23,6 +23,7 @@ class ProductValueGeneratorRegistry
         $this->generators[AttributeTypes::PRICE_COLLECTION] = new ProductValuePriceGenerator($currencyRepository);
         $this->generators[AttributeTypes::METRIC] = new ProductValueMetricGenerator();
         $this->generators[AttributeTypes::NUMBER] = new ProductValueNumberGenerator();
+        $this->generators[AttributeTypes::IMAGE] = new ProductValueImageGenerator();
     }
 
     public function support(Attribute $attribute): bool

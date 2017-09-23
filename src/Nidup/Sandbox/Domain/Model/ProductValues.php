@@ -16,22 +16,8 @@ class ProductValues
         $this->values[] = $value;
     }
 
-    public function toArray()
+    public function all(): array
     {
-        $data = [];
-        /** @var ProductValue $value */
-        foreach ($this->values as $value) {
-
-            if (!isset($data[$value->getAttribute()->getCode()])) {
-                $data[$value->getAttribute()->getCode()] = [];
-            }
-            $data[$value->getAttribute()->getCode()][] = [
-                'data' => $value->getData(),
-                'locale' => $value->getLocale(),
-                'scope' => $value->getChannel(),
-            ];
-        }
-
-        return $data;
+        return $this->values;
     }
 }

@@ -27,13 +27,13 @@ class Product
         return $this->family;
     }
 
-    public function toArray(): array
+    public function getCategories(): ProductCategories
     {
-        return [
-            'identifier' => $this->identifier,
-            'family' => $this->family->getCode(),
-            'values' => $this->values->toArray(),
-            'categories' => $this->categories->toArray()
-        ];
+        return $this->categories;
+    }
+
+    public function getValues(): ProductValues
+    {
+        return $this->values;
     }
 }

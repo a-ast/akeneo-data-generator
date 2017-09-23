@@ -16,14 +16,8 @@ class ProductCategories
         $this->items[] = $category;
     }
 
-    public function toArray()
+    public function all(): array
     {
-        $data = [];
-        /** @var Category $category */
-        foreach ($this->items as $category) {
-            $data[] = $category->getCode();
-        }
-
-        return $data;
+        return $this->items;
     }
 }
