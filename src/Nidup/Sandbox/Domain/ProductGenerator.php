@@ -1,6 +1,6 @@
 <?php
 
-namespace Nidup\Sandbox\Application;
+namespace Nidup\Sandbox\Domain;
 
 use Faker\Factory;
 use Faker\Generator;
@@ -15,6 +15,7 @@ use Nidup\Sandbox\Domain\Model\LocaleRepository;
 use Nidup\Sandbox\Domain\Model\Product;
 use Nidup\Sandbox\Domain\Model\ProductCategories;
 use Nidup\Sandbox\Domain\Model\ProductValues;
+use Nidup\Sandbox\Domain\ProductGenerator\ProductValueGeneratorRegistry;
 
 class ProductGenerator
 {

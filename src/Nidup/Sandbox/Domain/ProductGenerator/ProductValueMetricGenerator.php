@@ -1,13 +1,13 @@
 <?php
 
-namespace Nidup\Sandbox\Application;
+namespace Nidup\Sandbox\Domain\ProductGenerator;
 
 use Faker\Factory;
 use Faker\Generator;
 use Nidup\Sandbox\Domain\Model\Attribute;
 use Nidup\Sandbox\Domain\Model\ProductValue;
 
-class ProductValueDateGenerator implements ProductValueGenerator
+class ProductValueMetricGenerator implements ProductValueGenerator
 {
     /** @var Generator */
     private $generator;
@@ -19,7 +19,10 @@ class ProductValueDateGenerator implements ProductValueGenerator
 
     public function generate(Attribute $attribute, $channelCode, $localeCode): ProductValue
     {
-        $data = $this->generator->date('Y-m-d');
+        $data = [
+            'amount' => $this->generator->numberBetween(1,100),
+            'unit' => $attribute->getProperties()->getProperty('default_metric_unit')
+        ];
 
         return new ProductValue($attribute, $data, $localeCode, $channelCode);
     }

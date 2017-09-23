@@ -1,6 +1,6 @@
 <?php
 
-namespace Nidup\Sandbox\Application;
+namespace Nidup\Sandbox\Domain\ProductGenerator;
 
 use Faker\Factory;
 use Faker\Generator;

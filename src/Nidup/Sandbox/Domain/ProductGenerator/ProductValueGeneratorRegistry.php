@@ -1,6 +1,6 @@
 <?php
 
-namespace Nidup\Sandbox\Application;
+namespace Nidup\Sandbox\Domain\ProductGenerator;
 
 use Nidup\Sandbox\Domain\Model\Attribute;
 use Nidup\Sandbox\Domain\Model\AttributeTypes;
