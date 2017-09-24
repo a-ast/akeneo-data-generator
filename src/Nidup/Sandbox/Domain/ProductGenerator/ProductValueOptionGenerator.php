@@ -12,7 +12,7 @@ class ProductValueOptionGenerator implements ProductValueGenerator
         $options = $attribute->getAttributeOptions();
         $codes = $options->getCodes();
         if (count($codes) > 0) {
-            $data = $codes[rand(0, count($codes) -1 )];
+            $data = $codes[rand(0, count($codes) -1)];
         } else {
             $data = null;
         }

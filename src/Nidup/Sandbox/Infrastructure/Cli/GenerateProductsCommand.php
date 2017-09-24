@@ -4,34 +4,28 @@ namespace Nidup\Sandbox\Infrastructure\Cli;
 
 use Akeneo\Pim\AkeneoPimClientBuilder;
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Faker\Factory;
 use Nidup\Sandbox\Application\GenerateProduct;
 use Nidup\Sandbox\Application\GenerateProductHandler;
 use Nidup\Sandbox\Domain\Model\ProductRepository;
 use Nidup\Sandbox\Domain\ProductGenerator;
 use Nidup\Sandbox\Domain\Model\AttributeRepository;
-use Nidup\Sandbox\Domain\Model\AttributeTypes;
 use Nidup\Sandbox\Domain\Model\CategoryRepository;
 use Nidup\Sandbox\Domain\Model\ChannelRepository;
 use Nidup\Sandbox\Domain\Model\CurrencyRepository;
 use Nidup\Sandbox\Domain\Model\FamilyRepository;
 use Nidup\Sandbox\Domain\Model\LocaleRepository;
-use Nidup\Sandbox\Domain\Model\MeasureFamilyRepository;
-use Nidup\Sandbox\Domain\Model\Product;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryAttributeRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryCategoryRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryChannelRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryCurrencyRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryFamilyRepository;
 use Nidup\Sandbox\Infrastructure\Database\InMemoryLocaleRepository;
-use Nidup\Sandbox\Infrastructure\Database\InMemoryMeasureFamilyRepository;
 use Nidup\Sandbox\Infrastructure\WebApi\AttributeRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\WebApi\CategoryRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\WebApi\ChannelRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\WebApi\CurrencyRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\WebApi\FamilyRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\WebApi\LocaleRepositoryInitializer;
-use Nidup\Sandbox\Infrastructure\WebApi\MeasureFamilyRepositoryInitializer;
 use Nidup\Sandbox\Infrastructure\WebApi\WebApiProductRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -46,20 +40,16 @@ class GenerateProductsCommand extends Command
         $this->setName('nidup:sandbox:generate-products')
             ->setDescription('Import generated products through the Akeneo PIM Web API')
             ->addArgument('number', InputArgument::REQUIRED, 'Number of products to generate')
-            ->addOption('with-images', null, InputOption::VALUE_NONE, 'Generate image files')
-            ->addOption('debug', null, InputOption::VALUE_NONE, 'Enable debug mode');
+            ->addOption('with-images', null, InputOption::VALUE_NONE, 'Generate image files');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $number = $input->getArgument('number');
-        $debug = $input->getOption('debug'); // TODO: to handle?
-        $withImages = $input->getOption('with-images'); // TODO: to handle?
-
+        $withImages = $input->getOption('with-images');
         $handler = new GenerateProductHandler($this->getGenerator(), $this->getProductRepository());
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
-
             $command = new GenerateProduct($withImages);
             $handler->handle($command);
             try {
@@ -79,7 +69,6 @@ class GenerateProductsCommand extends Command
     {
         $localeRepository = $this->buildLocaleRepository();
         $currencyRepository = $this->buildCurrencyRepository();
-        $measureRepository = $this->buildMeasureFamilyRepository();
         $categoryRepository = $this->buildCategoryRepository();
         $channelRepository = $this->buildChannelRepository($localeRepository, $currencyRepository);
         $attributeRepository = $this->buildAttributeRepository();
@@ -154,8 +143,7 @@ class GenerateProductsCommand extends Command
     private function buildChannelRepository(
         LocaleRepository $localeRepository,
         CurrencyRepository $currencyRepository
-    ): ChannelRepository
-    {
+    ): ChannelRepository {
         $client = $this->getClient();
         $initializer = new ChannelRepositoryInitializer($client, $localeRepository, $currencyRepository);
         $repository = new InMemoryChannelRepository();
@@ -164,19 +152,9 @@ class GenerateProductsCommand extends Command
         return $repository;
     }
 
-    private function buildMeasureFamilyRepository(): MeasureFamilyRepository
-    {
-        $client = $this->getClient();
-        $initializer = new MeasureFamilyRepositoryInitializer($client);
-        $repository = new InMemoryMeasureFamilyRepository();
-        $initializer->initialize($repository);
-
-        return $repository;
-    }
-
     private function getClient(): AkeneoPimClientInterface
     {
-        $config = new ConfigProvider( __DIR__.'/../../../../../app/parameters.yml');
+        $config = new ConfigProvider(__DIR__.'/../../../../../app/parameters.yml');
         $baseUri = sprintf('%s:%s', $config->getParameter('host'), $config->getParameter('port'));
         $clientId = $config->getParameter('client_id');
         $secret = $config->getParameter('secret');

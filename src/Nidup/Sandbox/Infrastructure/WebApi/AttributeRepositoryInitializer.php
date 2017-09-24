@@ -44,7 +44,7 @@ class AttributeRepositoryInitializer
         $type = $attributeData['type'];
         if ($type === AttributeTypes::TEXT || $type === AttributeTypes::TEXTAREA) {
             $properties['max_characters'] = $attributeData['max_characters'];
-        } else if ($type === AttributeTypes::METRIC) {
+        } elseif ($type === AttributeTypes::METRIC) {
             $properties['metric_family'] = $attributeData['metric_family'];
             $properties['default_metric_unit'] = $attributeData['default_metric_unit'];
         }

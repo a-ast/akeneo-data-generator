@@ -13,7 +13,7 @@ class ProductValueOptionsGenerator implements ProductValueGenerator
         $codes = $options->getCodes();
         $randomCodes = [];
         for ($ind = 0; $ind < 3; $ind++) {
-            $randomCodes[] = $codes[rand(0, count($codes) -1 )];
+            $randomCodes[] = $codes[rand(0, count($codes) -1)];
         }
         $data = array_unique($randomCodes);
 

@@ -1,0 +1,18 @@
+language: php
+
+# use the new container infrastructure
+sudo: false
+
+php:
+  - '7.1'
+
+before_install:
+    - composer self-update --no-interaction
+
+install:
+    - composer install --prefer-dist --no-interaction
+
+script:
+    - ./bin/php-cs-fixer fix src --dry-run -v --diff --rules=@PSR2
+    - ./bin/php-coupling-detector detect --config-file=.php_cd.php
+    - ./bin/phpspec run

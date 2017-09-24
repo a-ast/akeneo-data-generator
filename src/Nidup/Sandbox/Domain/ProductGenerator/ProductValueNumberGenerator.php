@@ -19,7 +19,7 @@ class ProductValueNumberGenerator implements ProductValueGenerator
 
     public function generate(Attribute $attribute, $channelCode, $localeCode): ProductValue
     {
-        $data = $this->generator->numberBetween(1,100);
+        $data = $this->generator->numberBetween(1, 100);
 
         return new ProductValue($attribute, $data, $localeCode, $channelCode);
     }

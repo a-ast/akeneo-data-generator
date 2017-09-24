@@ -75,7 +75,7 @@ class ProductGenerator
     {
         $families = $this->familyRepository->all();
 
-        return $families[rand(0, count($families) -1 )];
+        return $families[rand(0, count($families) -1)];
     }
 
     private function getRandomCategories(): ProductCategories
@@ -134,11 +134,11 @@ class ProductGenerator
                     $values->add($generator->generate($attribute, $channel->getCode(), $locale->getCode()));
                 }
             }
-        } else if ($attribute->isScopable()) {
+        } elseif ($attribute->isScopable()) {
             foreach ($this->channelRepository->all() as $channel) {
                 $values->add($generator->generate($attribute, $channel->getCode(), null));
             }
-        } else if ($attribute->isLocalizable()) {
+        } elseif ($attribute->isLocalizable()) {
             foreach ($this->localeRepository->all() as $locale) {
                 $values->add($generator->generate($attribute, null, $locale->getCode()));
             }
