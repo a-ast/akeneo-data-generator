@@ -5,4 +5,3 @@ config:
     secret: mySecret
     username: admin
     password: admin
-    fixtures: icecat_demo_dev

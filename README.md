@@ -2,6 +2,8 @@
 
 Playing with the Akeneo PHP API client :rocket:
 
+[![Build Status](https://travis-ci.org/nidup/akeneo-php-client-sandbox.png)](https://travis-ci.org/nidup/akeneo-php-client-sandbox)
+
 ## Requirements
 
 - [Docker Engine](https://docs.docker.com/engine/installation/)
