@@ -44,10 +44,11 @@ $rules = [
             'Nidup\Sandbox\Domain',
             'Nidup\Sandbox\Application',
             'Nidup\Sandbox\Infrastructure\Cli',
-            'Akeneo\Pim', // TODO: should not exists
+            'Akeneo\Pim',
             'Symfony\Component\Console',
             'Symfony\Component\Yaml',
-            'Faker', // TODO: should not exists
+            'Nidup\Sandbox\Infrastructure\Database', // TODO: should be decoupled
+            'Nidup\Sandbox\Infrastructure\WebApi', // TODO: should be decoupled
         ],
         RuleInterface::TYPE_ONLY
     ),

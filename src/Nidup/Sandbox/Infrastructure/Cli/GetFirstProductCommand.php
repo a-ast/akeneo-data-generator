@@ -29,7 +29,7 @@ class GetFirstProductCommand extends Command
 
     private function getClient(): AkeneoPimClientInterface
     {
-        $config = new ConfigProvider( __DIR__.'/../../../../../app/parameters.yml');
+        $config = new ConfigProvider(__DIR__.'/../../../../../app/parameters.yml');
         $baseUri = sprintf('%s:%s', $config->getParameter('host'), $config->getParameter('port'));
         $clientId = $config->getParameter('client_id');
         $secret = $config->getParameter('secret');

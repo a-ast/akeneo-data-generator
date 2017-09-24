@@ -28,7 +28,6 @@ class ChannelRepositoryInitializer
     {
         $cursor = $this->client->getChannelApi()->all();
         foreach ($cursor as $itemData) {
-
             $locales = [];
             foreach ($itemData['locales'] as $localeCode) {
                 $locales[] = $this->localeRepository->get($localeCode);

@@ -10,7 +10,7 @@ class GenerateProduct
     /** @param bool $withImages */
     public function __construct(bool $withImages)
     {
-       $this->withImages = $withImages;
+        $this->withImages = $withImages;
     }
 
     public function withImages(): bool

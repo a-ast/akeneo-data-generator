@@ -20,7 +20,7 @@ class CategoryRepositoryInitializer
         $cursor = $this->client->getCategoryApi()->all();
         foreach ($cursor as $itemData) {
             $parent = null;
-            if ($itemData['parent'] !== null)  {
+            if ($itemData['parent'] !== null) {
                 $parent = $repository->get($itemData['parent']);
             }
             $repository->add(new Category($itemData['code'], $parent));
