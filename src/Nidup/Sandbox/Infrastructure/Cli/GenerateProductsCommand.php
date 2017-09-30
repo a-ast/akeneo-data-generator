@@ -51,7 +51,6 @@ class GenerateProductsCommand extends Command
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateProduct($withImages);
-            $handler->handle($command);
             try {
                 $handler->handle($command);
             } catch (\Exception $e) {
