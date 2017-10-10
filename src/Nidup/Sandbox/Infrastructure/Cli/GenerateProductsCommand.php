@@ -154,7 +154,7 @@ class GenerateProductsCommand extends Command
     private function getClient(): AkeneoPimClientInterface
     {
         $config = new ConfigProvider(__DIR__.'/../../../../../app/parameters.yml');
-        $baseUri = sprintf('%s:%s', $config->getParameter('host'), $config->getParameter('port'));
+        $baseUri = $config->getParameter('base_uri');
         $clientId = $config->getParameter('client_id');
         $secret = $config->getParameter('secret');
         $username = $config->getParameter('username');
