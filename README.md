@@ -36,12 +36,14 @@ Complete app/parameters.yml with the credentials.
 
 ## Get First Product Data
 
-- Run `bin/docker/console.sh nidup:sandbox:get-first-product`
+- Run `bin/docker/console.sh akeneo:sandbox:get-first-product`
 
 ## Generate Products
 
-- Run `bin/docker/console.sh nidup:sandbox:generate-products 100`
+- Run `bin/docker/console.sh akeneo:sandbox:generate-products 100 --with-images`
 
-## Thanks
+## Credits
 
-@matthiasnoback for the great devtools docker images ;)
+Thanks @fzaninotto for Faker!
+
+Thanks @matthiasnoback for the great devtools docker images!
