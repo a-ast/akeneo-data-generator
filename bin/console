@@ -3,8 +3,8 @@
 <?php
 require __DIR__.'/../vendor/autoload.php';
 
-use Akeneo\Sandbox\Infrastructure\Cli\GetFirstProductCommand;
-use Akeneo\Sandbox\Infrastructure\Cli\GenerateProductsCommand;
+use Akeneo\ApiSandbox\Infrastructure\Cli\GetFirstProductCommand;
+use Akeneo\ApiSandbox\Infrastructure\Cli\GenerateProductsCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
