@@ -88,5 +88,4 @@ class ProductGeneratorSpec extends ObjectBehavior
             []
         );
     }
-
 }
