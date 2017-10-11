@@ -6,8 +6,14 @@ Playing with the Akeneo PHP API client :rocket:
 
 ## Requirements
 
+## Docker Install
+
 - [Docker Engine](https://docs.docker.com/engine/installation/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
+
+## Local Install
+
+Composer & PHP 7.1.
 
 ## Getting Started
 
@@ -15,10 +21,17 @@ Have a Akeneo PIM 2.0 installed.
 
 ## Install the Sandbox
 
+## Docker Install
+
 - Clone this repository and `cd` into it.
 - Run `docker-compose pull`.
 - Run `docker-compose up -d`.
 - Run `bin/docker/composer.sh update --prefer-dist` to install the project's dependencies.
+
+## Local Install
+
+- Clone this repository and `cd` into it.
+- Run `composer.phar update --prefer-dist` to install the project's dependencies.
 
 ## Configure the Sandbox
 
@@ -36,12 +49,16 @@ Complete app/parameters.yml with the credentials.
 
 ## Get First Product Data
 
-- Run `bin/docker/console.sh nidup:sandbox:get-first-product`
+- Run `bin/docker/console.sh akeneo:sandbox:get-first-product`
 
-## Generate Products
+## Generate Complete Products
 
-- Run `bin/docker/console.sh nidup:sandbox:generate-products 100`
+The generation is based on structure of the targeted PIM, it picks a random family and create a complete product.
 
-## Thanks
+- Run `bin/docker/console.sh akeneo:sandbox:generate-products 100 --with-images`
 
-@matthiasnoback for the great devtools docker images ;)
+## Credits
+
+Thanks @fzaninotto for Faker!
+
+Thanks @matthiasnoback for the great devtools docker images!
