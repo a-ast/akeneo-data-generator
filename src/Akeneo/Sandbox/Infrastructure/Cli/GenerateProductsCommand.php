@@ -4,6 +4,7 @@ namespace Akeneo\Sandbox\Infrastructure\Cli;
 
 use Akeneo\Pim\AkeneoPimClientBuilder;
 use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\Exception\HttpException;
 use Akeneo\Sandbox\Application\GenerateProduct;
 use Akeneo\Sandbox\Application\GenerateProductHandler;
 use Akeneo\Sandbox\Domain\Model\ProductRepository;
@@ -53,7 +54,7 @@ class GenerateProductsCommand extends Command
             $command = new GenerateProduct($withImages);
             try {
                 $handler->handle($command);
-            } catch (\Exception $e) {
+            } catch (HttpException $e) {
                 echo $e->getMessage();
             }
 

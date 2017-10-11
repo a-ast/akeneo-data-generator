@@ -37,4 +37,21 @@ class InMemoryCategoryRepository implements CategoryRepository
     {
         return array_values($this->items);
     }
+
+    public function countChildren(): int
+    {
+        return count($this->allChildren());
+    }
+
+    public function allChildren(): array
+    {
+        $children = [];
+        foreach ($this->items as $category) {
+            if (!$category->isRoot()) {
+                $children[] = $category;
+            }
+        }
+
+        return $children;
+    }
 }

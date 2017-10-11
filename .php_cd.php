@@ -10,45 +10,45 @@ $finder->in('src');
 
 $rules = [
     new Rule(
-        'Nidup\Sandbox\Domain',
-        ['Nidup\Sandbox\Domain', 'Faker'],
+        'Akeneo\Sandbox\Domain',
+        ['Akeneo\Sandbox\Domain', 'Faker'],
         RuleInterface::TYPE_ONLY
     ),
     new Rule(
-        'Nidup\Sandbox\Application',
-        ['Nidup\Sandbox\Domain', 'Nidup\Sandbox\Application'],
+        'Akeneo\Sandbox\Application',
+        ['Akeneo\Sandbox\Domain', 'Akeneo\Sandbox\Application'],
         RuleInterface::TYPE_ONLY
     ),
     new Rule(
-        'Nidup\Sandbox\Infrastructure\Database',
+        'Akeneo\Sandbox\Infrastructure\Database',
         [
-            'Nidup\Sandbox\Domain',
-            'Nidup\Sandbox\Application',
-            'Nidup\Sandbox\Infrastructure\Database',
+            'Akeneo\Sandbox\Domain',
+            'Akeneo\Sandbox\Application',
+            'Akeneo\Sandbox\Infrastructure\Database',
         ],
         RuleInterface::TYPE_ONLY
     ),
     new Rule(
-        'Nidup\Sandbox\Infrastructure\WebApi',
+        'Akeneo\Sandbox\Infrastructure\WebApi',
         [
-            'Nidup\Sandbox\Domain',
-            'Nidup\Sandbox\Application',
-            'Nidup\Sandbox\Infrastructure\WebApi',
+            'Akeneo\Sandbox\Domain',
+            'Akeneo\Sandbox\Application',
+            'Akeneo\Sandbox\Infrastructure\WebApi',
             'Akeneo\Pim\AkeneoPimClientInterface',
         ],
         RuleInterface::TYPE_ONLY
     ),
     new Rule(
-        'Nidup\Sandbox\Infrastructure\Cli',
+        'Akeneo\Sandbox\Infrastructure\Cli',
         [
-            'Nidup\Sandbox\Domain',
-            'Nidup\Sandbox\Application',
-            'Nidup\Sandbox\Infrastructure\Cli',
+            'Akeneo\Sandbox\Domain',
+            'Akeneo\Sandbox\Application',
+            'Akeneo\Sandbox\Infrastructure\Cli',
             'Akeneo\Pim',
             'Symfony\Component\Console',
             'Symfony\Component\Yaml',
-            'Nidup\Sandbox\Infrastructure\Database', // TODO: should be decoupled
-            'Nidup\Sandbox\Infrastructure\WebApi', // TODO: should be decoupled
+            'Akeneo\Sandbox\Infrastructure\Database', // TODO: should be decoupled
+            'Akeneo\Sandbox\Infrastructure\WebApi', // TODO: should be decoupled
         ],
         RuleInterface::TYPE_ONLY
     ),

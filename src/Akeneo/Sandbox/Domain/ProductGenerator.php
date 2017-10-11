@@ -2,6 +2,8 @@
 
 namespace Akeneo\Sandbox\Domain;
 
+use Akeneo\Sandbox\Domain\Exception\NoChildrenCategoryDefinedException;
+use Akeneo\Sandbox\Domain\Exception\NoFamilyDefinedException;
 use Faker\Factory;
 use Faker\Generator;
 use Akeneo\Sandbox\Domain\Model\Attribute;
@@ -73,6 +75,9 @@ class ProductGenerator
 
     private function getRandomFamily(): Family
     {
+        if ($this->familyRepository->count() === 0) {
+            throw new NoFamilyDefinedException("At least one family should exist");
+        }
         $families = $this->familyRepository->all();
 
         return $families[rand(0, count($families) -1)];
@@ -80,13 +85,17 @@ class ProductGenerator
 
     private function getRandomCategories(): ProductCategories
     {
-        $categories = $this->categoryRepository->all();
+        if ($this->categoryRepository->countChildren() === 0) {
+            throw new NoChildrenCategoryDefinedException("At least one children category should exist");
+        }
+
+        $categories = $this->categoryRepository->allChildren();
         $randomCodes = [];
         $randomCategories = new ProductCategories();
         for ($ind = 0; $ind < 4; $ind++) {
             /** @var Category $category */
             $category = $categories[rand(0, count($categories) - 1)];
-            if (!in_array($category->getCode(), $randomCodes) && !$category->isRoot()) {
+            if (!in_array($category->getCode(), $randomCodes)) {
                 $randomCodes[] = $category->getCode();
                 $randomCategories->add($category);
             }

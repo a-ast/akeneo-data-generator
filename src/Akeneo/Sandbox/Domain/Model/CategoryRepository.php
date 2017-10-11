@@ -8,4 +8,6 @@ interface CategoryRepository
     public function add(Category $item);
     public function count(): int;
     public function all(): array;
+    public function countChildren(): int;
+    public function allChildren(): array;
 }
