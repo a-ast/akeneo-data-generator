@@ -4,6 +4,7 @@ namespace Akeneo\ApiSandbox\Infrastructure\Database;
 
 use Akeneo\ApiSandbox\Domain\Model\Locale;
 use Akeneo\ApiSandbox\Domain\Model\LocaleRepository;
+use Akeneo\ApiSandbox\Infrastructure\Database\Exception\EntityDoesNotExistsException;
 
 class InMemoryLocaleRepository implements LocaleRepository
 {
@@ -17,7 +18,7 @@ class InMemoryLocaleRepository implements LocaleRepository
     public function get(string $code): Locale
     {
         if (!isset($this->items[$code])) {
-            throw new \Exception(sprintf("Locale %s does not exists", $code));
+            throw new EntityDoesNotExistsException(sprintf("Locale %s does not exists", $code));
         }
 
         return $this->items[$code];

@@ -4,6 +4,7 @@ namespace Akeneo\ApiSandbox\Infrastructure\Database;
 
 use Akeneo\ApiSandbox\Domain\Model\Category;
 use Akeneo\ApiSandbox\Domain\Model\CategoryRepository;
+use Akeneo\ApiSandbox\Infrastructure\Database\Exception\EntityDoesNotExistsException;
 
 class InMemoryCategoryRepository implements CategoryRepository
 {
@@ -17,7 +18,7 @@ class InMemoryCategoryRepository implements CategoryRepository
     public function get(string $code): Category
     {
         if (!isset($this->items[$code])) {
-            throw new \Exception(sprintf("Category %s does not exists", $code));
+            throw new EntityDoesNotExistsException(sprintf("Category %s does not exists", $code));
         }
 
         return $this->items[$code];

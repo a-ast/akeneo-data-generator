@@ -2,6 +2,8 @@
 
 namespace Akeneo\ApiSandbox\Infrastructure\Cli;
 
+use Akeneo\ApiSandbox\Infrastructure\Database\InMemoryAttributeGroupRepository;
+use Akeneo\ApiSandbox\Infrastructure\WebApi\AttributeGroupRepositoryInitializer;
 use Akeneo\Pim\AkeneoPimClientBuilder;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
@@ -113,7 +115,11 @@ class GenerateProductsCommand extends Command
     private function buildAttributeRepository(): AttributeRepository
     {
         $client = $this->getClient();
-        $initializer = new AttributeRepositoryInitializer($client);
+        $initializer = new AttributeGroupRepositoryInitializer($client);
+        $groupRepository = new InMemoryAttributeGroupRepository();
+        $initializer->initialize($groupRepository);
+
+        $initializer = new AttributeRepositoryInitializer($client, $groupRepository);
         $repository = new InMemoryAttributeRepository();
         $initializer->initialize($repository);
 
