@@ -3,6 +3,7 @@
 namespace spec\Akeneo\ApiSandbox\Domain;
 
 use Akeneo\ApiSandbox\Domain\Exception\NoAttributeGroupDefinedException;
+use Akeneo\ApiSandbox\Domain\Model\Attribute;
 use Akeneo\ApiSandbox\Domain\Model\AttributeGroup;
 use Akeneo\ApiSandbox\Domain\Model\AttributeGroupRepository;
 use PhpSpec\ObjectBehavior;
@@ -21,7 +22,7 @@ class AttributeGeneratorSpec extends ObjectBehavior
         $groupRepository->count()->willReturn(1);
         $groupRepository->all()->willReturn([$group]);
 
-        $this->generate();
+        $this->generate()->shouldBeAnInstanceOf(Attribute::class);
     }
 
 

@@ -57,6 +57,12 @@ It only generates global text attributes for now.
 
 - Run `bin/docker/console.sh akeneo:sandbox:generate-attributes 100`
 
+## Generate Families
+
+It only generates families, no label or attributes requirements for now.
+
+- Run `bin/docker/console.sh akeneo:sandbox:generate-family 100`
+
 ## Generate Complete Products
 
 The generation is based on structure of the targeted PIM, it picks a random family and create a complete product.
