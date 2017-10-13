@@ -4,6 +4,7 @@ namespace Akeneo\ApiSandbox\Infrastructure\Database;
 
 use Akeneo\ApiSandbox\Domain\Model\MeasureFamily;
 use Akeneo\ApiSandbox\Domain\Model\MeasureFamilyRepository;
+use Akeneo\ApiSandbox\Infrastructure\Database\Exception\EntityDoesNotExistsException;
 
 class InMemoryMeasureFamilyRepository implements MeasureFamilyRepository
 {
@@ -17,7 +18,7 @@ class InMemoryMeasureFamilyRepository implements MeasureFamilyRepository
     public function get(string $code): MeasureFamily
     {
         if (!isset($this->items[$code])) {
-            throw new \Exception(sprintf("MeasureFamily %s does not exists", $code));
+            throw new EntityDoesNotExistsException(sprintf("Measure Family %s does not exists", $code));
         }
 
         return $this->items[$code];

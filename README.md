@@ -51,6 +51,12 @@ Complete app/parameters.yml with the credentials.
 
 - Run `bin/docker/console.sh akeneo:sandbox:get-first-product`
 
+## Generate Attributes
+
+It only generates global text attributes for now.
+
+- Run `bin/docker/console.sh akeneo:sandbox:generate-attributes 100`
+
 ## Generate Complete Products
 
 The generation is based on structure of the targeted PIM, it picks a random family and create a complete product.

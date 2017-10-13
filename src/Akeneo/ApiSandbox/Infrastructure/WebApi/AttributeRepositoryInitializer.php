@@ -2,6 +2,7 @@
 
 namespace Akeneo\ApiSandbox\Infrastructure\WebApi;
 
+use Akeneo\ApiSandbox\Domain\Model\AttributeGroupRepository;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\ApiSandbox\Domain\Model\Attribute;
 use Akeneo\ApiSandbox\Domain\Model\AttributeOption;
@@ -13,10 +14,12 @@ use Akeneo\ApiSandbox\Domain\Model\AttributeTypes;
 class AttributeRepositoryInitializer
 {
     private $client;
+    private $groupRepository;
 
-    public function __construct(AkeneoPimClientInterface $client)
+    public function __construct(AkeneoPimClientInterface $client, AttributeGroupRepository $groupRepository)
     {
         $this->client = $client;
+        $this->groupRepository = $groupRepository;
     }
 
     public function initialize(AttributeRepository $repository)
@@ -25,6 +28,7 @@ class AttributeRepositoryInitializer
         foreach ($cursor as $attributeData) {
             $properties = $this->buildProperties($attributeData);
             $options = $this->buildAttributeOptions($attributeData);
+            $group = $this->groupRepository->get($attributeData['group']);
             $repository->add(
                 new Attribute(
                     $attributeData['code'],
@@ -32,7 +36,8 @@ class AttributeRepositoryInitializer
                     $attributeData['localizable'],
                     $attributeData['scopable'],
                     $properties,
-                    $options
+                    $options,
+                    $group
                 )
             );
         }

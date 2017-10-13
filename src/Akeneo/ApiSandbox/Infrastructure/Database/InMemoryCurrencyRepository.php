@@ -4,6 +4,7 @@ namespace Akeneo\ApiSandbox\Infrastructure\Database;
 
 use Akeneo\ApiSandbox\Domain\Model\Currency;
 use Akeneo\ApiSandbox\Domain\Model\CurrencyRepository;
+use Akeneo\ApiSandbox\Infrastructure\Database\Exception\EntityDoesNotExistsException;
 
 class InMemoryCurrencyRepository implements CurrencyRepository
 {
@@ -17,7 +18,7 @@ class InMemoryCurrencyRepository implements CurrencyRepository
     public function get(string $code): Currency
     {
         if (!isset($this->items[$code])) {
-            throw new \Exception(sprintf("Currency %s does not exists", $code));
+            throw new EntityDoesNotExistsException(sprintf("Currency %s does not exists", $code));
         }
 
         return $this->items[$code];

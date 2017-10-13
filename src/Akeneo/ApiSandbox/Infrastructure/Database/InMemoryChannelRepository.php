@@ -4,6 +4,7 @@ namespace Akeneo\ApiSandbox\Infrastructure\Database;
 
 use Akeneo\ApiSandbox\Domain\Model\Channel;
 use Akeneo\ApiSandbox\Domain\Model\ChannelRepository;
+use Akeneo\ApiSandbox\Infrastructure\Database\Exception\EntityDoesNotExistsException;
 
 class InMemoryChannelRepository implements ChannelRepository
 {
@@ -17,7 +18,7 @@ class InMemoryChannelRepository implements ChannelRepository
     public function get(string $code): Channel
     {
         if (!isset($this->items[$code])) {
-            throw new \Exception(sprintf("Channel %s does not exists", $code));
+            throw new EntityDoesNotExistsException(sprintf("Channel %s does not exists", $code));
         }
 
         return $this->items[$code];

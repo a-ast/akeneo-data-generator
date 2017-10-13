@@ -2,11 +2,11 @@
 
 namespace Akeneo\ApiSandbox\Infrastructure\Database;
 
-use Akeneo\ApiSandbox\Domain\Model\Attribute;
-use Akeneo\ApiSandbox\Domain\Model\AttributeRepository;
+use Akeneo\ApiSandbox\Domain\Model\AttributeGroup;
+use Akeneo\ApiSandbox\Domain\Model\AttributeGroupRepository;
 use Akeneo\ApiSandbox\Infrastructure\Database\Exception\EntityDoesNotExistsException;
 
-class InMemoryAttributeRepository implements AttributeRepository
+class InMemoryAttributeGroupRepository implements AttributeGroupRepository
 {
     private $items = [];
 
@@ -15,16 +15,16 @@ class InMemoryAttributeRepository implements AttributeRepository
         $this->items = [];
     }
 
-    public function get(string $code): Attribute
+    public function get(string $code): AttributeGroup
     {
         if (!isset($this->items[$code])) {
-            throw new EntityDoesNotExistsException(sprintf("Attribute %s does not exists", $code));
+            throw new EntityDoesNotExistsException(sprintf("Attribute Group %s does not exists", $code));
         }
 
         return $this->items[$code];
     }
 
-    public function add(Attribute $item)
+    public function add(AttributeGroup $item)
     {
         $this->items[$item->getCode()] = $item;
     }
