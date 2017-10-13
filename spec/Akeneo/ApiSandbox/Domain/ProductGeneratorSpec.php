@@ -13,6 +13,7 @@ use Akeneo\ApiSandbox\Domain\Model\CurrencyRepository;
 use Akeneo\ApiSandbox\Domain\Model\Family;
 use Akeneo\ApiSandbox\Domain\Model\FamilyRepository;
 use Akeneo\ApiSandbox\Domain\Model\LocaleRepository;
+use Akeneo\ApiSandbox\Domain\Model\Product;
 use PhpSpec\ObjectBehavior;
 
 class ProductGeneratorSpec extends ObjectBehavior
@@ -49,7 +50,7 @@ class ProductGeneratorSpec extends ObjectBehavior
         $categoryRepository->allChildren()->willReturn([$children]);
         $children->getCode()->willReturn('clothes');
 
-        $this->generateWithImages();
+        $this->generateWithImages()->shouldBeAnInstanceOf(Product::class);
     }
 
     function it_throws_an_exception_when_no_family_exists ($familyRepository)

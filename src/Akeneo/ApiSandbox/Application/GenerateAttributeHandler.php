@@ -18,7 +18,7 @@ class GenerateAttributeHandler
 
     public function handle(GenerateAttribute $command)
     {
-        $product = $this->generator->generate();
-        $this->repository->add($product);
+        $attribute = $this->generator->generate();
+        $this->repository->add($attribute);
     }
 }

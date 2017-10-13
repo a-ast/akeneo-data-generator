@@ -33,7 +33,7 @@ class AttributeGenerator
      */
     public function generate(): Attribute
     {
-        $code = $this->generator->unique()->word;
+        $code = $this->generator->unique()->ean13;
         $type = 'pim_catalog_text';
         $localizable = false;
         $scopable = false;
