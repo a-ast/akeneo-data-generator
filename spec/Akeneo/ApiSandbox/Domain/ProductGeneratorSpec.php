@@ -31,7 +31,7 @@ class ProductGeneratorSpec extends ObjectBehavior
         );
     }
 
-    function it_generates_a_product (
+    function it_generates_a_product_with_images (
         $familyRepository,
         $categoryRepository,
         Family $family,
@@ -54,6 +54,31 @@ class ProductGeneratorSpec extends ObjectBehavior
         $children->getCode()->willReturn('clothes');
 
         $this->generateWithImages()->shouldBeAnInstanceOf(Product::class);
+    }
+
+    function it_generates_a_product_without_images (
+        $familyRepository,
+        $categoryRepository,
+        Family $family,
+        Attributes $attributes,
+        Attribute $sku,
+        Properties $skuProperties,
+        Category $children
+    ) {
+        $familyRepository->count()->willReturn(1);
+        $familyRepository->all()->willReturn([$family]);
+        $family->getAttributes()->willReturn($attributes);
+        $attributes->all()->willReturn([$sku]);
+        $sku->getType()->willReturn('pim_catalog_text');
+        $sku->isScopable()->willReturn(false);
+        $sku->isLocalizable()->willReturn(false);
+        $sku->getProperties()->willReturn($skuProperties);
+
+        $categoryRepository->countChildren()->willReturn(1);
+        $categoryRepository->allChildren()->willReturn([$children]);
+        $children->getCode()->willReturn('clothes');
+
+        $this->generateWithoutImages()->shouldBeAnInstanceOf(Product::class);
     }
 
     function it_throws_an_exception_when_no_family_exists ($familyRepository)

@@ -121,7 +121,7 @@ class ProductGenerator
         $attributes = $family->getAttributes();
         $values = new Values();
         /** @var Attribute $attribute */
-        foreach ($attributes as $attribute) {
+        foreach ($attributes->all() as $attribute) {
             if ($attribute->getType() !== AttributeTypes::IMAGE) {
                 $this->generateValues($values, $attribute);
             }
