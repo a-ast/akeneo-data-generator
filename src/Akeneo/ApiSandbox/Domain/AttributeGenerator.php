@@ -44,7 +44,8 @@ class AttributeGenerator
             AttributeTypes::NUMBER,
             AttributeTypes::METRIC,
             AttributeTypes::PRICE_COLLECTION,
-            AttributeTypes::FILE
+            AttributeTypes::FILE,
+            AttributeTypes::IMAGE
         ];
         $type = $types[rand(0, count($types) - 1)];
         if ($type === AttributeTypes::TEXT) {
