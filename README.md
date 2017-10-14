@@ -53,7 +53,7 @@ Complete app/parameters.yml with the credentials.
 
 ## Generate Attributes
 
-It only generates global text attributes for now.
+It only generates text, text-area, images and simple select attributes for now.
 
 - Run `bin/docker/console.sh akeneo:sandbox:generate-attributes 100`
 
@@ -73,4 +73,4 @@ The generation is based on structure of the targeted PIM, it picks a random fami
 
 Thanks @fzaninotto for Faker!
 
-Thanks @matthiasnoback for the great devtools docker images!
+Thanks @matthiasnoback for the devtools docker images!

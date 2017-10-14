@@ -34,7 +34,12 @@ class AttributeGenerator
      */
     public function generate(): Attribute
     {
-        $types = [AttributeTypes::TEXT, AttributeTypes::TEXTAREA, AttributeTypes::OPTION_SIMPLE_SELECT];
+        $types = [
+            AttributeTypes::IMAGE,
+            AttributeTypes::TEXT,
+            AttributeTypes::TEXTAREA,
+            AttributeTypes::OPTION_SIMPLE_SELECT
+        ];
         $type = $types[rand(0, count($types) - 1)];
         if ($type === AttributeTypes::TEXT) {
             return $this->generateTextAttribute();
@@ -42,6 +47,8 @@ class AttributeGenerator
             return $this->generateTextAreaAttribute();
         } elseif ($type === AttributeTypes::OPTION_SIMPLE_SELECT) {
             return $this->generateSimpleSelectAttribute();
+        } elseif ($type === AttributeTypes::IMAGE) {
+            return $this->generateImageAttribute();
         }
     }
 
@@ -51,7 +58,11 @@ class AttributeGenerator
         $type = AttributeTypes::TEXT;
         $localizable = (rand(0, 1) == 1);
         $scopable = (rand(0, 1) == 1);
-        $properties = new Properties(['useable_as_grid_filter' => true]);
+        $properties = new Properties(
+            [
+                'useable_as_grid_filter' => true,
+            ]
+        );
         $options = new Options();
         $group = $this->generateRandomGroup();
 
@@ -64,7 +75,12 @@ class AttributeGenerator
         $type = AttributeTypes::TEXTAREA;
         $localizable = (rand(0, 1) == 1);
         $scopable = (rand(0, 1) == 1);
-        $properties = new Properties(['useable_as_grid_filter' => true]);
+        $properties = new Properties(
+            [
+                'useable_as_grid_filter' => true,
+                'wysiwyg_enabled' => true
+            ]
+        );
         $options = new Options();
         $group = $this->generateRandomGroup();
 
@@ -79,6 +95,24 @@ class AttributeGenerator
         $scopable = false;
         $properties = new Properties(['useable_as_grid_filter' => true]);
         $options = $this->generateRandomOptions();
+        $group = $this->generateRandomGroup();
+
+        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+    }
+
+    private function generateImageAttribute(): Attribute
+    {
+        $code = $this->generator->unique()->ean13;
+        $type = AttributeTypes::IMAGE;
+        $localizable = false;
+        $scopable = false;
+        $properties = new Properties(
+            [
+                'useable_as_grid_filter' => true,
+                'allowed_extensions' => ['jpg', 'jpeg', 'gif', 'png']
+            ]
+        );
+        $options = new Options();
         $group = $this->generateRandomGroup();
 
         return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
