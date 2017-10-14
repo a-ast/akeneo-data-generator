@@ -2,24 +2,17 @@
 
 namespace Akeneo\ApiSandbox\Domain\Model\Attribute;
 
-use Akeneo\ApiSandbox\Domain\Model\Attribute\Option;
-
 class Options
 {
     /** @var array */
     private $items;
 
-    public function __construct()
+    public function __construct(array $items = [])
     {
-        $this->items = [];
+        $this->items = $items;
     }
 
-    public function add(Option $option)
-    {
-        $this->items[] = $option;
-    }
-
-    public function getCodes()
+    public function getCodes():array
     {
         $codes = [];
         foreach ($this->items as $option) {

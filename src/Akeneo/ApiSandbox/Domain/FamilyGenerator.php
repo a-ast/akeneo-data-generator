@@ -52,7 +52,6 @@ class FamilyGenerator
     private function generateRandomAttributes(): Attributes
     {
         $attributes = $this->attributeRepository->all();
-
         $randomAttributes = [];
         for ($ind = 0; $ind < 20; $ind++) {
             /** @var Attribute $attribute */

@@ -59,16 +59,17 @@ class AttributeRepositoryInitializer
 
     private function buildAttributeOptions(array $attributeData): Options
     {
-        $options = new Options();
         $type = $attributeData['type'];
         $attributeCode = $attributeData['code'];
         if ($type === AttributeTypes::OPTION_SIMPLE_SELECT || $type === AttributeTypes::OPTION_MULTI_SELECT) {
             $cursor = $this->client->getAttributeOptionApi()->all($attributeCode);
+            $optionItems = [];
             foreach ($cursor as $optionData) {
-                $options->add(
-                    new Option($optionData['code'])
-                );
+                $optionItems[] = new Option($optionData['code']);
             }
+            $options = new Options($optionItems);
+        } else {
+            $options = new Options();
         }
 
         return $options;

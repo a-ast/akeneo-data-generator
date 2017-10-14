@@ -23,13 +23,19 @@ class WebApiAttributeRepository implements AttributeRepository
     public function add(Attribute $attribute)
     {
         $attributeData = [
-            'code' => $attribute->getCode(),
             'type' => $attribute->getType(),
             'localizable' => $attribute->isLocalizable(),
             'scopable' => $attribute->isScopable(),
-            'group' => $attribute->getAttributeGroup()->getCode()
+            'group' => $attribute->getGroup()->getCode()
         ];
-        $this->client->getAttributeApi()->upsert($attribute->getCode(), $attributeData);
+        foreach ($attribute->getProperties()->all() as $propertyCode => $propertyValue) {
+            $attributeData[$propertyCode]= $propertyValue;
+        }
+        $this->client->getAttributeApi()->create($attribute->getCode(), $attributeData);
+
+        foreach ($attribute->getOptions()->getCodes() as $optionCode) {
+            $this->client->getAttributeOptionApi()->create($attribute->getCode(), $optionCode);
+        }
     }
 
     public function count(): int

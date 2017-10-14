@@ -12,7 +12,7 @@ class Attribute
     private $localizable;
     private $scopable;
     private $properties;
-    private $attributeOptions;
+    private $options;
     private $group;
 
     public function __construct(
@@ -21,7 +21,7 @@ class Attribute
         bool $localizable,
         bool $scopable,
         Properties $properties,
-        Options $attributeOptions,
+        Options $options,
         AttributeGroup $group
     ) {
         $this->code = $code;
@@ -29,7 +29,7 @@ class Attribute
         $this->localizable = $localizable;
         $this->scopable = $scopable;
         $this->properties = $properties;
-        $this->attributeOptions = $attributeOptions;
+        $this->options = $options;
         $this->group = $group;
     }
 
@@ -76,15 +76,15 @@ class Attribute
     /**
      * @return Options
      */
-    public function getAttributeOptions(): Options
+    public function getOptions(): Options
     {
-        return $this->attributeOptions;
+        return $this->options;
     }
 
     /**
      * @return AttributeGroup
      */
-    public function getAttributeGroup(): AttributeGroup
+    public function getGroup(): AttributeGroup
     {
         return $this->group;
     }
