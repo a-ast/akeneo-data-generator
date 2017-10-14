@@ -59,7 +59,7 @@ It only generates global text attributes for now.
 
 ## Generate Families
 
-It only generates families, no label or attributes requirements for now.
+It generates families without label, attribute as image and attribute as label for now.
 
 - Run `bin/docker/console.sh akeneo:sandbox:generate-family 100`
 

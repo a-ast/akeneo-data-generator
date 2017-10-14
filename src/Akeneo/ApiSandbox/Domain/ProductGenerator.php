@@ -109,7 +109,7 @@ class ProductGenerator
         $attributes = $family->getAttributes();
         $values = new ProductValues();
         /** @var Attribute $attribute */
-        foreach ($attributes as $attribute) {
+        foreach ($attributes->all() as $attribute) {
             $this->generateValues($values, $attribute);
         }
 

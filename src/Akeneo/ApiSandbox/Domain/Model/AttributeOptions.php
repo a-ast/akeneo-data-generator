@@ -4,6 +4,7 @@ namespace Akeneo\ApiSandbox\Domain\Model;
 
 class AttributeOptions
 {
+    /** @var array */
     private $items;
 
     public function __construct()

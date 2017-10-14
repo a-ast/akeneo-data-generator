@@ -74,7 +74,7 @@ class GenerateProductsCommand extends Command
         $categoryRepository = $this->buildCategoryRepository();
         $channelRepository = $this->buildChannelRepository($localeRepository, $currencyRepository);
         $attributeRepository = $this->buildAttributeRepository();
-        $familyRepository = $this->buildFamilyRepository($attributeRepository);
+        $familyRepository = $this->buildFamilyRepository($attributeRepository, $channelRepository);
 
         return new ProductGenerator(
             $channelRepository,
@@ -102,11 +102,13 @@ class GenerateProductsCommand extends Command
         return $repository;
     }
 
-    private function buildFamilyRepository(AttributeRepository $attributeRepository): FamilyRepository
-    {
+    private function buildFamilyRepository(
+        AttributeRepository $attributeRepository,
+        ChannelRepository $channelRepository
+    ): FamilyRepository {
         $client = $this->getClient();
         $repository = new InMemoryFamilyRepository();
-        $initializer = new FamilyRepositoryInitializer($client, $attributeRepository);
+        $initializer = new FamilyRepositoryInitializer($client, $attributeRepository, $channelRepository);
         $initializer->initialize($repository);
 
         return $repository;
