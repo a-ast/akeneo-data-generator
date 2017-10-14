@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\ApiSandbox\Domain\Model;
+namespace Akeneo\ApiSandbox\Domain\Model\Attribute;
 
-class AttributeOption
+class Option
 {
     /** @var string */
     private $code;

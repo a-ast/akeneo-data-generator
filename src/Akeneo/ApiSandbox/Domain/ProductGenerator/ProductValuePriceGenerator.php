@@ -6,7 +6,7 @@ use Faker\Factory;
 use Faker\Generator;
 use Akeneo\ApiSandbox\Domain\Model\Attribute;
 use Akeneo\ApiSandbox\Domain\Model\CurrencyRepository;
-use Akeneo\ApiSandbox\Domain\Model\ProductValue;
+use Akeneo\ApiSandbox\Domain\Model\Product\Value;
 
 class ProductValuePriceGenerator implements ProductValueGenerator
 {
@@ -21,7 +21,7 @@ class ProductValuePriceGenerator implements ProductValueGenerator
         $this->generator = Factory::create();
     }
 
-    public function generate(Attribute $attribute, $channelCode, $localeCode): ProductValue
+    public function generate(Attribute $attribute, $channelCode, $localeCode): Value
     {
         $currencies = $this->currencyRepository->all();
         $data = [];
@@ -32,6 +32,6 @@ class ProductValuePriceGenerator implements ProductValueGenerator
             ];
         }
 
-        return new ProductValue($attribute, $data, $localeCode, $channelCode);
+        return new Value($attribute, $data, $localeCode, $channelCode);
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
-namespace Akeneo\ApiSandbox\Domain\Model;
+namespace Akeneo\ApiSandbox\Domain\Model\Product;
 
-class ProductValue
+use Akeneo\ApiSandbox\Domain\Model\Attribute;
+
+class Value
 {
     private $attribute;
     private $data;

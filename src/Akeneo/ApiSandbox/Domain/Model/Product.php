@@ -2,6 +2,9 @@
 
 namespace Akeneo\ApiSandbox\Domain\Model;
 
+use Akeneo\ApiSandbox\Domain\Model\Product\Categories;
+use Akeneo\ApiSandbox\Domain\Model\Product\Values;
+
 class Product
 {
     private $identifier;
@@ -9,7 +12,7 @@ class Product
     private $categories;
     private $values;
 
-    public function __construct(string $identifier, Family $family, ProductValues $values, ProductCategories $categories)
+    public function __construct(string $identifier, Family $family, Values $values, Categories $categories)
     {
         $this->identifier = $identifier;
         $this->family = $family;
@@ -27,12 +30,12 @@ class Product
         return $this->family;
     }
 
-    public function getCategories(): ProductCategories
+    public function getCategories(): Categories
     {
         return $this->categories;
     }
 
-    public function getValues(): ProductValues
+    public function getValues(): Values
     {
         return $this->values;
     }

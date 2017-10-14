@@ -3,9 +3,9 @@
 namespace Akeneo\ApiSandbox\Infrastructure\WebApi;
 
 use Akeneo\ApiSandbox\Domain\Model\ChannelRepository;
-use Akeneo\ApiSandbox\Domain\Model\FamilyAttributeRequirement;
-use Akeneo\ApiSandbox\Domain\Model\FamilyAttributeRequirements;
-use Akeneo\ApiSandbox\Domain\Model\FamilyAttributes;
+use Akeneo\ApiSandbox\Domain\Model\Family\AttributeRequirement;
+use Akeneo\ApiSandbox\Domain\Model\Family\AttributeRequirements;
+use Akeneo\ApiSandbox\Domain\Model\Family\Attributes;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\ApiSandbox\Domain\Model\AttributeRepository;
 use Akeneo\ApiSandbox\Domain\Model\Family;
@@ -40,7 +40,7 @@ class FamilyRepositoryInitializer
             }
             foreach ($attributeRequirements as $channelCode => $attributeRequirementCodes) {
                 foreach ($attributeRequirementCodes as $attributeRequirementCode) {
-                    $requirements[]= new FamilyAttributeRequirement(
+                    $requirements[]= new AttributeRequirement(
                         $this->attributeRepository->get($attributeRequirementCode),
                         $this->channelRepository->get($channelCode)
                     );
@@ -49,8 +49,8 @@ class FamilyRepositoryInitializer
             $repository->add(
                 new Family(
                     $familyData['code'],
-                    new FamilyAttributes($attributes),
-                    new FamilyAttributeRequirements($requirements)
+                    new Attributes($attributes),
+                    new AttributeRequirements($requirements)
                 )
             );
         }

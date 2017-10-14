@@ -6,10 +6,10 @@ use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\ApiSandbox\Domain\Model\AttributeTypes;
 use Akeneo\ApiSandbox\Domain\Model\Category;
 use Akeneo\ApiSandbox\Domain\Model\Product;
-use Akeneo\ApiSandbox\Domain\Model\ProductCategories;
+use Akeneo\ApiSandbox\Domain\Model\Product\Categories;
 use Akeneo\ApiSandbox\Domain\Model\ProductRepository;
-use Akeneo\ApiSandbox\Domain\Model\ProductValue;
-use Akeneo\ApiSandbox\Domain\Model\ProductValues;
+use Akeneo\ApiSandbox\Domain\Model\Product\Value;
+use Akeneo\ApiSandbox\Domain\Model\Product\Values;
 
 class WebApiProductRepository implements ProductRepository
 {
@@ -46,10 +46,10 @@ class WebApiProductRepository implements ProductRepository
         }
     }
 
-    private function normalizeNonImageValues(ProductValues $values)
+    private function normalizeNonImageValues(Values $values)
     {
         $data = [];
-        /** @var ProductValue $value */
+        /** @var Value $value */
         foreach ($values->all() as $value) {
             if ($value->getAttribute()->getType() !== AttributeTypes::IMAGE) {
                 if (!isset($data[$value->getAttribute()->getCode()])) {
@@ -66,10 +66,10 @@ class WebApiProductRepository implements ProductRepository
         return $data;
     }
 
-    private function normalizeImageValues(ProductValues $values)
+    private function normalizeImageValues(Values $values)
     {
         $data = [];
-        /** @var ProductValue $value */
+        /** @var Value $value */
         foreach ($values->all() as $value) {
             if ($value->getAttribute()->getType() === AttributeTypes::IMAGE) {
                 if (!isset($data[$value->getAttribute()->getCode()])) {
@@ -86,7 +86,7 @@ class WebApiProductRepository implements ProductRepository
         return $data;
     }
 
-    private function normalizeCategories(ProductCategories $categories)
+    private function normalizeCategories(Categories $categories)
     {
         $data = [];
         /** @var Category $category */

@@ -5,9 +5,9 @@ namespace Akeneo\ApiSandbox\Infrastructure\WebApi;
 use Akeneo\ApiSandbox\Domain\Model\AttributeGroupRepository;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\ApiSandbox\Domain\Model\Attribute;
-use Akeneo\ApiSandbox\Domain\Model\AttributeOption;
-use Akeneo\ApiSandbox\Domain\Model\AttributeOptions;
-use Akeneo\ApiSandbox\Domain\Model\AttributeProperties;
+use Akeneo\ApiSandbox\Domain\Model\Attribute\Option;
+use Akeneo\ApiSandbox\Domain\Model\Attribute\Options;
+use Akeneo\ApiSandbox\Domain\Model\Attribute\Properties;
 use Akeneo\ApiSandbox\Domain\Model\AttributeRepository;
 use Akeneo\ApiSandbox\Domain\Model\AttributeTypes;
 
@@ -43,7 +43,7 @@ class AttributeRepositoryInitializer
         }
     }
 
-    private function buildProperties(array $attributeData): AttributeProperties
+    private function buildProperties(array $attributeData): Properties
     {
         $properties = [];
         $type = $attributeData['type'];
@@ -54,19 +54,19 @@ class AttributeRepositoryInitializer
             $properties['default_metric_unit'] = $attributeData['default_metric_unit'];
         }
 
-        return new AttributeProperties($properties);
+        return new Properties($properties);
     }
 
-    private function buildAttributeOptions(array $attributeData): AttributeOptions
+    private function buildAttributeOptions(array $attributeData): Options
     {
-        $options = new AttributeOptions();
+        $options = new Options();
         $type = $attributeData['type'];
         $attributeCode = $attributeData['code'];
         if ($type === AttributeTypes::OPTION_SIMPLE_SELECT || $type === AttributeTypes::OPTION_MULTI_SELECT) {
             $cursor = $this->client->getAttributeOptionApi()->all($attributeCode);
             foreach ($cursor as $optionData) {
                 $options->add(
-                    new AttributeOption($optionData['code'])
+                    new Option($optionData['code'])
                 );
             }
         }

@@ -1,8 +1,10 @@
 <?php
 
-namespace Akeneo\ApiSandbox\Domain\Model;
+namespace Akeneo\ApiSandbox\Domain\Model\Attribute;
 
-class AttributeOptions
+use Akeneo\ApiSandbox\Domain\Model\Attribute\Option;
+
+class Options
 {
     /** @var array */
     private $items;
@@ -12,7 +14,7 @@ class AttributeOptions
         $this->items = [];
     }
 
-    public function add(AttributeOption $option)
+    public function add(Option $option)
     {
         $this->items[] = $option;
     }

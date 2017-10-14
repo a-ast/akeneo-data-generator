@@ -5,7 +5,7 @@ namespace Akeneo\ApiSandbox\Domain\ProductGenerator;
 use Faker\Factory;
 use Faker\Generator;
 use Akeneo\ApiSandbox\Domain\Model\Attribute;
-use Akeneo\ApiSandbox\Domain\Model\ProductValue;
+use Akeneo\ApiSandbox\Domain\Model\Product\Value;
 
 class ProductValueMetricGenerator implements ProductValueGenerator
 {
@@ -17,13 +17,13 @@ class ProductValueMetricGenerator implements ProductValueGenerator
         $this->generator = Factory::create();
     }
 
-    public function generate(Attribute $attribute, $channelCode, $localeCode): ProductValue
+    public function generate(Attribute $attribute, $channelCode, $localeCode): Value
     {
         $data = [
             'amount' => $this->generator->numberBetween(1, 100),
             'unit' => $attribute->getProperties()->getProperty('default_metric_unit')
         ];
 
-        return new ProductValue($attribute, $data, $localeCode, $channelCode);
+        return new Value($attribute, $data, $localeCode, $channelCode);
     }
 }
