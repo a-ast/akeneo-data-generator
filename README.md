@@ -53,8 +53,6 @@ Complete app/parameters.yml with the credentials.
 
 ## Generate Attributes
 
-It only generates text, text-area, images and simple select attributes for now.
-
 - Run `bin/docker/console.sh akeneo:sandbox:generate-attributes 100`
 
 ## Generate Families

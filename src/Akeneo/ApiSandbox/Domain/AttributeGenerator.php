@@ -35,10 +35,16 @@ class AttributeGenerator
     public function generate(): Attribute
     {
         $types = [
-            AttributeTypes::IMAGE,
+            AttributeTypes::BOOLEAN,
+            AttributeTypes::DATE,
             AttributeTypes::TEXT,
             AttributeTypes::TEXTAREA,
-            AttributeTypes::OPTION_SIMPLE_SELECT
+            AttributeTypes::OPTION_SIMPLE_SELECT,
+            AttributeTypes::OPTION_MULTI_SELECT,
+            AttributeTypes::NUMBER,
+            AttributeTypes::METRIC,
+            AttributeTypes::PRICE_COLLECTION,
+            AttributeTypes::FILE
         ];
         $type = $types[rand(0, count($types) - 1)];
         if ($type === AttributeTypes::TEXT) {
@@ -47,8 +53,22 @@ class AttributeGenerator
             return $this->generateTextAreaAttribute();
         } elseif ($type === AttributeTypes::OPTION_SIMPLE_SELECT) {
             return $this->generateSimpleSelectAttribute();
+        } elseif ($type === AttributeTypes::OPTION_MULTI_SELECT) {
+            return $this->generateMultiSelectAttribute();
         } elseif ($type === AttributeTypes::IMAGE) {
             return $this->generateImageAttribute();
+        } elseif ($type === AttributeTypes::DATE) {
+            return $this->generateDateAttribute();
+        } elseif ($type === AttributeTypes::BOOLEAN) {
+            return $this->generateBooleanAttribute();
+        } elseif ($type === AttributeTypes::NUMBER) {
+            return $this->generateNumberAttribute();
+        } elseif ($type === AttributeTypes::METRIC) {
+            return $this->generateMetricAttribute();
+        } elseif ($type === AttributeTypes::PRICE_COLLECTION) {
+            return $this->generatePriceCollectionAttribute();
+        } elseif ($type === AttributeTypes::FILE) {
+            return $this->generateFileAttribute();
         }
     }
 
@@ -100,6 +120,19 @@ class AttributeGenerator
         return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
     }
 
+    private function generateMultiSelectAttribute(): Attribute
+    {
+        $code = $this->generator->unique()->ean13;
+        $type = AttributeTypes::OPTION_MULTI_SELECT;
+        $localizable = false;
+        $scopable = false;
+        $properties = new Properties(['useable_as_grid_filter' => true]);
+        $options = $this->generateRandomOptions();
+        $group = $this->generateRandomGroup();
+
+        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+    }
+
     private function generateImageAttribute(): Attribute
     {
         $code = $this->generator->unique()->ean13;
@@ -110,6 +143,108 @@ class AttributeGenerator
             [
                 'useable_as_grid_filter' => true,
                 'allowed_extensions' => ['jpg', 'jpeg', 'gif', 'png']
+            ]
+        );
+        $options = new Options();
+        $group = $this->generateRandomGroup();
+
+        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+    }
+
+    private function generateFileAttribute(): Attribute
+    {
+        $code = $this->generator->unique()->ean13;
+        $type = AttributeTypes::FILE;
+        $localizable = false;
+        $scopable = false;
+        $properties = new Properties(
+            [
+                'useable_as_grid_filter' => true,
+                'allowed_extensions' => ['pdf']
+            ]
+        );
+        $options = new Options();
+        $group = $this->generateRandomGroup();
+
+        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+    }
+
+    private function generateDateAttribute(): Attribute
+    {
+        $code = $this->generator->unique()->ean13;
+        $type = AttributeTypes::DATE;
+        $localizable = false;
+        $scopable = false;
+        $properties = new Properties(['useable_as_grid_filter' => true,]);
+        $options = new Options();
+        $group = $this->generateRandomGroup();
+
+        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+    }
+
+    private function generateNumberAttribute(): Attribute
+    {
+        $code = $this->generator->unique()->ean13;
+        $type = AttributeTypes::NUMBER;
+        $localizable = false;
+        $scopable = false;
+        $properties = new Properties(
+            [
+                'useable_as_grid_filter' => true,
+                'decimals_allowed' => true,
+                'negative_allowed' => false
+            ]
+        );
+        $options = new Options();
+        $group = $this->generateRandomGroup();
+
+        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+    }
+
+    private function generateBooleanAttribute(): Attribute
+    {
+        $code = $this->generator->unique()->ean13;
+        $type = AttributeTypes::BOOLEAN;
+        $localizable = false;
+        $scopable = false;
+        $properties = new Properties(['useable_as_grid_filter' => true,]);
+        $options = new Options();
+        $group = $this->generateRandomGroup();
+
+        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+    }
+
+    private function generatePriceCollectionAttribute(): Attribute
+    {
+        $code = $this->generator->unique()->ean13;
+        $type = AttributeTypes::PRICE_COLLECTION;
+        $localizable = false;
+        $scopable = false;
+        $properties = new Properties(
+            [
+                'useable_as_grid_filter' => true,
+                'decimals_allowed' => true,
+            ]
+        );
+        $options = new Options();
+        $group = $this->generateRandomGroup();
+
+        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+    }
+
+    private function generateMetricAttribute(): Attribute
+    {
+        $code = $this->generator->unique()->ean13;
+        $type = AttributeTypes::METRIC;
+        $localizable = false;
+        $scopable = false;
+        $properties = new Properties(
+            [
+                'useable_as_grid_filter' => true,
+                'metric_family' => 'Weight',
+                'default_metric_unit' => 'KILOGRAM',
+                'decimals_allowed' => true,
+                'negative_allowed' => false
             ]
         );
         $options = new Options();
