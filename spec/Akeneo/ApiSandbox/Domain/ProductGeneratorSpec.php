@@ -11,6 +11,7 @@ use Akeneo\ApiSandbox\Domain\Model\CategoryRepository;
 use Akeneo\ApiSandbox\Domain\Model\ChannelRepository;
 use Akeneo\ApiSandbox\Domain\Model\CurrencyRepository;
 use Akeneo\ApiSandbox\Domain\Model\Family;
+use Akeneo\ApiSandbox\Domain\Model\FamilyAttributes;
 use Akeneo\ApiSandbox\Domain\Model\FamilyRepository;
 use Akeneo\ApiSandbox\Domain\Model\LocaleRepository;
 use Akeneo\ApiSandbox\Domain\Model\Product;
@@ -34,13 +35,15 @@ class ProductGeneratorSpec extends ObjectBehavior
         $familyRepository,
         $categoryRepository,
         Family $family,
+        FamilyAttributes $attributes,
         Attribute $sku,
         AttributeProperties $skuProperties,
         Category $children
     ) {
         $familyRepository->count()->willReturn(1);
         $familyRepository->all()->willReturn([$family]);
-        $family->getAttributes()->willReturn([$sku]);
+        $family->getAttributes()->willReturn($attributes);
+        $attributes->all()->willReturn([$sku]);
         $sku->getType()->willReturn('pim_catalog_text');
         $sku->isScopable()->willReturn(false);
         $sku->isLocalizable()->willReturn(false);
@@ -68,13 +71,15 @@ class ProductGeneratorSpec extends ObjectBehavior
         $familyRepository,
         $categoryRepository,
         Family $family,
+        FamilyAttributes $attributes,
         Attribute $sku,
         AttributeProperties $skuProperties
     )
     {
         $familyRepository->count()->willReturn(1);
         $familyRepository->all()->willReturn([$family]);
-        $family->getAttributes()->willReturn([$sku]);
+        $family->getAttributes()->willReturn($attributes);
+        $attributes->all()->willReturn([$sku]);
         $sku->getType()->willReturn('pim_catalog_text');
         $sku->isScopable()->willReturn(false);
         $sku->isLocalizable()->willReturn(false);

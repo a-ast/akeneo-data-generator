@@ -6,6 +6,9 @@ use Akeneo\ApiSandbox\Domain\Model\Attribute;
 use Akeneo\ApiSandbox\Domain\Model\AttributeRepository;
 use Akeneo\ApiSandbox\Domain\Model\ChannelRepository;
 use Akeneo\ApiSandbox\Domain\Model\Family;
+use Akeneo\ApiSandbox\Domain\Model\FamilyAttributeRequirement;
+use Akeneo\ApiSandbox\Domain\Model\FamilyAttributeRequirements;
+use Akeneo\ApiSandbox\Domain\Model\FamilyAttributes;
 use Faker\Factory;
 use Faker\Generator;
 
@@ -38,16 +41,18 @@ class FamilyGenerator
     {
         $code = $this->generator->unique()->ean13;
         $attributes = $this->generateRandomAttributes();
+        $requirements = $this->generateRandomAttributeRequirements($attributes);
 
-        return new Family($code, $attributes);
+        return new Family($code, $attributes, $requirements);
     }
 
     /**
-     * @return Attribute[]
+     * @return FamilyAttributes
      */
-    private function generateRandomAttributes(): array
+    private function generateRandomAttributes(): FamilyAttributes
     {
         $attributes = $this->attributeRepository->all();
+
         $randomAttributes = [];
         for ($ind = 0; $ind < 20; $ind++) {
             /** @var Attribute $attribute */
@@ -57,6 +62,24 @@ class FamilyGenerator
             }
         }
 
-        return $randomAttributes;
+        return new FamilyAttributes($randomAttributes);
+    }
+
+    /**
+     * @return FamilyAttributeRequirements
+     */
+    private function generateRandomAttributeRequirements(FamilyAttributes $attributes): FamilyAttributeRequirements
+    {
+        $channels = $this->channelRepository->all();
+        $randomRequirements = [];
+        foreach ($channels as $channel) {
+            foreach ($attributes->all() as $attribute) {
+                if (rand(0, 1) == 1) {
+                    $randomRequirements[] = new FamilyAttributeRequirement($attribute, $channel);
+                }
+            }
+        }
+
+        return new FamilyAttributeRequirements($randomRequirements);
     }
 }

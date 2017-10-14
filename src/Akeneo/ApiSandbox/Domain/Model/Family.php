@@ -6,13 +6,19 @@ class Family
 {
     /** @var string */
     private $code;
-    /** @var Attribute[] */
+    /** @var FamilyAttributes */
     private $attributes;
+    /** @var FamilyAttributeRequirements */
+    private $requirements;
 
-    public function __construct(string $code, array $attributes)
-    {
+    public function __construct(
+        string $code,
+        FamilyAttributes $attributes,
+        FamilyAttributeRequirements $requirements
+    ) {
         $this->code = $code;
         $this->attributes = $attributes;
+        $this->requirements = $requirements;
     }
 
     public function getCode(): string
@@ -20,8 +26,13 @@ class Family
         return $this->code;
     }
 
-    public function getAttributes(): array
+    public function getAttributes(): FamilyAttributes
     {
         return $this->attributes;
+    }
+
+    public function getRequirements(): FamilyAttributeRequirements
+    {
+        return $this->requirements;
     }
 }

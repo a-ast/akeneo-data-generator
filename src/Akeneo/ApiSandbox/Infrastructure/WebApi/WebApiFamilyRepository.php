@@ -2,8 +2,6 @@
 
 namespace Akeneo\ApiSandbox\Infrastructure\WebApi;
 
-use Akeneo\ApiSandbox\Domain\Model\Attribute;
-use Akeneo\ApiSandbox\Domain\Model\AttributeRepository;
 use Akeneo\ApiSandbox\Domain\Model\Family;
 use Akeneo\ApiSandbox\Domain\Model\FamilyRepository;
 use Akeneo\Pim\AkeneoPimClientInterface;
@@ -24,15 +22,9 @@ class WebApiFamilyRepository implements FamilyRepository
 
     public function add(Family $family)
     {
-        $attributes = [];
-        foreach ($family->getAttributes() as $attribute) {
-            $attributes[]= $attribute->getCode();
-        }
-
-        $requirements = [];
         $familyData = [
-            'attributes' => $attributes,
-            'attribute_requirements' => $requirements
+            'attributes' => $family->getAttributes()->getCodes(),
+            'attribute_requirements' => $family->getRequirements()->getAttributeCodesPerChannel()
         ];
         $this->client->getFamilyApi()->create($family->getCode(), $familyData);
     }
