@@ -8,6 +8,7 @@ use Akeneo\ApiSandbox\Domain\Model\AttributeGroup;
 use Akeneo\ApiSandbox\Domain\Model\AttributeGroupRepository;
 use Akeneo\ApiSandbox\Domain\Model\Attribute\Options;
 use Akeneo\ApiSandbox\Domain\Model\Attribute\Properties;
+use Akeneo\ApiSandbox\Domain\Model\AttributeTypes;
 use Faker\Factory;
 use Faker\Generator;
 
@@ -33,21 +34,67 @@ class AttributeGenerator
      */
     public function generate(): Attribute
     {
-        $code = $this->generator->unique()->ean13;
-        $type = 'pim_catalog_text';
-        $localizable = false;
-        $scopable = false;
-        $properties = new Properties([]);
-        $attributeOptions = new Options([]);
-        $group = $this->generateRandomAttributeGroup();
-
-        return new Attribute($code, $type, $localizable, $scopable, $properties, $attributeOptions, $group);
+        $types = [AttributeTypes::TEXT, AttributeTypes::TEXTAREA, AttributeTypes::OPTION_SIMPLE_SELECT];
+        $type = $types[rand(0, count($types) - 1)];
+        if ($type === AttributeTypes::TEXT) {
+            return $this->generateTextAttribute();
+        } elseif ($type === AttributeTypes::TEXTAREA) {
+            return $this->generateTextAreaAttribute();
+        } elseif ($type === AttributeTypes::OPTION_SIMPLE_SELECT) {
+            return $this->generateSimpleSelectAttribute();
+        }
     }
 
-    /**
-     * @return AttributeGroup
-     */
-    private function generateRandomAttributeGroup(): AttributeGroup
+    private function generateTextAttribute(): Attribute
+    {
+        $code = $this->generator->unique()->ean13;
+        $type = AttributeTypes::TEXT;
+        $localizable = (rand(0, 1) == 1);
+        $scopable = (rand(0, 1) == 1);
+        $properties = new Properties(['useable_as_grid_filter' => true]);
+        $options = new Options();
+        $group = $this->generateRandomGroup();
+
+        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+    }
+
+    private function generateTextAreaAttribute(): Attribute
+    {
+        $code = $this->generator->unique()->ean13;
+        $type = AttributeTypes::TEXTAREA;
+        $localizable = (rand(0, 1) == 1);
+        $scopable = (rand(0, 1) == 1);
+        $properties = new Properties(['useable_as_grid_filter' => true]);
+        $options = new Options();
+        $group = $this->generateRandomGroup();
+
+        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+    }
+
+    private function generateSimpleSelectAttribute(): Attribute
+    {
+        $code = $this->generator->unique()->ean13;
+        $type = AttributeTypes::OPTION_SIMPLE_SELECT;
+        $localizable = false;
+        $scopable = false;
+        $properties = new Properties(['useable_as_grid_filter' => true]);
+        $options = $this->generateRandomOptions();
+        $group = $this->generateRandomGroup();
+
+        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+    }
+
+    private function generateRandomOptions(): Options
+    {
+        $randomOptions = [];
+        for ($ind = 0; $ind < 20; $ind++) {
+            $randomOptions[]= new Attribute\Option($this->generator->unique()->ean13);
+        }
+
+        return new Options($randomOptions);
+    }
+
+    private function generateRandomGroup(): AttributeGroup
     {
         if ($this->groupRepository->count() === 0) {
             throw new NoAttributeGroupDefinedException("At least one attribute group should exist");

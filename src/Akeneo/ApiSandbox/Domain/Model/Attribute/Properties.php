@@ -11,6 +11,11 @@ class Properties
         $this->properties = $properties;
     }
 
+    public function all():array
+    {
+        return $this->properties;
+    }
+
     /**
      * @return mixed|null
      */
