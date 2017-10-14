@@ -7,8 +7,8 @@ use Akeneo\ApiSandbox\Domain\Model\AttributeRepository;
 use Akeneo\ApiSandbox\Domain\Model\Channel;
 use Akeneo\ApiSandbox\Domain\Model\ChannelRepository;
 use Akeneo\ApiSandbox\Domain\Model\Family;
-use Akeneo\ApiSandbox\Domain\Model\FamilyAttributeRequirements;
-use Akeneo\ApiSandbox\Domain\Model\FamilyAttributes;
+use Akeneo\ApiSandbox\Domain\Model\Family\AttributeRequirements;
+use Akeneo\ApiSandbox\Domain\Model\Family\Attributes;
 use PhpSpec\ObjectBehavior;
 
 class FamilyGeneratorSpec extends ObjectBehavior
@@ -32,7 +32,7 @@ class FamilyGeneratorSpec extends ObjectBehavior
 
         $generatedFamily = $this->generate();
         $generatedFamily->shouldBeAnInstanceOf(Family::class);
-        $generatedFamily->getAttributes()->shouldBeAnInstanceOf(FamilyAttributes::class);
-        $generatedFamily->getRequirements()->shouldBeAnInstanceOf(FamilyAttributeRequirements::class);
+        $generatedFamily->getAttributes()->shouldBeAnInstanceOf(Attributes::class);
+        $generatedFamily->getRequirements()->shouldBeAnInstanceOf(AttributeRequirements::class);
     }
 }

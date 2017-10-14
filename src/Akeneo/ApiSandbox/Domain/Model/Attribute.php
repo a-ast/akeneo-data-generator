@@ -2,6 +2,9 @@
 
 namespace Akeneo\ApiSandbox\Domain\Model;
 
+use Akeneo\ApiSandbox\Domain\Model\Attribute\Properties;
+use Akeneo\ApiSandbox\Domain\Model\Attribute\Options;
+
 class Attribute
 {
     private $code;
@@ -17,8 +20,8 @@ class Attribute
         string $type,
         bool $localizable,
         bool $scopable,
-        AttributeProperties $properties,
-        AttributeOptions $attributeOptions,
+        Properties $properties,
+        Options $attributeOptions,
         AttributeGroup $group
     ) {
         $this->code = $code;
@@ -63,17 +66,17 @@ class Attribute
     }
 
     /**
-     * @return AttributeProperties
+     * @return Properties
      */
-    public function getProperties(): AttributeProperties
+    public function getProperties(): Properties
     {
         return $this->properties;
     }
 
     /**
-     * @return AttributeOptions
+     * @return Options
      */
-    public function getAttributeOptions(): AttributeOptions
+    public function getAttributeOptions(): Options
     {
         return $this->attributeOptions;
     }

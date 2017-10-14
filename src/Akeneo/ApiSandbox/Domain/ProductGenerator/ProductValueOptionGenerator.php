@@ -3,11 +3,11 @@
 namespace Akeneo\ApiSandbox\Domain\ProductGenerator;
 
 use Akeneo\ApiSandbox\Domain\Model\Attribute;
-use Akeneo\ApiSandbox\Domain\Model\ProductValue;
+use Akeneo\ApiSandbox\Domain\Model\Product\Value;
 
 class ProductValueOptionGenerator implements ProductValueGenerator
 {
-    public function generate(Attribute $attribute, $channelCode, $localeCode): ProductValue
+    public function generate(Attribute $attribute, $channelCode, $localeCode): Value
     {
         $options = $attribute->getAttributeOptions();
         $codes = $options->getCodes();
@@ -17,6 +17,6 @@ class ProductValueOptionGenerator implements ProductValueGenerator
             $data = null;
         }
 
-        return new ProductValue($attribute, $data, $localeCode, $channelCode);
+        return new Value($attribute, $data, $localeCode, $channelCode);
     }
 }

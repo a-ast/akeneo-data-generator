@@ -6,9 +6,9 @@ use Akeneo\ApiSandbox\Domain\Model\Attribute;
 use Akeneo\ApiSandbox\Domain\Model\AttributeRepository;
 use Akeneo\ApiSandbox\Domain\Model\ChannelRepository;
 use Akeneo\ApiSandbox\Domain\Model\Family;
-use Akeneo\ApiSandbox\Domain\Model\FamilyAttributeRequirement;
-use Akeneo\ApiSandbox\Domain\Model\FamilyAttributeRequirements;
-use Akeneo\ApiSandbox\Domain\Model\FamilyAttributes;
+use Akeneo\ApiSandbox\Domain\Model\Family\AttributeRequirement;
+use Akeneo\ApiSandbox\Domain\Model\Family\AttributeRequirements;
+use Akeneo\ApiSandbox\Domain\Model\Family\Attributes;
 use Faker\Factory;
 use Faker\Generator;
 
@@ -47,9 +47,9 @@ class FamilyGenerator
     }
 
     /**
-     * @return FamilyAttributes
+     * @return Attributes
      */
-    private function generateRandomAttributes(): FamilyAttributes
+    private function generateRandomAttributes(): Attributes
     {
         $attributes = $this->attributeRepository->all();
 
@@ -62,24 +62,24 @@ class FamilyGenerator
             }
         }
 
-        return new FamilyAttributes($randomAttributes);
+        return new Attributes($randomAttributes);
     }
 
     /**
-     * @return FamilyAttributeRequirements
+     * @return AttributeRequirements
      */
-    private function generateRandomAttributeRequirements(FamilyAttributes $attributes): FamilyAttributeRequirements
+    private function generateRandomAttributeRequirements(Attributes $attributes): AttributeRequirements
     {
         $channels = $this->channelRepository->all();
         $randomRequirements = [];
         foreach ($channels as $channel) {
             foreach ($attributes->all() as $attribute) {
                 if (rand(0, 1) == 1) {
-                    $randomRequirements[] = new FamilyAttributeRequirement($attribute, $channel);
+                    $randomRequirements[] = new AttributeRequirement($attribute, $channel);
                 }
             }
         }
 
-        return new FamilyAttributeRequirements($randomRequirements);
+        return new AttributeRequirements($randomRequirements);
     }
 }

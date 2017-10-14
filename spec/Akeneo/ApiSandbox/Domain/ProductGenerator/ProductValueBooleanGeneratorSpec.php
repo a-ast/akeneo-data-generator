@@ -5,7 +5,7 @@ namespace spec\Akeneo\ApiSandbox\Domain\ProductGenerator;
 use Akeneo\ApiSandbox\Domain\Exception\NoChildrenCategoryDefinedException;
 use Akeneo\ApiSandbox\Domain\Exception\NoFamilyDefinedException;
 use Akeneo\ApiSandbox\Domain\Model\Attribute;
-use Akeneo\ApiSandbox\Domain\Model\AttributeProperties;
+use Akeneo\ApiSandbox\Domain\Model\Attribute\Properties;
 use Akeneo\ApiSandbox\Domain\Model\Category;
 use Akeneo\ApiSandbox\Domain\Model\CategoryRepository;
 use Akeneo\ApiSandbox\Domain\Model\ChannelRepository;
@@ -13,7 +13,7 @@ use Akeneo\ApiSandbox\Domain\Model\CurrencyRepository;
 use Akeneo\ApiSandbox\Domain\Model\Family;
 use Akeneo\ApiSandbox\Domain\Model\FamilyRepository;
 use Akeneo\ApiSandbox\Domain\Model\LocaleRepository;
-use Akeneo\ApiSandbox\Domain\Model\ProductValue;
+use Akeneo\ApiSandbox\Domain\Model\Product\Value;
 use PhpSpec\ObjectBehavior;
 
 class ProductValueBooleanGeneratorSpec extends ObjectBehavior
@@ -22,7 +22,7 @@ class ProductValueBooleanGeneratorSpec extends ObjectBehavior
         Attribute $enabled
     ) {
         $productValue = $this->generate($enabled, null, null);
-        $productValue->shouldBeAnInstanceOf(ProductValue::class);
+        $productValue->shouldBeAnInstanceOf(Value::class);
         $productValue->shouldHaveBooleanData();
         $productValue->getLocale()->shouldReturn(null);
         $productValue->getChannel()->shouldReturn(null);
@@ -32,7 +32,7 @@ class ProductValueBooleanGeneratorSpec extends ObjectBehavior
         Attribute $enabled
     ) {
         $productValue = $this->generate($enabled, null, 'fr_FR');
-        $productValue->shouldBeAnInstanceOf(ProductValue::class);
+        $productValue->shouldBeAnInstanceOf(Value::class);
         $productValue->shouldHaveBooleanData();
         $productValue->getLocale()->shouldReturn('fr_FR');
         $productValue->getChannel()->shouldReturn(null);
@@ -42,7 +42,7 @@ class ProductValueBooleanGeneratorSpec extends ObjectBehavior
         Attribute $enabled
     ) {
         $productValue = $this->generate($enabled, 'ecommerce', null);
-        $productValue->shouldBeAnInstanceOf(ProductValue::class);
+        $productValue->shouldBeAnInstanceOf(Value::class);
         $productValue->shouldHaveBooleanData();
         $productValue->getLocale()->shouldReturn(null);
         $productValue->getChannel()->shouldReturn('ecommerce');
@@ -52,7 +52,7 @@ class ProductValueBooleanGeneratorSpec extends ObjectBehavior
         Attribute $enabled
     ) {
         $productValue = $this->generate($enabled, 'ecommerce', 'fr_FR');
-        $productValue->shouldBeAnInstanceOf(ProductValue::class);
+        $productValue->shouldBeAnInstanceOf(Value::class);
         $productValue->shouldHaveBooleanData();
         $productValue->getLocale()->shouldReturn('fr_FR');
         $productValue->getChannel()->shouldReturn('ecommerce');

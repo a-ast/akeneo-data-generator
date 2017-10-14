@@ -6,8 +6,8 @@ use Akeneo\ApiSandbox\Domain\Exception\NoAttributeGroupDefinedException;
 use Akeneo\ApiSandbox\Domain\Model\Attribute;
 use Akeneo\ApiSandbox\Domain\Model\AttributeGroup;
 use Akeneo\ApiSandbox\Domain\Model\AttributeGroupRepository;
-use Akeneo\ApiSandbox\Domain\Model\AttributeOptions;
-use Akeneo\ApiSandbox\Domain\Model\AttributeProperties;
+use Akeneo\ApiSandbox\Domain\Model\Attribute\Options;
+use Akeneo\ApiSandbox\Domain\Model\Attribute\Properties;
 use Faker\Factory;
 use Faker\Generator;
 
@@ -37,8 +37,8 @@ class AttributeGenerator
         $type = 'pim_catalog_text';
         $localizable = false;
         $scopable = false;
-        $properties = new AttributeProperties([]);
-        $attributeOptions = new AttributeOptions([]);
+        $properties = new Properties([]);
+        $attributeOptions = new Options([]);
         $group = $this->generateRandomAttributeGroup();
 
         return new Attribute($code, $type, $localizable, $scopable, $properties, $attributeOptions, $group);

@@ -16,8 +16,8 @@ use Akeneo\ApiSandbox\Domain\Model\Family;
 use Akeneo\ApiSandbox\Domain\Model\FamilyRepository;
 use Akeneo\ApiSandbox\Domain\Model\LocaleRepository;
 use Akeneo\ApiSandbox\Domain\Model\Product;
-use Akeneo\ApiSandbox\Domain\Model\ProductCategories;
-use Akeneo\ApiSandbox\Domain\Model\ProductValues;
+use Akeneo\ApiSandbox\Domain\Model\Product\Categories;
+use Akeneo\ApiSandbox\Domain\Model\Product\Values;
 use Akeneo\ApiSandbox\Domain\ProductGenerator\ProductValueGeneratorRegistry;
 
 class ProductGenerator
@@ -83,7 +83,7 @@ class ProductGenerator
         return $families[rand(0, count($families) -1)];
     }
 
-    private function getRandomCategories(): ProductCategories
+    private function getRandomCategories(): Categories
     {
         if ($this->categoryRepository->countChildren() === 0) {
             throw new NoChildrenCategoryDefinedException("At least one children category should exist");
@@ -91,7 +91,7 @@ class ProductGenerator
 
         $categories = $this->categoryRepository->allChildren();
         $randomCodes = [];
-        $randomCategories = new ProductCategories();
+        $randomCategories = new Categories();
         for ($ind = 0; $ind < 4; $ind++) {
             /** @var Category $category */
             $category = $categories[rand(0, count($categories) - 1)];
@@ -104,10 +104,10 @@ class ProductGenerator
         return $randomCategories;
     }
 
-    private function getRandomValues(Family $family): ProductValues
+    private function getRandomValues(Family $family): Values
     {
         $attributes = $family->getAttributes();
-        $values = new ProductValues();
+        $values = new Values();
         /** @var Attribute $attribute */
         foreach ($attributes->all() as $attribute) {
             $this->generateValues($values, $attribute);
@@ -116,10 +116,10 @@ class ProductGenerator
         return $values;
     }
 
-    private function getRandomValuesExceptImages(Family $family): ProductValues
+    private function getRandomValuesExceptImages(Family $family): Values
     {
         $attributes = $family->getAttributes();
-        $values = new ProductValues();
+        $values = new Values();
         /** @var Attribute $attribute */
         foreach ($attributes as $attribute) {
             if ($attribute->getType() !== AttributeTypes::IMAGE) {
@@ -130,7 +130,7 @@ class ProductGenerator
         return $values;
     }
 
-    private function generateValues(ProductValues $values, Attribute $attribute)
+    private function generateValues(Values $values, Attribute $attribute)
     {
         if (!$this->valueGeneratorRegistry->support($attribute)) {
             return;

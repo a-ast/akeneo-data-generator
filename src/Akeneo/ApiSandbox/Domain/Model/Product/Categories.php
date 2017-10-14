@@ -1,8 +1,10 @@
 <?php
 
-namespace Akeneo\ApiSandbox\Domain\Model;
+namespace Akeneo\ApiSandbox\Domain\Model\Product;
 
-class ProductCategories
+use Akeneo\ApiSandbox\Domain\Model\Category;
+
+class Categories
 {
     private $items;
 

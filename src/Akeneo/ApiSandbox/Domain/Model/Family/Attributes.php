@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\ApiSandbox\Domain\Model;
+namespace Akeneo\ApiSandbox\Domain\Model\Family;
 
-class FamilyAttributes
+class Attributes
 {
     /** @var array */
     private $items;

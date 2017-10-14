@@ -5,7 +5,7 @@ namespace Akeneo\ApiSandbox\Domain\ProductGenerator;
 use Faker\Factory;
 use Faker\Generator;
 use Akeneo\ApiSandbox\Domain\Model\Attribute;
-use Akeneo\ApiSandbox\Domain\Model\ProductValue;
+use Akeneo\ApiSandbox\Domain\Model\Product\Value;
 
 class ProductValueTextGenerator implements ProductValueGenerator
 {
@@ -28,11 +28,11 @@ class ProductValueTextGenerator implements ProductValueGenerator
         return $this->generators[$locale];
     }
 
-    public function generate(Attribute $attribute, $channelCode, $localeCode): ProductValue
+    public function generate(Attribute $attribute, $channelCode, $localeCode): Value
     {
         $maxNbChars = $attribute->getProperties()->getProperty('max_characters');
         $maxNbChars = $maxNbChars !== null ? $maxNbChars : 100;
 
-        return new ProductValue($attribute, $this->generator($localeCode)->realText($maxNbChars), $localeCode, $channelCode);
+        return new Value($attribute, $this->generator($localeCode)->realText($maxNbChars), $localeCode, $channelCode);
     }
 }

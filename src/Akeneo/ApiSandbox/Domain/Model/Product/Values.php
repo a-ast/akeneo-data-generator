@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\ApiSandbox\Domain\Model;
+namespace Akeneo\ApiSandbox\Domain\Model\Product;
 
-class ProductValues
+class Values
 {
     private $values;
 
@@ -11,7 +11,7 @@ class ProductValues
         $this->values = [];
     }
 
-    public function add(ProductValue $value)
+    public function add(Value $value)
     {
         $this->values[] = $value;
     }

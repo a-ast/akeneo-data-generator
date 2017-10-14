@@ -5,13 +5,13 @@ namespace spec\Akeneo\ApiSandbox\Domain;
 use Akeneo\ApiSandbox\Domain\Exception\NoChildrenCategoryDefinedException;
 use Akeneo\ApiSandbox\Domain\Exception\NoFamilyDefinedException;
 use Akeneo\ApiSandbox\Domain\Model\Attribute;
-use Akeneo\ApiSandbox\Domain\Model\AttributeProperties;
+use Akeneo\ApiSandbox\Domain\Model\Attribute\Properties;
 use Akeneo\ApiSandbox\Domain\Model\Category;
 use Akeneo\ApiSandbox\Domain\Model\CategoryRepository;
 use Akeneo\ApiSandbox\Domain\Model\ChannelRepository;
 use Akeneo\ApiSandbox\Domain\Model\CurrencyRepository;
 use Akeneo\ApiSandbox\Domain\Model\Family;
-use Akeneo\ApiSandbox\Domain\Model\FamilyAttributes;
+use Akeneo\ApiSandbox\Domain\Model\Family\Attributes;
 use Akeneo\ApiSandbox\Domain\Model\FamilyRepository;
 use Akeneo\ApiSandbox\Domain\Model\LocaleRepository;
 use Akeneo\ApiSandbox\Domain\Model\Product;
@@ -35,9 +35,9 @@ class ProductGeneratorSpec extends ObjectBehavior
         $familyRepository,
         $categoryRepository,
         Family $family,
-        FamilyAttributes $attributes,
+        Attributes $attributes,
         Attribute $sku,
-        AttributeProperties $skuProperties,
+        Properties $skuProperties,
         Category $children
     ) {
         $familyRepository->count()->willReturn(1);
@@ -71,9 +71,9 @@ class ProductGeneratorSpec extends ObjectBehavior
         $familyRepository,
         $categoryRepository,
         Family $family,
-        FamilyAttributes $attributes,
+        Attributes $attributes,
         Attribute $sku,
-        AttributeProperties $skuProperties
+        Properties $skuProperties
     )
     {
         $familyRepository->count()->willReturn(1);

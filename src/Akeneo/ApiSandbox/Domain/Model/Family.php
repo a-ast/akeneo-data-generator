@@ -2,19 +2,22 @@
 
 namespace Akeneo\ApiSandbox\Domain\Model;
 
+use Akeneo\ApiSandbox\Domain\Model\Family\AttributeRequirements;
+use Akeneo\ApiSandbox\Domain\Model\Family\Attributes;
+
 class Family
 {
     /** @var string */
     private $code;
-    /** @var FamilyAttributes */
+    /** @var Attributes */
     private $attributes;
-    /** @var FamilyAttributeRequirements */
+    /** @var AttributeRequirements */
     private $requirements;
 
     public function __construct(
         string $code,
-        FamilyAttributes $attributes,
-        FamilyAttributeRequirements $requirements
+        Attributes $attributes,
+        AttributeRequirements $requirements
     ) {
         $this->code = $code;
         $this->attributes = $attributes;
@@ -26,12 +29,12 @@ class Family
         return $this->code;
     }
 
-    public function getAttributes(): FamilyAttributes
+    public function getAttributes(): Attributes
     {
         return $this->attributes;
     }
 
-    public function getRequirements(): FamilyAttributeRequirements
+    public function getRequirements(): AttributeRequirements
     {
         return $this->requirements;
     }

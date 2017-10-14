@@ -1,8 +1,11 @@
 <?php
 
-namespace Akeneo\ApiSandbox\Domain\Model;
+namespace Akeneo\ApiSandbox\Domain\Model\Family;
 
-class FamilyAttributeRequirement
+use Akeneo\ApiSandbox\Domain\Model\Attribute;
+use Akeneo\ApiSandbox\Domain\Model\Channel;
+
+class AttributeRequirement
 {
     /** @var Attribute */
     private $attribute;
