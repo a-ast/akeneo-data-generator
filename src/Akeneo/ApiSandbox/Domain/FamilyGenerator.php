@@ -2,6 +2,7 @@
 
 namespace Akeneo\ApiSandbox\Domain;
 
+use Akeneo\ApiSandbox\Domain\Exception\NotEnoughAttributesException;
 use Akeneo\ApiSandbox\Domain\Model\Attribute;
 use Akeneo\ApiSandbox\Domain\Model\AttributeRepository;
 use Akeneo\ApiSandbox\Domain\Model\ChannelRepository;
@@ -35,22 +36,35 @@ class FamilyGenerator
     }
 
     /**
+     * @param int $numberAttributes
+     *
      * @return Family
      */
-    public function generate(): Family
+    public function generate(int $numberAttributes): Family
     {
         $code = $this->generator->unique()->ean13;
-        $attributes = $this->generateRandomAttributes();
+        $attributes = $this->generateRandomAttributes($numberAttributes);
         $requirements = $this->generateRandomAttributeRequirements($attributes);
 
         return new Family($code, $attributes, $requirements);
     }
 
     /**
+     * @param int $numberAttributes
      * @return Attributes
      */
-    private function generateRandomAttributes(): Attributes
+    private function generateRandomAttributes(int $numberAttributes): Attributes
     {
+        $totalAttributes = $this->attributeRepository->count();
+        if ($totalAttributes <= $numberAttributes) {
+            throw new NotEnoughAttributesException(
+                sprintf(
+                    'Only %d existing attributes, can\'t add %d attributes in family',
+                    $totalAttributes,
+                    $numberAttributes
+                )
+            );
+        }
         $attributes = $this->attributeRepository->all();
         $randomAttributes = [];
         for ($ind = 0; $ind < 20; $ind++) {

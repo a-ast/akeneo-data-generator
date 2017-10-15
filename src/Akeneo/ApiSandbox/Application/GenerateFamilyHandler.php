@@ -18,7 +18,7 @@ class GenerateFamilyHandler
 
     public function handle(GenerateFamily $command)
     {
-        $family = $this->generator->generate();
+        $family = $this->generator->generate($command->getAttributes());
         $this->repository->add($family);
     }
 }

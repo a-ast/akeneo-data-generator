@@ -5,7 +5,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 use Akeneo\ApiSandbox\Infrastructure\Cli\GetFirstProductCommand;
 use Akeneo\ApiSandbox\Infrastructure\Cli\GenerateAttributesCommand;
-use Akeneo\ApiSandbox\Infrastructure\Cli\GenerateCategoryTreeCommand;
+use Akeneo\ApiSandbox\Infrastructure\Cli\GenerateCategoryTreesCommand;
 use Akeneo\ApiSandbox\Infrastructure\Cli\GenerateFamiliesCommand;
 use Akeneo\ApiSandbox\Infrastructure\Cli\GenerateProductsCommand;
 use Symfony\Component\Console\Application;
@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 $application = new Application('akeneo-api-sandbox', '1.0.0');
 $command = new GetFirstProductCommand();
 $application->add($command);
-$command = new GenerateCategoryTreeCommand();
+$command = new GenerateCategoryTreesCommand();
 $application->add($command);
 $command = new GenerateFamiliesCommand();
 $application->add($command);

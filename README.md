@@ -1,6 +1,6 @@
 # Akeneo PHP API Client sandbox
 
-Playing with the Akeneo PHP API client :rocket:
+Akeneo PHP API client utils :rocket:
 
 [![Build Status](https://travis-ci.org/nidup/akeneo-php-client-sandbox.png)](https://travis-ci.org/nidup/akeneo-php-client-sandbox)
 
@@ -53,9 +53,9 @@ Complete app/parameters.yml with the credentials.
 
 ## Generate Category Tree
 
-For instance, to generate 1 category tree with 100 children categories on 3 levels.
+For instance, to generate 1 category tree with 99 children categories on 3 levels.
 
-- Run `bin/docker/console.sh akeneo:sandbox:generate-category-tree 1 100 3`
+- Run `bin/docker/console.sh akeneo:sandbox:generate-category-trees 1 100 3`
 
 ## Generate Attributes
 

@@ -15,13 +15,14 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         $this->beConstructedWith($generator, $repository);
     }
 
-    function it_generates_an_attribute(
+    function it_generates_a_family(
         $generator,
         $repository,
         GenerateFamily $command,
         Family $family
     ) {
-        $generator->generate()->willReturn($family);
+        $command->getAttributes()->willReturn(20);
+        $generator->generate(20)->willReturn($family);
         $repository->add($family)->shouldBeCalled();
 
         $this->handle($command);
