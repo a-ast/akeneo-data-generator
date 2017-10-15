@@ -15,11 +15,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateCategoryTreeCommand extends Command
+class GenerateCategoryTreesCommand extends Command
 {
     protected function configure()
     {
-        $this->setName('akeneo:sandbox:generate-category-tree')
+        $this->setName('akeneo:sandbox:generate-category-trees')
             ->setDescription('Import generated category tree through the Akeneo PIM Web API')
             ->addArgument('number', InputArgument::REQUIRED, 'Number of trees to generate')
             ->addArgument('children', InputArgument::REQUIRED, 'Number of categories to generate per tree')

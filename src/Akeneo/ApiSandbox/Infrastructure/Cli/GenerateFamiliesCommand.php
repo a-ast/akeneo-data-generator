@@ -31,16 +31,18 @@ class GenerateFamiliesCommand extends Command
     {
         $this->setName('akeneo:sandbox:generate-families')
             ->setDescription('Import generated families through the Akeneo PIM Web API')
-            ->addArgument('number', InputArgument::REQUIRED, 'Number of families to generate');
+            ->addArgument('number', InputArgument::REQUIRED, 'Number of families to generate')
+            ->addArgument('attributes', InputArgument::REQUIRED, 'Number of attributes per family');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $number = $input->getArgument('number');
+        $attributes = $input->getArgument('attributes');
         $handler = new GenerateFamilyHandler($this->getGenerator(), $this->getFamilyRepository());
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
-            $command = new GenerateFamily();
+            $command = new GenerateFamily($attributes);
             try {
                 $handler->handle($command);
             } catch (HttpException $e) {
