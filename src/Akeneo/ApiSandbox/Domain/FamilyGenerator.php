@@ -67,7 +67,7 @@ class FamilyGenerator
         }
         $attributes = $this->attributeRepository->all();
         $randomAttributes = [];
-        for ($ind = 0; $ind < 20; $ind++) {
+        for ($ind = 0; $ind < $numberAttributes; $ind++) {
             /** @var Attribute $attribute */
             $attribute = $attributes[rand(0, count($attributes) - 1)];
             if (!in_array($attribute->getCode(), $randomAttributes)) {
