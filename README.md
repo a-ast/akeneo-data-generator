@@ -51,19 +51,27 @@ Complete app/parameters.yml with the credentials.
 
 - Run `bin/docker/console.sh akeneo:sandbox:get-first-product`
 
+## Generate Category Tree
+
+For instance, to generate 1 category tree with 100 children categories on 3 levels.
+
+- Run `bin/docker/console.sh akeneo:sandbox:generate-category-tree 1 100 3`
+
 ## Generate Attributes
+
+For instance, to generate 100 attributes.
 
 - Run `bin/docker/console.sh akeneo:sandbox:generate-attributes 100`
 
 ## Generate Families
 
-It generates families without label, attribute as image and attribute as label for now.
+For instance, to generate 100 families.
 
 - Run `bin/docker/console.sh akeneo:sandbox:generate-family 100`
 
 ## Generate Complete Products
 
-The generation is based on structure of the targeted PIM, it picks a random family and create a complete product.
+The generation is based on structure of the targeted PIM, it picks a random family and creates a product filling all values.
 
 - Run `bin/docker/console.sh akeneo:sandbox:generate-products 100 --with-images`
 
