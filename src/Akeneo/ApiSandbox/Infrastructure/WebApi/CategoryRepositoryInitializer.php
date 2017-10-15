@@ -23,7 +23,11 @@ class CategoryRepositoryInitializer
             if ($itemData['parent'] !== null) {
                 $parent = $repository->get($itemData['parent']);
             }
-            $repository->add(new Category($itemData['code'], $parent));
+            $child = new Category($itemData['code'], $parent);
+            $repository->add($child);
+            if ($parent) {
+                $parent->addChild($child);
+            }
         }
     }
 }
