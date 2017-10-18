@@ -30,9 +30,11 @@ class AttributeGenerator
     }
 
     /**
+     * @param bool $useableInGrid
+     *
      * @return Attribute
      */
-    public function generate(): Attribute
+    public function generate(bool $useableInGrid): Attribute
     {
         $types = [
             AttributeTypes::BOOLEAN,
@@ -49,31 +51,31 @@ class AttributeGenerator
         ];
         $type = $types[rand(0, count($types) - 1)];
         if ($type === AttributeTypes::TEXT) {
-            return $this->generateTextAttribute();
+            return $this->generateTextAttribute($useableInGrid);
         } elseif ($type === AttributeTypes::TEXTAREA) {
-            return $this->generateTextAreaAttribute();
+            return $this->generateTextAreaAttribute($useableInGrid);
         } elseif ($type === AttributeTypes::OPTION_SIMPLE_SELECT) {
-            return $this->generateSimpleSelectAttribute();
+            return $this->generateSimpleSelectAttribute($useableInGrid);
         } elseif ($type === AttributeTypes::OPTION_MULTI_SELECT) {
-            return $this->generateMultiSelectAttribute();
+            return $this->generateMultiSelectAttribute($useableInGrid);
         } elseif ($type === AttributeTypes::IMAGE) {
-            return $this->generateImageAttribute();
+            return $this->generateImageAttribute($useableInGrid);
         } elseif ($type === AttributeTypes::DATE) {
-            return $this->generateDateAttribute();
+            return $this->generateDateAttribute($useableInGrid);
         } elseif ($type === AttributeTypes::BOOLEAN) {
-            return $this->generateBooleanAttribute();
+            return $this->generateBooleanAttribute($useableInGrid);
         } elseif ($type === AttributeTypes::NUMBER) {
-            return $this->generateNumberAttribute();
+            return $this->generateNumberAttribute($useableInGrid);
         } elseif ($type === AttributeTypes::METRIC) {
-            return $this->generateMetricAttribute();
+            return $this->generateMetricAttribute($useableInGrid);
         } elseif ($type === AttributeTypes::PRICE_COLLECTION) {
-            return $this->generatePriceCollectionAttribute();
+            return $this->generatePriceCollectionAttribute($useableInGrid);
         } elseif ($type === AttributeTypes::FILE) {
-            return $this->generateFileAttribute();
+            return $this->generateFileAttribute($useableInGrid);
         }
     }
 
-    private function generateTextAttribute(): Attribute
+    private function generateTextAttribute(bool $useableInGrid): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::TEXT;
@@ -81,7 +83,7 @@ class AttributeGenerator
         $scopable = (rand(0, 1) == 1);
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => true,
+                'useable_as_grid_filter' => $useableInGrid,
             ]
         );
         $options = new Options();
@@ -90,7 +92,7 @@ class AttributeGenerator
         return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
     }
 
-    private function generateTextAreaAttribute(): Attribute
+    private function generateTextAreaAttribute(bool $useableInGrid): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::TEXTAREA;
@@ -98,7 +100,7 @@ class AttributeGenerator
         $scopable = (rand(0, 1) == 1);
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => true,
+                'useable_as_grid_filter' => $useableInGrid,
                 'wysiwyg_enabled' => true
             ]
         );
@@ -108,33 +110,33 @@ class AttributeGenerator
         return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
     }
 
-    private function generateSimpleSelectAttribute(): Attribute
+    private function generateSimpleSelectAttribute(bool $useableInGrid): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::OPTION_SIMPLE_SELECT;
         $localizable = false;
         $scopable = false;
-        $properties = new Properties(['useable_as_grid_filter' => true]);
+        $properties = new Properties(['useable_as_grid_filter' => $useableInGrid]);
         $options = $this->generateRandomOptions();
         $group = $this->generateRandomGroup();
 
         return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
     }
 
-    private function generateMultiSelectAttribute(): Attribute
+    private function generateMultiSelectAttribute(bool $useableInGrid): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::OPTION_MULTI_SELECT;
         $localizable = false;
         $scopable = false;
-        $properties = new Properties(['useable_as_grid_filter' => true]);
+        $properties = new Properties(['useable_as_grid_filter' => $useableInGrid]);
         $options = $this->generateRandomOptions();
         $group = $this->generateRandomGroup();
 
         return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
     }
 
-    private function generateImageAttribute(): Attribute
+    private function generateImageAttribute(bool $useableInGrid): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::IMAGE;
@@ -142,7 +144,7 @@ class AttributeGenerator
         $scopable = false;
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => true,
+                'useable_as_grid_filter' => $useableInGrid,
                 'allowed_extensions' => ['jpg', 'jpeg', 'gif', 'png']
             ]
         );
@@ -152,7 +154,7 @@ class AttributeGenerator
         return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
     }
 
-    private function generateFileAttribute(): Attribute
+    private function generateFileAttribute(bool $useableInGrid): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::FILE;
@@ -160,7 +162,7 @@ class AttributeGenerator
         $scopable = false;
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => true,
+                'useable_as_grid_filter' => $useableInGrid,
                 'allowed_extensions' => ['pdf']
             ]
         );
@@ -170,20 +172,20 @@ class AttributeGenerator
         return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
     }
 
-    private function generateDateAttribute(): Attribute
+    private function generateDateAttribute(bool $useableInGrid): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::DATE;
         $localizable = false;
         $scopable = false;
-        $properties = new Properties(['useable_as_grid_filter' => true,]);
+        $properties = new Properties(['useable_as_grid_filter' => $useableInGrid,]);
         $options = new Options();
         $group = $this->generateRandomGroup();
 
         return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
     }
 
-    private function generateNumberAttribute(): Attribute
+    private function generateNumberAttribute(bool $useableInGrid): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::NUMBER;
@@ -191,7 +193,7 @@ class AttributeGenerator
         $scopable = false;
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => true,
+                'useable_as_grid_filter' => $useableInGrid,
                 'decimals_allowed' => true,
                 'negative_allowed' => false
             ]
@@ -202,20 +204,20 @@ class AttributeGenerator
         return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
     }
 
-    private function generateBooleanAttribute(): Attribute
+    private function generateBooleanAttribute(bool $useableInGrid): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::BOOLEAN;
         $localizable = false;
         $scopable = false;
-        $properties = new Properties(['useable_as_grid_filter' => true,]);
+        $properties = new Properties(['useable_as_grid_filter' => $useableInGrid,]);
         $options = new Options();
         $group = $this->generateRandomGroup();
 
         return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
     }
 
-    private function generatePriceCollectionAttribute(): Attribute
+    private function generatePriceCollectionAttribute(bool $useableInGrid): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::PRICE_COLLECTION;
@@ -223,7 +225,7 @@ class AttributeGenerator
         $scopable = false;
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => true,
+                'useable_as_grid_filter' => $useableInGrid,
                 'decimals_allowed' => true,
             ]
         );
@@ -233,7 +235,7 @@ class AttributeGenerator
         return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
     }
 
-    private function generateMetricAttribute(): Attribute
+    private function generateMetricAttribute(bool $useableInGrid): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::METRIC;
@@ -241,7 +243,7 @@ class AttributeGenerator
         $scopable = false;
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => true,
+                'useable_as_grid_filter' => $useableInGrid,
                 'metric_family' => 'Weight',
                 'default_metric_unit' => 'KILOGRAM',
                 'decimals_allowed' => true,

@@ -17,7 +17,7 @@ Composer & PHP 7.1.
 
 ## Getting Started
 
-Have a Akeneo PIM 2.0 installed.
+Last Akeneo PIM 2.0.x installed.
 
 ## Install the Sandbox
 

@@ -18,7 +18,7 @@ class GenerateAttributeHandler
 
     public function handle(GenerateAttribute $command)
     {
-        $attribute = $this->generator->generate();
+        $attribute = $this->generator->generate($command->isUseableInGrid());
         $this->repository->add($attribute);
     }
 }

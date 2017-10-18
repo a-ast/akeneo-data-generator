@@ -23,16 +23,18 @@ class GenerateAttributesCommand extends Command
     {
         $this->setName('akeneo:sandbox:generate-attributes')
             ->setDescription('Import generated attributes through the Akeneo PIM Web API')
-            ->addArgument('number', InputArgument::REQUIRED, 'Number of attributes to generate');
+            ->addArgument('number', InputArgument::REQUIRED, 'Number of attributes to generate')
+            ->addArgument('useable-in-grid', InputArgument::OPTIONAL, 'Useable in product grid', true);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $number = $input->getArgument('number');
+        $inGrid = $input->getArgument('useable-in-grid');
         $handler = new GenerateAttributeHandler($this->getGenerator(), $this->getAttributeRepository());
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
-            $command = new GenerateAttribute();
+            $command = new GenerateAttribute($inGrid);
             try {
                 $handler->handle($command);
             } catch (HttpException $e) {

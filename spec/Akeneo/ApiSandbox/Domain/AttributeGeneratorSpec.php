@@ -15,14 +15,14 @@ class AttributeGeneratorSpec extends ObjectBehavior
         $this->beConstructedWith($groupRepository);
     }
 
-    function it_generates_a_attribute (
+    function it_generates_a_attribute_usable_in_grid (
         $groupRepository,
         AttributeGroup $group
     ) {
         $groupRepository->count()->willReturn(1);
         $groupRepository->all()->willReturn([$group]);
 
-        $this->generate()->shouldBeAnInstanceOf(Attribute::class);
+        $this->generate(true)->shouldBeAnInstanceOf(Attribute::class);
     }
 
 
@@ -33,7 +33,7 @@ class AttributeGeneratorSpec extends ObjectBehavior
             new NoAttributeGroupDefinedException("At least one attribute group should exist")
         )->during(
             'generate',
-            []
+            [true]
         );
     }
 }
