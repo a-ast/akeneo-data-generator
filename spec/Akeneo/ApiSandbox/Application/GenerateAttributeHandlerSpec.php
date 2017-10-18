@@ -15,13 +15,14 @@ class GenerateAttributeHandlerSpec extends ObjectBehavior
         $this->beConstructedWith($generator, $repository);
     }
 
-    function it_generates_an_attribute(
+    function it_generates_an_attribute_usable_in_grid(
         $generator,
         $repository,
         GenerateAttribute $command,
         Attribute $attribute
     ) {
-        $generator->generate()->willReturn($attribute);
+        $command->isUseableInGrid()->willReturn(true);
+        $generator->generate(true)->willReturn($attribute);
         $repository->add($attribute)->shouldBeCalled();
 
         $this->handle($command);
