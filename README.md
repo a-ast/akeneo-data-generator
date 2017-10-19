@@ -61,7 +61,7 @@ For instance, to generate 1 category tree with 99 children categories on 3 level
 
 For instance, to generate 100 attributes.
 
-- Run `bin/docker/console.sh akeneo:sandbox:generate-attributes 100`
+- Run `bin/docker/console.sh akeneo:sandbox:generate-attributes 100 --useable-in-grid`
 
 ## Generate Families
 

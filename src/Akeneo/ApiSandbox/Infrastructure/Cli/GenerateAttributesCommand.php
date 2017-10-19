@@ -15,6 +15,7 @@ use Akeneo\ApiSandbox\Domain\Model\AttributeRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateAttributesCommand extends Command
@@ -24,13 +25,13 @@ class GenerateAttributesCommand extends Command
         $this->setName('akeneo:sandbox:generate-attributes')
             ->setDescription('Import generated attributes through the Akeneo PIM Web API')
             ->addArgument('number', InputArgument::REQUIRED, 'Number of attributes to generate')
-            ->addArgument('useable-in-grid', InputArgument::OPTIONAL, 'Useable in product grid', true);
+            ->addOption('useable-in-grid', null, InputOption::VALUE_NONE, 'Useable in product grid');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $number = $input->getArgument('number');
-        $inGrid = $input->getArgument('useable-in-grid');
+        $inGrid = $input->getOption('useable-in-grid');
         $handler = new GenerateAttributeHandler($this->getGenerator(), $this->getAttributeRepository());
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
