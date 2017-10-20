@@ -3,18 +3,18 @@
 <?php
 require __DIR__.'/../vendor/autoload.php';
 
-use Akeneo\ApiSandbox\Infrastructure\Cli\GetFirstProductCommand;
-use Akeneo\ApiSandbox\Infrastructure\Cli\GenerateAttributesCommand;
-use Akeneo\ApiSandbox\Infrastructure\Cli\GenerateCategoryTreesCommand;
-use Akeneo\ApiSandbox\Infrastructure\Cli\GenerateFamiliesCommand;
-use Akeneo\ApiSandbox\Infrastructure\Cli\GenerateProductsCommand;
+use Akeneo\DataGenerator\Infrastructure\Cli\GetFirstProductCommand;
+use Akeneo\DataGenerator\Infrastructure\Cli\GenerateAttributesCommand;
+use Akeneo\DataGenerator\Infrastructure\Cli\GenerateCategoryTreesCommand;
+use Akeneo\DataGenerator\Infrastructure\Cli\GenerateFamiliesCommand;
+use Akeneo\DataGenerator\Infrastructure\Cli\GenerateProductsCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-$application = new Application('akeneo-api-sandbox', '1.0.0');
+$application = new Application('akeneo-data-generator', '1.0.0');
 $command = new GetFirstProductCommand();
 $application->add($command);
 $command = new GenerateCategoryTreesCommand();
