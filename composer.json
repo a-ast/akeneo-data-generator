@@ -1,6 +1,6 @@
 {
-  "name": "nidup/akeneo-php-client-sandbox",
-  "description": "Akeneo PIM web api sandbox",
+  "name": "nidup/akeneo-data-generator",
+  "description": "Akeneo PIM data generator using the Web API",
   "license": "OSL-3.0",
   "authors": [
      {

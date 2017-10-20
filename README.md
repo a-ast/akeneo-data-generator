@@ -1,8 +1,8 @@
-# Akeneo PHP API Client sandbox
+# Akeneo Data Generator
 
-Akeneo PHP API client utils :rocket:
+Command line tool which generates and injects data to an Akeneo PIM instance using the Web API :rocket:
 
-[![Build Status](https://travis-ci.org/nidup/akeneo-php-client-sandbox.png)](https://travis-ci.org/nidup/akeneo-php-client-sandbox)
+[![Build Status](https://travis-ci.org/nidup/akeneo-data-generator.png)](https://travis-ci.org/nidup/akeneo-data-generator)
 
 ## Requirements
 
