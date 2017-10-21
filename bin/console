@@ -5,6 +5,7 @@ require __DIR__.'/../vendor/autoload.php';
 
 use Akeneo\DataGenerator\Infrastructure\Cli\GetFirstProductCommand;
 use Akeneo\DataGenerator\Infrastructure\Cli\GenerateAttributesCommand;
+use Akeneo\DataGenerator\Infrastructure\Cli\GenerateCatalogCommand;
 use Akeneo\DataGenerator\Infrastructure\Cli\GenerateCategoryTreesCommand;
 use Akeneo\DataGenerator\Infrastructure\Cli\GenerateFamiliesCommand;
 use Akeneo\DataGenerator\Infrastructure\Cli\GenerateProductsCommand;
@@ -24,6 +25,8 @@ $application->add($command);
 $command = new GenerateAttributesCommand();
 $application->add($command);
 $command = new GenerateProductsCommand();
+$application->add($command);
+$command = new GenerateCatalogCommand();
 $application->add($command);
 
 $application->run();

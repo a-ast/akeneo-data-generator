@@ -8,7 +8,6 @@ use Akeneo\DataGenerator\Domain\AttributeGenerator;
 use Akeneo\DataGenerator\Infrastructure\Database\InMemoryAttributeGroupRepository;
 use Akeneo\DataGenerator\Infrastructure\WebApi\AttributeGroupRepositoryInitializer;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WebApiAttributeRepository;
-use Akeneo\Pim\AkeneoPimClientBuilder;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
 use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
@@ -67,19 +66,7 @@ class GenerateAttributesCommand extends Command
 
     private function getClient(): AkeneoPimClientInterface
     {
-        $config = new ConfigProvider(__DIR__.'/../../../../../app/parameters.yml');
-        $baseUri = $config->getParameter('base_uri');
-        $clientId = $config->getParameter('client_id');
-        $secret = $config->getParameter('secret');
-        $username = $config->getParameter('username');
-        $password = $config->getParameter('password');
-
-        $clientBuilder = new AkeneoPimClientBuilder($baseUri);
-        return $clientBuilder->buildAuthenticatedByPassword(
-            $clientId,
-            $secret,
-            $username,
-            $password
-        );
+        $factory = new ApiClientFactory();
+        return $factory->create();
     }
 }
