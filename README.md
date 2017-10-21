@@ -65,11 +65,17 @@ The generation is based on structure of the targeted PIM, it picks a random fami
 
 - Run `bin/docker/console.sh akeneo:api:generate-products 100 --with-images`
 
+Please note that data generation takes time, especially the image generation part that has a large impact on performance.
+
 ### Generate Complete Catalog
 
-The generation is based on a configuration file that needs to be placed in `app/catalog/`.
+The generation is based on a configuration file that needs to be placed into `app/catalog/`.
 
-- Run `bin/docker/console.sh akeneo:api:generate-catalog minimal.yml --with-products`
+- Run `bin/docker/console.sh akeneo:api:generate-catalog small.yml --with-products`
+
+When generating & injecting large set of products, for instance, 300K products, we advise to launch several product generation commands in parallel.
+
+Troubleshooting: on Enterprise Edition, you need to give permissions on category trees before to launch the product import, this issue is known as PIM-6937 and will be fixed in a 2.0.x patch.
 
 ## Credits
 
