@@ -1,5 +1,13 @@
 catalog:
     entities:
+        channels:
+            -
+                code: ecommerce
+                locales:
+                    - en_US
+                currencies:
+                    - USD
+                    - EUR
         category-trees:
             -
                 code: master

@@ -10,4 +10,6 @@ interface CategoryRepository
     public function all(): array;
     public function countChildren(): int;
     public function allChildren(): array;
+    public function countTrees(): int;
+    public function allTrees(): array;
 }

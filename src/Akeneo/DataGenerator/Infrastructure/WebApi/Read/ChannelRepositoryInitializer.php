@@ -3,6 +3,7 @@
 namespace Akeneo\DataGenerator\Infrastructure\WebApi\Read;
 
 use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
 use Akeneo\DataGenerator\Domain\Model\Channel;
 use Akeneo\DataGenerator\Domain\Model\ChannelRepository;
 use Akeneo\DataGenerator\Domain\Model\CurrencyRepository;
@@ -13,15 +14,18 @@ class ChannelRepositoryInitializer
     private $client;
     private $localeRepository;
     private $currencyRepository;
+    private $categoryRepository;
 
     public function __construct(
         AkeneoPimClientInterface $client,
         LocaleRepository $localeRepository,
-        CurrencyRepository $currencyRepository
+        CurrencyRepository $currencyRepository,
+        CategoryRepository $categoryRepository
     ) {
         $this->client = $client;
         $this->localeRepository = $localeRepository;
         $this->currencyRepository = $currencyRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function initialize(ChannelRepository $repository)
@@ -36,8 +40,9 @@ class ChannelRepositoryInitializer
             foreach ($itemData['currencies'] as $currencyCode) {
                 $currencies[] = $this->currencyRepository->get($currencyCode);
             }
+            $tree = $this->categoryRepository->get($itemData['category_tree']);
 
-            $repository->add(new Channel($itemData['code'], $locales, $currencies));
+            $repository->add(new Channel($itemData['code'], $locales, $currencies, $tree));
         }
     }
 }
