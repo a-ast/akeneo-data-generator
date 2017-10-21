@@ -65,6 +65,12 @@ The generation is based on structure of the targeted PIM, it picks a random fami
 
 - Run `bin/docker/console.sh akeneo:api:generate-products 100 --with-images`
 
+### Generate Complete Catalog
+
+The generation is based on a configuration file that needs to be placed in `app/catalog/`.
+
+- Run `bin/docker/console.sh akeneo:api:generate-catalog minimal.yml --with-products`
+
 ## Credits
 
 Thanks @fzaninotto for Faker!

@@ -6,6 +6,7 @@ use Akeneo\DataGenerator\Application\GenerateFamily;
 use Akeneo\DataGenerator\Application\GenerateFamilyHandler;
 use Akeneo\DataGenerator\Domain\FamilyGenerator;
 use Akeneo\DataGenerator\Domain\Model\FamilyRepository;
+use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;

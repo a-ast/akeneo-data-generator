@@ -2,6 +2,7 @@
 
 namespace Akeneo\DataGenerator\Infrastructure\Cli;
 
+use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

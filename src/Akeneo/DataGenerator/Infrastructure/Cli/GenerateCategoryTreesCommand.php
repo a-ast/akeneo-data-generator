@@ -6,6 +6,7 @@ use Akeneo\DataGenerator\Application\GenerateCategoryTree;
 use Akeneo\DataGenerator\Application\GenerateCategoryTreeHandler;
 use Akeneo\DataGenerator\Domain\CategoryTreeGenerator;
 use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
+use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;

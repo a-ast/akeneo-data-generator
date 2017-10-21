@@ -1,0 +1,18 @@
+catalog:
+    entities:
+        category-trees:
+            -
+                code: master
+                children: 25
+                levels: 3
+            -
+                code: sales
+                children: 25
+                levels: 3
+        attributes:
+            count: 100
+        families:
+            count: 40
+            attributes_count: 20
+        products:
+            count: 100

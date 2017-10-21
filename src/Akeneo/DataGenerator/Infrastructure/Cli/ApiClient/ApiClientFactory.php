@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\DataGenerator\Infrastructure\Cli;
+namespace Akeneo\DataGenerator\Infrastructure\Cli\ApiClient;
 
 use Akeneo\Pim\AkeneoPimClientBuilder;
 use Akeneo\Pim\AkeneoPimClientInterface;
@@ -9,7 +9,8 @@ class ApiClientFactory
 {
     public function create(): AkeneoPimClientInterface
     {
-        $config = new ConfigProvider(__DIR__.'/../../../../../app/parameters.yml');
+        $path = __DIR__.'/../../../../../../app/parameters.yml';
+        $config = new ApiClientConfiguration($path);
         $baseUri = $config->getParameter('base_uri');
         $clientId = $config->getParameter('client_id');
         $secret = $config->getParameter('secret');
