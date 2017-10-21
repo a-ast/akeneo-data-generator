@@ -25,14 +25,14 @@ class WebApiAttributeRepositorySpec extends ObjectBehavior
         AttributeApi $attributeApi,
         AttributeOptionApi $attributeOptionApi
     ) {
-        $attribute->getCode()->willReturn('MyAttributeCode');
-        $attribute->getType()->willReturn(AttributeTypes::TEXT);
-        $attribute->isLocalizable()->willReturn(true);
-        $attribute->isScopable()->willReturn(false);
-        $attribute->getGroup()->willReturn($group);
-        $attribute->getProperties()->willReturn($properties);
+        $attribute->code()->willReturn('MyAttributeCode');
+        $attribute->type()->willReturn(AttributeTypes::TEXT);
+        $attribute->localizable()->willReturn(true);
+        $attribute->scopable()->willReturn(false);
+        $attribute->group()->willReturn($group);
+        $attribute->properties()->willReturn($properties);
         $properties->all()->willReturn([]);
-        $group->getCode()->willReturn('MyGroupCode');
+        $group->code()->willReturn('MyGroupCode');
         $client->getAttributeApi()->willReturn($attributeApi);
         $attributeApi->create(
             'MyAttributeCode',
@@ -44,7 +44,7 @@ class WebApiAttributeRepositorySpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $attribute->getOptions()->willReturn($options);
+        $attribute->options()->willReturn($options);
         $options->getCodes()->willReturn([]);
         $client->getAttributeOptionApi()->willReturn($attributeOptionApi);
         $attributeOptionApi->create()->shouldNotBeCalled();
@@ -61,14 +61,14 @@ class WebApiAttributeRepositorySpec extends ObjectBehavior
         AttributeApi $attributeApi,
         AttributeOptionApi $attributeOptionApi
     ) {
-        $attribute->getCode()->willReturn('MyAttributeCode');
-        $attribute->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(false);
-        $attribute->getGroup()->willReturn($group);
-        $attribute->getProperties()->willReturn($properties);
+        $attribute->code()->willReturn('MyAttributeCode');
+        $attribute->type()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
+        $attribute->localizable()->willReturn(false);
+        $attribute->scopable()->willReturn(false);
+        $attribute->group()->willReturn($group);
+        $attribute->properties()->willReturn($properties);
         $properties->all()->willReturn([]);
-        $group->getCode()->willReturn('MyGroupCode');
+        $group->code()->willReturn('MyGroupCode');
         $client->getAttributeApi()->willReturn($attributeApi);
         $attributeApi->create(
             'MyAttributeCode',
@@ -80,7 +80,7 @@ class WebApiAttributeRepositorySpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $attribute->getOptions()->willReturn($options);
+        $attribute->options()->willReturn($options);
         $options->getCodes()->willReturn(['MyOptionCode']);
         $client->getAttributeOptionApi()->willReturn($attributeOptionApi);
         $attributeOptionApi->create(

@@ -26,7 +26,7 @@ class InMemoryLocaleRepository implements LocaleRepository
 
     public function add(Locale $item)
     {
-        $this->items[$item->getCode()] = $item;
+        $this->items[$item->code()] = $item;
     }
 
     public function count(): int

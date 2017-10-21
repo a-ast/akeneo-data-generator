@@ -24,13 +24,13 @@ class WebApiChannelRepositorySpec extends ObjectBehavior
         Category $tree,
         ChannelApi $api
     ) {
-        $channel->getCode()->willReturn('MyChannelCode');
-        $channel->getLocales()->willReturn([$locale]);
-        $locale->getCode()->willReturn('en_US');
-        $channel->getCurrencies()->willReturn([$currency]);
-        $currency->getCode()->willReturn('EUR');
+        $channel->code()->willReturn('MyChannelCode');
+        $channel->locales()->willReturn([$locale]);
+        $locale->code()->willReturn('en_US');
+        $channel->currencies()->willReturn([$currency]);
+        $currency->code()->willReturn('EUR');
         $channel->tree()->willReturn($tree);
-        $tree->getCode()->willReturn('master');
+        $tree->code()->willReturn('master');
 
         $client->getChannelApi()->willReturn($api);
         $api->create(

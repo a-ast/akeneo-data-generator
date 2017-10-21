@@ -29,12 +29,12 @@ class GenerateCategoryTreeHandlerSpec extends ObjectBehavior
         $generator->generate(2, 1)->willReturn($tree);
         $repository->add($tree)->shouldBeCalled();
 
-        $tree->getChildren()->willReturn([$child1, $child2]);
+        $tree->children()->willReturn([$child1, $child2]);
         $repository->add($child1)->shouldBeCalled();
         $repository->add($child2)->shouldBeCalled();
 
-        $child1->getChildren()->willReturn([]);
-        $child2->getChildren()->willReturn([]);
+        $child1->children()->willReturn([]);
+        $child2->children()->willReturn([]);
 
         $this->handle($command);
     }

@@ -88,8 +88,8 @@ class ChannelGenerator
         for ($ind = 0; $ind < $numberLocales; $ind++) {
             /** @var Locale $locale */
             $locale = $locales[rand(0, count($locales) - 1)];
-            if (!in_array($locale->getCode(), $randomLocales)) {
-                $randomLocales[$locale->getCode()] = $locale;
+            if (!in_array($locale->code(), $randomLocales)) {
+                $randomLocales[$locale->code()] = $locale;
             }
         }
 
@@ -107,8 +107,8 @@ class ChannelGenerator
         for ($ind = 0; $ind < $numberCurrencies; $ind++) {
             /** @var Currency $currency */
             $currency = $currencies[rand(0, count($currencies) - 1)];
-            if (!in_array($currency->getCode(), $randomCurrencies)) {
-                $randomCurrencies[$currency->getCode()] = $currency;
+            if (!in_array($currency->code(), $randomCurrencies)) {
+                $randomCurrencies[$currency->code()] = $currency;
             }
         }
 

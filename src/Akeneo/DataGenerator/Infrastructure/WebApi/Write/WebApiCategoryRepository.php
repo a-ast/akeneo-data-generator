@@ -23,9 +23,9 @@ class WebApiCategoryRepository implements CategoryRepository
     public function add(Category $category)
     {
         $categoryData = [
-            'parent' => $category->getParent() !== null ? $category->getParent()->getCode() : null,
+            'parent' => $category->parent() !== null ? $category->parent()->code() : null,
         ];
-        $this->client->getCategoryApi()->create($category->getCode(), $categoryData);
+        $this->client->getCategoryApi()->create($category->code(), $categoryData);
     }
 
     public function count(): int

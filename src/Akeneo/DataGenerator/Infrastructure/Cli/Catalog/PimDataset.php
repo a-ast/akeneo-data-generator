@@ -37,7 +37,7 @@ class PimDataset
         }
         try {
             $code = 'sku';
-            $this->attributeRepository->get('sku');
+            $this->attributeRepository->get($code);
         } catch (EntityDoesNotExistsException $e) {
             throw new MinimalCatalogExpectedException(
                 sprintf('Expect to have an attribute with code %s', $code),

@@ -12,7 +12,7 @@ class Currency
         $this->code = $code;
     }
 
-    public function getCode(): string
+    public function code(): string
     {
         return $this->code;
     }

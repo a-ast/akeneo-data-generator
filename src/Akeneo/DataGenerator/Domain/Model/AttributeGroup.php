@@ -14,7 +14,7 @@ class AttributeGroup
     /**
      * @return string
      */
-    public function getCode(): string
+    public function code(): string
     {
         return $this->code;
     }

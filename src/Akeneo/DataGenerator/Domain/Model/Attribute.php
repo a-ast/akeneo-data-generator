@@ -36,7 +36,7 @@ class Attribute
     /**
      * @return string
      */
-    public function getCode(): string
+    public function code(): string
     {
         return $this->code;
     }
@@ -44,7 +44,7 @@ class Attribute
     /**
      * @return string
      */
-    public function getType(): string
+    public function type(): string
     {
         return $this->type;
     }
@@ -52,7 +52,7 @@ class Attribute
     /**
      * @return bool
      */
-    public function isLocalizable(): bool
+    public function localizable(): bool
     {
         return $this->localizable;
     }
@@ -60,7 +60,7 @@ class Attribute
     /**
      * @return bool
      */
-    public function isScopable(): bool
+    public function scopable(): bool
     {
         return $this->scopable;
     }
@@ -68,7 +68,7 @@ class Attribute
     /**
      * @return Properties
      */
-    public function getProperties(): Properties
+    public function properties(): Properties
     {
         return $this->properties;
     }
@@ -76,7 +76,7 @@ class Attribute
     /**
      * @return Options
      */
-    public function getOptions(): Options
+    public function options(): Options
     {
         return $this->options;
     }
@@ -84,7 +84,7 @@ class Attribute
     /**
      * @return AttributeGroup
      */
-    public function getGroup(): AttributeGroup
+    public function group(): AttributeGroup
     {
         return $this->group;
     }

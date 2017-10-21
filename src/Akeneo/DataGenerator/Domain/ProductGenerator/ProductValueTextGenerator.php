@@ -30,7 +30,7 @@ class ProductValueTextGenerator implements ProductValueGenerator
 
     public function generate(Attribute $attribute, $channelCode, $localeCode): Value
     {
-        $maxNbChars = $attribute->getProperties()->getProperty('max_characters');
+        $maxNbChars = $attribute->properties()->getProperty('max_characters');
         $maxNbChars = $maxNbChars !== null ? $maxNbChars : 100;
 
         return new Value($attribute, $this->generator($localeCode)->realText($maxNbChars), $localeCode, $channelCode);

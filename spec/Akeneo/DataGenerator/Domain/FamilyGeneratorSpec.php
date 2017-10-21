@@ -27,14 +27,14 @@ class FamilyGeneratorSpec extends ObjectBehavior
     ) {
         $attributeRepository->count()->willReturn(2);
         $attributeRepository->all()->willReturn([$attribute]);
-        $attribute->getCode()->willReturn('my-code');
+        $attribute->code()->willReturn('my-code');
 
         $channelRepository->all()->willReturn([$channel]);
 
         $generatedFamily = $this->generate(1);
         $generatedFamily->shouldBeAnInstanceOf(Family::class);
-        $generatedFamily->getAttributes()->shouldBeAnInstanceOf(Attributes::class);
-        $generatedFamily->getRequirements()->shouldBeAnInstanceOf(AttributeRequirements::class);
+        $generatedFamily->attributes()->shouldBeAnInstanceOf(Attributes::class);
+        $generatedFamily->requirements()->shouldBeAnInstanceOf(AttributeRequirements::class);
     }
 
     function it_throws_an_exception_when_there_is_not_enough_existing_attributes($attributeRepository)

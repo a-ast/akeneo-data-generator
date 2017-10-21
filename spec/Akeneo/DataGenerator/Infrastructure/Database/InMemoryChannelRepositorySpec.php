@@ -10,7 +10,7 @@ class InMemoryChannelRepositorySpec extends ObjectBehavior
 {
     function it_stores_channel (Channel $entity)
     {
-        $entity->getCode()->willReturn('MyCode');
+        $entity->code()->willReturn('MyCode');
         $this->count()->shouldReturn(0);
         $this->add($entity);
         $this->count()->shouldReturn(1);

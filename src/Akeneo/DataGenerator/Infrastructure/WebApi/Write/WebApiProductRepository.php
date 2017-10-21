@@ -23,20 +23,20 @@ class WebApiProductRepository implements ProductRepository
     public function add(Product $product)
     {
         $productDataWithoutImages = [
-            'identifier' => $product->getIdentifier(),
-            'family' => $product->getFamily()->getCode(),
-            'values' => $this->normalizeNonImageValues($product->getValues()),
-            'categories' => $this->normalizeCategories($product->getCategories())
+            'identifier' => $product->identifier(),
+            'family' => $product->family()->code(),
+            'values' => $this->normalizeNonImageValues($product->values()),
+            'categories' => $this->normalizeCategories($product->categories())
         ];
-        $this->client->getProductApi()->upsert($product->getIdentifier(), $productDataWithoutImages);
+        $this->client->getProductApi()->upsert($product->identifier(), $productDataWithoutImages);
 
-        $productAttributeImages = $this->normalizeImageValues($product->getValues());
+        $productAttributeImages = $this->normalizeImageValues($product->values());
         foreach ($productAttributeImages as $attributeCode => $productImages) {
             foreach ($productImages as $productImage) {
                 $this->client->getProductMediaFileApi()->create(
                     $productImage['data'],
                     [
-                        'identifier' => $product->getIdentifier(),
+                        'identifier' => $product->identifier(),
                         'attribute' => $attributeCode,
                         'locale' => $productImage['locale'],
                         'scope' => $productImage['scope'],
@@ -51,11 +51,11 @@ class WebApiProductRepository implements ProductRepository
         $data = [];
         /** @var Value $value */
         foreach ($values->all() as $value) {
-            if ($value->getAttribute()->getType() !== AttributeTypes::IMAGE) {
-                if (!isset($data[$value->getAttribute()->getCode()])) {
-                    $data[$value->getAttribute()->getCode()] = [];
+            if ($value->getAttribute()->type() !== AttributeTypes::IMAGE) {
+                if (!isset($data[$value->getAttribute()->code()])) {
+                    $data[$value->getAttribute()->code()] = [];
                 }
-                $data[$value->getAttribute()->getCode()][] = [
+                $data[$value->getAttribute()->code()][] = [
                     'data' => $value->getData(),
                     'locale' => $value->getLocale(),
                     'scope' => $value->getChannel(),
@@ -71,11 +71,11 @@ class WebApiProductRepository implements ProductRepository
         $data = [];
         /** @var Value $value */
         foreach ($values->all() as $value) {
-            if ($value->getAttribute()->getType() === AttributeTypes::IMAGE) {
-                if (!isset($data[$value->getAttribute()->getCode()])) {
-                    $data[$value->getAttribute()->getCode()] = [];
+            if ($value->getAttribute()->type() === AttributeTypes::IMAGE) {
+                if (!isset($data[$value->getAttribute()->code()])) {
+                    $data[$value->getAttribute()->code()] = [];
                 }
-                $data[$value->getAttribute()->getCode()][] = [
+                $data[$value->getAttribute()->code()][] = [
                     'data' => $value->getData(),
                     'locale' => $value->getLocale(),
                     'scope' => $value->getChannel(),
@@ -91,7 +91,7 @@ class WebApiProductRepository implements ProductRepository
         $data = [];
         /** @var Category $category */
         foreach ($categories->all() as $category) {
-            $data[] = $category->getCode();
+            $data[] = $category->code();
         }
 
         return $data;

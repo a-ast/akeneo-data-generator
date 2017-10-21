@@ -28,7 +28,7 @@ class ProductValuePriceGenerator implements ProductValueGenerator
         foreach ($currencies as $currency) {
             $data[]= [
                 'amount' => $this->generator->numberBetween(10, 1000),
-                'currency' => $currency->getCode()
+                'currency' => $currency->code()
             ];
         }
 

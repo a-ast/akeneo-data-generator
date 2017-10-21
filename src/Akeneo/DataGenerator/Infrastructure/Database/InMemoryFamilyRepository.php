@@ -26,7 +26,7 @@ class InMemoryFamilyRepository implements FamilyRepository
 
     public function add(Family $item)
     {
-        $this->items[$item->getCode()] = $item;
+        $this->items[$item->code()] = $item;
     }
 
     public function count(): int

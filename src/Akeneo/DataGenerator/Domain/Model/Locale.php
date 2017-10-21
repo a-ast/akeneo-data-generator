@@ -15,7 +15,7 @@ class Locale
         $this->enabled = $enabled;
     }
 
-    public function getCode(): string
+    public function code(): string
     {
         return $this->code;
     }

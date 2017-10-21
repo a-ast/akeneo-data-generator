@@ -26,7 +26,7 @@ class InMemoryCategoryRepository implements CategoryRepository
 
     public function add(Category $item)
     {
-        $this->items[$item->getCode()] = $item;
+        $this->items[$item->code()] = $item;
     }
 
     public function count(): int

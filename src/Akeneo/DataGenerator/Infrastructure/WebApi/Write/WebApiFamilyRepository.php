@@ -23,10 +23,10 @@ class WebApiFamilyRepository implements FamilyRepository
     public function add(Family $family)
     {
         $familyData = [
-            'attributes' => $family->getAttributes()->getCodes(),
-            'attribute_requirements' => $family->getRequirements()->getAttributeCodesPerChannel()
+            'attributes' => $family->attributes()->getCodes(),
+            'attribute_requirements' => $family->requirements()->getAttributeCodesPerChannel()
         ];
-        $this->client->getFamilyApi()->create($family->getCode(), $familyData);
+        $this->client->getFamilyApi()->create($family->code(), $familyData);
     }
 
     public function count(): int

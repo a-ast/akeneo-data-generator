@@ -26,7 +26,7 @@ class GenerateCategoryTreeHandler
     private function addCategoryAndChildren(Category $category)
     {
         $this->repository->add($category);
-        foreach ($category->getChildren() as $child) {
+        foreach ($category->children() as $child) {
             $this->addCategoryAndChildren($child);
         }
     }

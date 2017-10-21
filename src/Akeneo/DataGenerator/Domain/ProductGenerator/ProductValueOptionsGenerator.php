@@ -9,7 +9,7 @@ class ProductValueOptionsGenerator implements ProductValueGenerator
 {
     public function generate(Attribute $attribute, $channelCode, $localeCode): Value
     {
-        $options = $attribute->getOptions();
+        $options = $attribute->options();
         $codes = $options->getCodes();
         $randomCodes = [];
         for ($ind = 0; $ind < 3; $ind++) {
