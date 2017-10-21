@@ -47,4 +47,14 @@ class WebApiCategoryRepository implements CategoryRepository
     {
         throw new \LogicException('not implemented yet');
     }
+
+    public function countTrees(): int
+    {
+        throw new \LogicException('not implemented yet');
+    }
+
+    public function allTrees(): array
+    {
+        throw new \LogicException('not implemented yet');
+    }
 }

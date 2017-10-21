@@ -87,8 +87,14 @@ class ReadRepositories
     {
         $localeRepository = $this->localeRepository();
         $currencyRepository = $this->currencyRepository();
+        $categoryRepository = $this->categoryRepository();
 
-        $initializer = new ChannelRepositoryInitializer($this->client, $localeRepository, $currencyRepository);
+        $initializer = new ChannelRepositoryInitializer(
+            $this->client,
+            $localeRepository,
+            $currencyRepository,
+            $categoryRepository
+        );
         $repository = new InMemoryChannelRepository();
         $initializer->initialize($repository);
 

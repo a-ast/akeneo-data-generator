@@ -37,15 +37,17 @@ Complete app/parameters.yml with the credentials.
 
 - Run `bin/docker/console.sh` to run the `bin/console` script.
 
-### Get First Product Data
-
-- Run `bin/docker/console.sh akeneo:api:get-first-product`
-
 ### Generate Category Trees
 
 For instance, to generate 1 category tree with 99 children categories on 3 levels.
 
 - Run `bin/docker/console.sh akeneo:api:generate-category-trees 1 100 3`
+
+### Generate Channels
+
+For instance, to generate 2 channels.
+
+- Run `bin/docker/console.sh akeneo:api:generate-channels 2`
 
 ### Generate Attributes
 

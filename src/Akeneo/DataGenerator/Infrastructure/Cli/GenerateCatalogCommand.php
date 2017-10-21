@@ -6,12 +6,16 @@ use Akeneo\DataGenerator\Application\GenerateAttribute;
 use Akeneo\DataGenerator\Application\GenerateAttributeHandler;
 use Akeneo\DataGenerator\Application\GenerateCategoryTree;
 use Akeneo\DataGenerator\Application\GenerateCategoryTreeHandler;
+use Akeneo\DataGenerator\Application\GenerateChannelHandler;
+use Akeneo\DataGenerator\Application\GenerateChannelWithDefinedCodeAndLocalesAndCurrencies;
+use Akeneo\DataGenerator\Application\GenerateChannelWithDefinedCodeAndLocalesAndCurrenciesHandler;
 use Akeneo\DataGenerator\Application\GenerateFamily;
 use Akeneo\DataGenerator\Application\GenerateFamilyHandler;
 use Akeneo\DataGenerator\Application\GenerateProduct;
 use Akeneo\DataGenerator\Application\GenerateProductHandler;
 use Akeneo\DataGenerator\Domain\AttributeGenerator;
 use Akeneo\DataGenerator\Domain\CategoryTreeGenerator;
+use Akeneo\DataGenerator\Domain\ChannelGenerator;
 use Akeneo\DataGenerator\Domain\FamilyGenerator;
 use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
 use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
@@ -21,6 +25,7 @@ use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Attributes;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\CatalogConfiguration;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\CategoryTrees;
+use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Channels;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Families;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Products;
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
@@ -52,6 +57,10 @@ class GenerateCatalogCommand extends Command
         $this->generateTrees($trees);
         $output->writeln(sprintf('<info>%s trees have been generated and imported</info>', $trees->count()));
 
+        $channels = $configuration->channels();
+        $this->generateChannels($channels);
+        $output->writeln(sprintf('<info>%s channels have been generated and imported</info>', $channels->count()));
+
         $attributes = $configuration->attributes();
         $this->generateAttributes($attributes);
         $output->writeln(sprintf('<info>%s attributes have been generated and imported</info>', $attributes->count()));
@@ -75,6 +84,23 @@ class GenerateCatalogCommand extends Command
         $handler = $this->categoryTreeHandler();
         foreach ($trees as $tree) {
             $command = new GenerateCategoryTree($tree->getChildren(), $tree->getLevels());
+            try {
+                $handler->handle($command);
+            } catch (HttpException $e) {
+                echo $e->getMessage();
+            }
+        }
+    }
+
+    private function generateChannels(Channels $channels)
+    {
+        $handler = $this->channelHandler();
+        foreach ($channels as $channel) {
+            $command = new GenerateChannelWithDefinedCodeAndLocalesAndCurrencies(
+                $channel->code(),
+                $channel->locales(),
+                $channel->currencies()
+            );
             try {
                 $handler->handle($command);
             } catch (HttpException $e) {
@@ -169,6 +195,21 @@ class GenerateCatalogCommand extends Command
         $writeRepository = $writeRepositories->productRepository();
 
         return new GenerateProductHandler($generator, $writeRepository);
+    }
+
+    private function channelHandler(): GenerateChannelWithDefinedCodeAndLocalesAndCurrenciesHandler
+    {
+        $readRepositories = new ReadRepositories($this->getClient());
+        $generator = new ChannelGenerator(
+            $readRepositories->localeRepository(),
+            $readRepositories->currencyRepository(),
+            $readRepositories->categoryRepository()
+        );
+
+        $writeRepositories = new WriteRepositories($this->getClient());
+        $channelRepository = $writeRepositories->channelRepository();
+
+        return new GenerateChannelWithDefinedCodeAndLocalesAndCurrenciesHandler($generator, $channelRepository);
     }
 
     private function getClient(): AkeneoPimClientInterface

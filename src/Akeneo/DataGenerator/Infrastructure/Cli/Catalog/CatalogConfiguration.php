@@ -45,4 +45,15 @@ class CatalogConfiguration
 
         return new Products($configuration['count'], $configuration['with_images']);
     }
+
+    public function channels(): Channels
+    {
+        $configuration = $this->config['entities']['channels'];
+        $channels = [];
+        foreach ($configuration as $channel) {
+            $channels[] = new Channel($channel['code'], $channel['locales'], $channel['currencies']);
+        }
+
+        return new Channels($channels);
+    }
 }
