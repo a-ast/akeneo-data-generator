@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\DataGenerator\Infrastructure\WebApi;
+namespace Akeneo\DataGenerator\Infrastructure\WebApi\Read;
 
 use Akeneo\DataGenerator\Domain\Model\AttributeGroupRepository;
 use Akeneo\Pim\AkeneoPimClientInterface;

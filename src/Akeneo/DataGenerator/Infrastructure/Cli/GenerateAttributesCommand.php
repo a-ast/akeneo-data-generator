@@ -6,7 +6,7 @@ use Akeneo\DataGenerator\Application\GenerateAttribute;
 use Akeneo\DataGenerator\Application\GenerateAttributeHandler;
 use Akeneo\DataGenerator\Domain\AttributeGenerator;
 use Akeneo\DataGenerator\Infrastructure\Database\InMemoryAttributeGroupRepository;
-use Akeneo\DataGenerator\Infrastructure\WebApi\AttributeGroupRepositoryInitializer;
+use Akeneo\DataGenerator\Infrastructure\WebApi\Read\AttributeGroupRepositoryInitializer;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WebApiAttributeRepository;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;

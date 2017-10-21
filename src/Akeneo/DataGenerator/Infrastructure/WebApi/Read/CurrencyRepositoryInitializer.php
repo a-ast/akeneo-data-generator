@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\DataGenerator\Infrastructure\WebApi;
+namespace Akeneo\DataGenerator\Infrastructure\WebApi\Read;
 
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\DataGenerator\Domain\Model\Currency;

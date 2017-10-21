@@ -15,6 +15,13 @@ use Akeneo\DataGenerator\Infrastructure\Database\InMemoryChannelRepository;
 use Akeneo\DataGenerator\Infrastructure\Database\InMemoryCurrencyRepository;
 use Akeneo\DataGenerator\Infrastructure\Database\InMemoryFamilyRepository;
 use Akeneo\DataGenerator\Infrastructure\Database\InMemoryLocaleRepository;
+use Akeneo\DataGenerator\Infrastructure\WebApi\Read\LocaleRepositoryInitializer;
+use Akeneo\DataGenerator\Infrastructure\WebApi\Read\AttributeGroupRepositoryInitializer;
+use Akeneo\DataGenerator\Infrastructure\WebApi\Read\AttributeRepositoryInitializer;
+use Akeneo\DataGenerator\Infrastructure\WebApi\Read\CategoryRepositoryInitializer;
+use Akeneo\DataGenerator\Infrastructure\WebApi\Read\ChannelRepositoryInitializer;
+use Akeneo\DataGenerator\Infrastructure\WebApi\Read\CurrencyRepositoryInitializer;
+use Akeneo\DataGenerator\Infrastructure\WebApi\Read\FamilyRepositoryInitializer;
 use Akeneo\Pim\AkeneoPimClientInterface;
 
 class ReadRepositories
