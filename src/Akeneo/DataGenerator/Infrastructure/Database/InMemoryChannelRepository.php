@@ -26,7 +26,7 @@ class InMemoryChannelRepository implements ChannelRepository
 
     public function add(Channel $item)
     {
-        $this->items[$item->getCode()] = $item;
+        $this->items[$item->code()] = $item;
     }
 
     public function count(): int

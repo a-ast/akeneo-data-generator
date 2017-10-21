@@ -42,16 +42,16 @@ class ProductGeneratorSpec extends ObjectBehavior
     ) {
         $familyRepository->count()->willReturn(1);
         $familyRepository->all()->willReturn([$family]);
-        $family->getAttributes()->willReturn($attributes);
+        $family->attributes()->willReturn($attributes);
         $attributes->all()->willReturn([$sku]);
-        $sku->getType()->willReturn('pim_catalog_text');
-        $sku->isScopable()->willReturn(false);
-        $sku->isLocalizable()->willReturn(false);
-        $sku->getProperties()->willReturn($skuProperties);
+        $sku->type()->willReturn('pim_catalog_text');
+        $sku->scopable()->willReturn(false);
+        $sku->localizable()->willReturn(false);
+        $sku->properties()->willReturn($skuProperties);
 
         $categoryRepository->countChildren()->willReturn(1);
         $categoryRepository->allChildren()->willReturn([$children]);
-        $children->getCode()->willReturn('clothes');
+        $children->code()->willReturn('clothes');
 
         $this->generateWithImages()->shouldBeAnInstanceOf(Product::class);
     }
@@ -67,16 +67,16 @@ class ProductGeneratorSpec extends ObjectBehavior
     ) {
         $familyRepository->count()->willReturn(1);
         $familyRepository->all()->willReturn([$family]);
-        $family->getAttributes()->willReturn($attributes);
+        $family->attributes()->willReturn($attributes);
         $attributes->all()->willReturn([$sku]);
-        $sku->getType()->willReturn('pim_catalog_text');
-        $sku->isScopable()->willReturn(false);
-        $sku->isLocalizable()->willReturn(false);
-        $sku->getProperties()->willReturn($skuProperties);
+        $sku->type()->willReturn('pim_catalog_text');
+        $sku->scopable()->willReturn(false);
+        $sku->localizable()->willReturn(false);
+        $sku->properties()->willReturn($skuProperties);
 
         $categoryRepository->countChildren()->willReturn(1);
         $categoryRepository->allChildren()->willReturn([$children]);
-        $children->getCode()->willReturn('clothes');
+        $children->code()->willReturn('clothes');
 
         $this->generateWithoutImages()->shouldBeAnInstanceOf(Product::class);
     }
@@ -103,12 +103,12 @@ class ProductGeneratorSpec extends ObjectBehavior
     {
         $familyRepository->count()->willReturn(1);
         $familyRepository->all()->willReturn([$family]);
-        $family->getAttributes()->willReturn($attributes);
+        $family->attributes()->willReturn($attributes);
         $attributes->all()->willReturn([$sku]);
-        $sku->getType()->willReturn('pim_catalog_text');
-        $sku->isScopable()->willReturn(false);
-        $sku->isLocalizable()->willReturn(false);
-        $sku->getProperties()->willReturn($skuProperties);
+        $sku->type()->willReturn('pim_catalog_text');
+        $sku->scopable()->willReturn(false);
+        $sku->localizable()->willReturn(false);
+        $sku->properties()->willReturn($skuProperties);
 
         $categoryRepository->countChildren()->willReturn(0);
 

@@ -70,8 +70,8 @@ class FamilyGenerator
         for ($ind = 0; $ind < $numberAttributes; $ind++) {
             /** @var Attribute $attribute */
             $attribute = $attributes[rand(0, count($attributes) - 1)];
-            if (!in_array($attribute->getCode(), $randomAttributes)) {
-                $randomAttributes[$attribute->getCode()] = $attribute;
+            if (!in_array($attribute->code(), $randomAttributes)) {
+                $randomAttributes[$attribute->code()] = $attribute;
             }
         }
 

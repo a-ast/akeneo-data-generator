@@ -21,7 +21,7 @@ class Attributes
     {
         $codes = [];
         foreach ($this->items as $attribute) {
-            $codes[] = $attribute->getCode();
+            $codes[] = $attribute->code();
         }
 
         return $codes;

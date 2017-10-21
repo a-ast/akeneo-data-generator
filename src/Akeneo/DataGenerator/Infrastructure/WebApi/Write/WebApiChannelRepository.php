@@ -4,6 +4,7 @@ namespace Akeneo\DataGenerator\Infrastructure\WebApi\Write;
 
 use Akeneo\DataGenerator\Domain\Model\Channel;
 use Akeneo\DataGenerator\Domain\Model\ChannelRepository;
+use Akeneo\DataGenerator\Domain\Model\Currency;
 use Akeneo\Pim\AkeneoPimClientInterface;
 
 class WebApiChannelRepository implements ChannelRepository
@@ -23,19 +24,25 @@ class WebApiChannelRepository implements ChannelRepository
     public function add(Channel $channel)
     {
         $localeCodes = [];
-        foreach ($channel->getLocales() as $locale) {
-            $localeCodes[]= $locale->getCode();
+        /**
+         * @var Locale $locale
+         */
+        foreach ($channel->locales() as $locale) {
+            $localeCodes[]= $locale->code();
         }
         $currencyCodes = [];
-        foreach ($channel->getCurrencies() as $currency) {
-            $currencyCodes[]= $currency->getCode();
+        /**
+         * @var Currency $currency
+         */
+        foreach ($channel->currencies() as $currency) {
+            $currencyCodes[]= $currency->code();
         }
         $channelData = [
             'locales' => $localeCodes,
             'currencies' => $currencyCodes,
-            'category_tree' => $channel->tree()->getCode()
+            'category_tree' => $channel->tree()->code()
         ];
-        $this->client->getChannelApi()->create($channel->getCode(), $channelData);
+        $this->client->getChannelApi()->create($channel->code(), $channelData);
     }
 
     public function count(): int

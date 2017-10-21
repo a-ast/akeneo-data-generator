@@ -19,9 +19,7 @@ class LocaleRepositoryInitializer
     {
         $cursor = $this->client->getLocaleApi()->all();
         foreach ($cursor as $itemData) {
-            if ($itemData['enabled']) {
-                $repository->add(new Locale($itemData['code']));
-            }
+            $repository->add(new Locale($itemData['code'], $itemData['enabled']));
         }
     }
 }

@@ -24,17 +24,17 @@ class Family
         $this->requirements = $requirements;
     }
 
-    public function getCode(): string
+    public function code(): string
     {
         return $this->code;
     }
 
-    public function getAttributes(): Attributes
+    public function attributes(): Attributes
     {
         return $this->attributes;
     }
 
-    public function getRequirements(): AttributeRequirements
+    public function requirements(): AttributeRequirements
     {
         return $this->requirements;
     }

@@ -95,8 +95,8 @@ class ProductGenerator
         for ($ind = 0; $ind < 4; $ind++) {
             /** @var Category $category */
             $category = $categories[rand(0, count($categories) - 1)];
-            if (!in_array($category->getCode(), $randomCodes)) {
-                $randomCodes[] = $category->getCode();
+            if (!in_array($category->code(), $randomCodes)) {
+                $randomCodes[] = $category->code();
                 $randomCategories->add($category);
             }
         }
@@ -106,7 +106,7 @@ class ProductGenerator
 
     private function getRandomValues(Family $family): Values
     {
-        $attributes = $family->getAttributes();
+        $attributes = $family->attributes();
         $values = new Values();
         /** @var Attribute $attribute */
         foreach ($attributes->all() as $attribute) {
@@ -118,11 +118,11 @@ class ProductGenerator
 
     private function getRandomValuesExceptImages(Family $family): Values
     {
-        $attributes = $family->getAttributes();
+        $attributes = $family->attributes();
         $values = new Values();
         /** @var Attribute $attribute */
         foreach ($attributes->all() as $attribute) {
-            if ($attribute->getType() !== AttributeTypes::IMAGE) {
+            if ($attribute->type() !== AttributeTypes::IMAGE) {
                 $this->generateValues($values, $attribute);
             }
         }
@@ -137,19 +137,19 @@ class ProductGenerator
         }
         $generator = $this->valueGeneratorRegistry->get($attribute);
 
-        if ($attribute->isScopable() && $attribute->isLocalizable()) {
+        if ($attribute->scopable() && $attribute->localizable()) {
             foreach ($this->channelRepository->all() as $channel) {
-                foreach ($channel->getLocales() as $locale) {
-                    $values->add($generator->generate($attribute, $channel->getCode(), $locale->getCode()));
+                foreach ($channel->locales() as $locale) {
+                    $values->add($generator->generate($attribute, $channel->code(), $locale->code()));
                 }
             }
-        } elseif ($attribute->isScopable()) {
+        } elseif ($attribute->scopable()) {
             foreach ($this->channelRepository->all() as $channel) {
-                $values->add($generator->generate($attribute, $channel->getCode(), null));
+                $values->add($generator->generate($attribute, $channel->code(), null));
             }
-        } elseif ($attribute->isLocalizable()) {
-            foreach ($this->localeRepository->all() as $locale) {
-                $values->add($generator->generate($attribute, null, $locale->getCode()));
+        } elseif ($attribute->localizable()) {
+            foreach ($this->localeRepository->allEnabled() as $locale) {
+                $values->add($generator->generate($attribute, null, $locale->code()));
             }
         } else {
             $values->add($generator->generate($attribute, null, null));

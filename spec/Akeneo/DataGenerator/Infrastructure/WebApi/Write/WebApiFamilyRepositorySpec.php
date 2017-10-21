@@ -22,10 +22,10 @@ class WebApiFamilyRepositorySpec extends ObjectBehavior
         AttributeRequirements $requirements,
         FamilyApi $api
     ) {
-        $family->getCode()->willReturn('MyFamilyCode');
-        $family->getAttributes()->willReturn($attributes);
+        $family->code()->willReturn('MyFamilyCode');
+        $family->attributes()->willReturn($attributes);
         $attributes->getCodes()->willReturn(['MyAttributeCode1', 'MyAttributeCode2']);
-        $family->getRequirements()->willReturn($requirements);
+        $family->requirements()->willReturn($requirements);
         $requirements->getAttributeCodesPerChannel()->willReturn(
             [
                 'ecommerce' => ['MyAttributeCode1', 'MyAttributeCode2'],

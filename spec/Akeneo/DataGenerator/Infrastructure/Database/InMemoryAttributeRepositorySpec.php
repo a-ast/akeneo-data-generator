@@ -10,7 +10,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
 {
     function it_stores_attribute (Attribute $entity)
     {
-        $entity->getCode()->willReturn('MyCode');
+        $entity->code()->willReturn('MyCode');
         $this->count()->shouldReturn(0);
         $this->add($entity);
         $this->count()->shouldReturn(1);

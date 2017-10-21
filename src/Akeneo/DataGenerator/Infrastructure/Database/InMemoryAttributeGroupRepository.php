@@ -26,7 +26,7 @@ class InMemoryAttributeGroupRepository implements AttributeGroupRepository
 
     public function add(AttributeGroup $item)
     {
-        $this->items[$item->getCode()] = $item;
+        $this->items[$item->code()] = $item;
     }
 
     public function count(): int

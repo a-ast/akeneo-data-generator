@@ -73,7 +73,7 @@ Please note that data generation takes time, especially the image generation par
 
 The generation is based on a configuration file that needs to be placed into `app/catalog/`.
 
-- Run `bin/docker/console.sh akeneo:api:generate-catalog small.yml --with-products`
+- Run `bin/docker/console.sh akeneo:api:generate-catalog small.yml --check-minimal-install --with-products`
 
 When generating & injecting large set of products, for instance, 300K products, we advise to launch several product generation commands in parallel.
 

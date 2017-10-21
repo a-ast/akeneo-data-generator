@@ -49,8 +49,8 @@ class ChannelGeneratorSpec extends ObjectBehavior
         $currencyRepository->all()->willReturn([$currency]);
         $currencyRepository->get('EUR')->willReturn($currency);
         $categoryRepository->allTrees()->willReturn([$tree]);
-        $locale->getCode()->willReturn('en_US');
-        $currency->getCode()->willReturn('EUR');
+        $locale->code()->willReturn('en_US');
+        $currency->code()->willReturn('EUR');
 
         $this->generate()->shouldBeAnInstanceOf(Channel::class);
     }

@@ -11,13 +11,13 @@ class CategoryTreeGeneratorSpec extends ObjectBehavior
     {
         $tree = $this->generate(100, 3);
         $tree->shouldBeAnInstanceOf(Category::class);
-        $childrenLevel1 = $tree->getChildren();
+        $childrenLevel1 = $tree->children();
         $childrenLevel1->shouldHaveCount(4);
-        $childrenLevel2 = $childrenLevel1[0]->getChildren();
+        $childrenLevel2 = $childrenLevel1[0]->children();
         $childrenLevel2->shouldHaveCount(4);
-        $childrenLevel3 = $childrenLevel2[0]->getChildren();
+        $childrenLevel3 = $childrenLevel2[0]->children();
         $childrenLevel3->shouldHaveCount(4);
-        $childrenLevel4 = $childrenLevel3[0]->getChildren();
+        $childrenLevel4 = $childrenLevel3[0]->children();
         $childrenLevel4->shouldHaveCount(0);
     }
 
@@ -25,9 +25,9 @@ class CategoryTreeGeneratorSpec extends ObjectBehavior
     {
         $tree = $this->generate(100, 1);
         $tree->shouldBeAnInstanceOf(Category::class);
-        $childrenLevel1 = $tree->getChildren();
+        $childrenLevel1 = $tree->children();
         $childrenLevel1->shouldHaveCount(99);
-        $childrenLevel2 = $childrenLevel1[0]->getChildren();
+        $childrenLevel2 = $childrenLevel1[0]->children();
         $childrenLevel2->shouldHaveCount(0);
     }
 }

@@ -21,17 +21,17 @@ class Channel
         $this->tree = $tree;
     }
 
-    public function getCode(): string
+    public function code(): string
     {
         return $this->code;
     }
 
-    public function getLocales(): array
+    public function locales(): array
     {
         return $this->locales;
     }
 
-    public function getCurrencies(): array
+    public function currencies(): array
     {
         return $this->currencies;
     }

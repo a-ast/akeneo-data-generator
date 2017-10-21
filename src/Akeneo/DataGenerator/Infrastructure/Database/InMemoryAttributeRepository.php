@@ -26,7 +26,7 @@ class InMemoryAttributeRepository implements AttributeRepository
 
     public function add(Attribute $item)
     {
-        $this->items[$item->getCode()] = $item;
+        $this->items[$item->code()] = $item;
     }
 
     public function count(): int

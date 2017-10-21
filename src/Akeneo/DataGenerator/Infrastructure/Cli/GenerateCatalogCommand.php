@@ -27,6 +27,7 @@ use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\CatalogConfiguration;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\CategoryTrees;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Channels;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Families;
+use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\PimDataset;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Products;
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
@@ -45,13 +46,19 @@ class GenerateCatalogCommand extends Command
         $this->setName('akeneo:api:generate-catalog')
             ->setDescription('Import generated catalog (channels, trees, families, attributes, options) through the Akeneo PIM Web API')
             ->addArgument('file-name', InputArgument::REQUIRED, 'Catalog file name')
-            ->addOption('with-products', null, InputOption::VALUE_NONE, 'Generate products');
+            ->addOption('with-products', null, InputOption::VALUE_NONE, 'Generate products')
+            ->addOption('check-minimal-install', null, InputOption::VALUE_NONE, 'Check PIM has been installed with minimal set');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fileName = $input->getArgument('file-name');
         $configuration = new CatalogConfiguration($fileName);
+
+        $minimalInstall =  $input->getOption('check-minimal-install');
+        if ($minimalInstall) {
+            $this->dataset()->isMinimal();
+        }
 
         $trees = $configuration->categoryTrees();
         $this->generateTrees($trees);
@@ -77,6 +84,14 @@ class GenerateCatalogCommand extends Command
         }
 
         $output->writeln(sprintf('<info>catalog %s has been generated and imported</info>', $fileName));
+    }
+
+    private function dataset(): PimDataset
+    {
+        $client = $this->getClient();
+        $readRepositories = new ReadRepositories($client);
+
+        return new PimDataset($readRepositories->channelRepository(), $readRepositories->attributeRepository());
     }
 
     private function generateTrees(CategoryTrees $trees)

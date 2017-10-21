@@ -20,17 +20,17 @@ class WebApiCategoryRepositorySpec extends ObjectBehavior
         Category $granChild,
         CategoryApi $api
     ) {
-        $tree->getCode()->willReturn('MyTreeCode');
-        $tree->getParent()->willReturn(null);
-        $tree->getChildren()->willReturn([$child]);
+        $tree->code()->willReturn('MyTreeCode');
+        $tree->parent()->willReturn(null);
+        $tree->children()->willReturn([$child]);
 
-        $child->getCode()->willReturn('MyChildCode');
-        $child->getParent()->willReturn($tree);
-        $child->getChildren()->willReturn([$granChild]);
+        $child->code()->willReturn('MyChildCode');
+        $child->parent()->willReturn($tree);
+        $child->children()->willReturn([$granChild]);
 
-        $granChild->getCode()->willReturn('MyGranChildCode');
-        $granChild->getParent()->willReturn($child);
-        $granChild->getChildren()->willReturn([]);
+        $granChild->code()->willReturn('MyGranChildCode');
+        $granChild->parent()->willReturn($child);
+        $granChild->children()->willReturn([]);
 
         $client->getCategoryApi()->willReturn($api);
 

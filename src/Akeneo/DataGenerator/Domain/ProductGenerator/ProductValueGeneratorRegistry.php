@@ -28,11 +28,11 @@ class ProductValueGeneratorRegistry
 
     public function support(Attribute $attribute): bool
     {
-        return isset($this->generators[$attribute->getType()]);
+        return isset($this->generators[$attribute->type()]);
     }
 
     public function get(Attribute $attribute): ProductValueGenerator
     {
-        return $this->generators[$attribute->getType()];
+        return $this->generators[$attribute->type()];
     }
 }

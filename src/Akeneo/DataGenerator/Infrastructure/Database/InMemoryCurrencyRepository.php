@@ -26,7 +26,7 @@ class InMemoryCurrencyRepository implements CurrencyRepository
 
     public function add(Currency $item)
     {
-        $this->items[$item->getCode()] = $item;
+        $this->items[$item->code()] = $item;
     }
 
     public function count(): int

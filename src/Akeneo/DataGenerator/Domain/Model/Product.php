@@ -20,22 +20,22 @@ class Product
         $this->categories = $categories;
     }
 
-    public function getIdentifier(): string
+    public function identifier(): string
     {
         return $this->identifier;
     }
 
-    public function getFamily()
+    public function family()
     {
         return $this->family;
     }
 
-    public function getCategories(): Categories
+    public function categories(): Categories
     {
         return $this->categories;
     }
 
-    public function getValues(): Values
+    public function values(): Values
     {
         return $this->values;
     }

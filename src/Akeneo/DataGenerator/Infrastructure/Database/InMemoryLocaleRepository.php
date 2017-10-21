@@ -26,7 +26,7 @@ class InMemoryLocaleRepository implements LocaleRepository
 
     public function add(Locale $item)
     {
-        $this->items[$item->getCode()] = $item;
+        $this->items[$item->code()] = $item;
     }
 
     public function count(): int
@@ -37,5 +37,20 @@ class InMemoryLocaleRepository implements LocaleRepository
     public function all(): array
     {
         return array_values($this->items);
+    }
+
+    public function allEnabled(): array
+    {
+        $enabledLocales = [];
+        /**
+         * @var Locale $locale
+         */
+        foreach ($this->items as $locale) {
+            if ($locale->enabled()) {
+                $enabledLocales[]= $locale;
+            }
+        }
+
+        return $enabledLocales;
     }
 }

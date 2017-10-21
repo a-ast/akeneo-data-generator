@@ -21,7 +21,7 @@ class ProductValueMetricGenerator implements ProductValueGenerator
     {
         $data = [
             'amount' => $this->generator->numberBetween(1, 100),
-            'unit' => $attribute->getProperties()->getProperty('default_metric_unit')
+            'unit' => $attribute->properties()->getProperty('default_metric_unit')
         ];
 
         return new Value($attribute, $data, $localeCode, $channelCode);

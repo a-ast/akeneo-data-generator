@@ -16,10 +16,10 @@ class AttributeRequirements
     {
         $codes = [];
         foreach ($this->items as $requirement) {
-            if (!isset($codes[$requirement->getChannel()->getCode()])) {
-                $codes[$requirement->getChannel()->getCode()] = [];
+            if (!isset($codes[$requirement->getChannel()->code()])) {
+                $codes[$requirement->getChannel()->code()] = [];
             }
-            $codes[$requirement->getChannel()->getCode()][] = $requirement->getAttribute()->getCode();
+            $codes[$requirement->getChannel()->code()][] = $requirement->getAttribute()->code();
         }
 
         return $codes;

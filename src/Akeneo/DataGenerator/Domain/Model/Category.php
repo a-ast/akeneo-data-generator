@@ -18,7 +18,7 @@ class Category
         $this->children = [];
     }
 
-    public function getCode(): string
+    public function code(): string
     {
         return $this->code;
     }
@@ -33,12 +33,12 @@ class Category
         $this->children[]= $category;
     }
 
-    public function getChildren(): array
+    public function children(): array
     {
         return $this->children;
     }
 
-    public function getParent()
+    public function parent()
     {
         return $this->parent;
     }
