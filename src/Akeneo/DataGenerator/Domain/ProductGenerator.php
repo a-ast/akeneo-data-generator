@@ -148,7 +148,7 @@ class ProductGenerator
                 $values->add($generator->generate($attribute, $channel->getCode(), null));
             }
         } elseif ($attribute->isLocalizable()) {
-            foreach ($this->localeRepository->all() as $locale) {
+            foreach ($this->localeRepository->allEnabled() as $locale) {
                 $values->add($generator->generate($attribute, null, $locale->getCode()));
             }
         } else {

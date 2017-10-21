@@ -8,4 +8,5 @@ interface LocaleRepository
     public function add(Locale $locale);
     public function count(): int;
     public function all(): array;
+    public function allEnabled(): array;
 }

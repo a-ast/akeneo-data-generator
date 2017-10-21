@@ -38,4 +38,19 @@ class InMemoryLocaleRepository implements LocaleRepository
     {
         return array_values($this->items);
     }
+
+    public function allEnabled(): array
+    {
+        $enabledLocales = [];
+        /**
+         * @var Locale $locale
+         */
+        foreach ($this->items as $locale) {
+            if ($locale->enabled()) {
+                $enabledLocales[]= $locale;
+            }
+        }
+
+        return $enabledLocales;
+    }
 }
