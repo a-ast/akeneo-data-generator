@@ -5,7 +5,6 @@ namespace Akeneo\DataGenerator\Infrastructure\Cli;
 use Akeneo\DataGenerator\Application\GenerateFamily;
 use Akeneo\DataGenerator\Application\GenerateFamilyHandler;
 use Akeneo\DataGenerator\Domain\FamilyGenerator;
-use Akeneo\DataGenerator\Domain\Model\FamilyRepository;
 use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
@@ -30,7 +29,7 @@ class GenerateFamiliesCommand extends Command
     {
         $number = $input->getArgument('number');
         $attributes = $input->getArgument('attributes');
-        $handler = new GenerateFamilyHandler($this->getFamilyGenerator(), $this->getFamilyRepository());
+        $handler = $this->familyHandler();
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateFamily($attributes);
@@ -47,18 +46,15 @@ class GenerateFamiliesCommand extends Command
         $output->writeln(sprintf('<info>%s families have been generated and imported</info>', $number));
     }
 
-    private function getFamilyGenerator(): FamilyGenerator
+    private function familyHandler(): GenerateFamilyHandler
     {
         $readRepositories = new ReadRepositories($this->getClient());
+        $generator = new FamilyGenerator($readRepositories->attributeRepository(), $readRepositories->channelRepository());
 
-        return new FamilyGenerator($readRepositories->attributeRepository(), $readRepositories->channelRepository());
-    }
-
-    private function getFamilyRepository(): FamilyRepository
-    {
         $writeRepositories = new WriteRepositories($this->getClient());
+        $familyRepository = $writeRepositories->familyRepository();
 
-        return $writeRepositories->familyRepository();
+        return new GenerateFamilyHandler($generator, $familyRepository);
     }
 
     private function getClient(): AkeneoPimClientInterface

@@ -5,7 +5,6 @@ namespace Akeneo\DataGenerator\Infrastructure\Cli;
 use Akeneo\DataGenerator\Application\GenerateCategoryTree;
 use Akeneo\DataGenerator\Application\GenerateCategoryTreeHandler;
 use Akeneo\DataGenerator\Domain\CategoryTreeGenerator;
-use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
 use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
@@ -31,7 +30,7 @@ class GenerateCategoryTreesCommand extends Command
         $number = $input->getArgument('number');
         $children = $input->getArgument('children');
         $levels = $input->getArgument('levels');
-        $handler = new GenerateCategoryTreeHandler($this->getCategoryTreeGenerator(), $this->getCategoryRepository());
+        $handler = $this->categoryTreeHandler();
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateCategoryTree($children, $levels);
             try {
@@ -43,16 +42,13 @@ class GenerateCategoryTreesCommand extends Command
         }
     }
 
-    private function getCategoryTreeGenerator(): CategoryTreeGenerator
+    private function categoryTreeHandler(): GenerateCategoryTreeHandler
     {
-        return new CategoryTreeGenerator();
-    }
-
-    private function getCategoryRepository(): CategoryRepository
-    {
+        $generator = new CategoryTreeGenerator();
         $writeRepositories = new WriteRepositories($this->getClient());
+        $categoryRepository = $writeRepositories->categoryRepository();
 
-        return $writeRepositories->categoryRepository();
+        return new GenerateCategoryTreeHandler($generator, $categoryRepository);
     }
 
     private function getClient(): AkeneoPimClientInterface

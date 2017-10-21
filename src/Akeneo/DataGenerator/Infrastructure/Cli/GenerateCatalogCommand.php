@@ -6,14 +6,18 @@ use Akeneo\DataGenerator\Application\GenerateAttribute;
 use Akeneo\DataGenerator\Application\GenerateAttributeHandler;
 use Akeneo\DataGenerator\Application\GenerateCategoryTree;
 use Akeneo\DataGenerator\Application\GenerateCategoryTreeHandler;
+use Akeneo\DataGenerator\Application\GenerateFamily;
+use Akeneo\DataGenerator\Application\GenerateFamilyHandler;
 use Akeneo\DataGenerator\Domain\AttributeGenerator;
 use Akeneo\DataGenerator\Domain\CategoryTreeGenerator;
+use Akeneo\DataGenerator\Domain\FamilyGenerator;
 use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
 use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
 use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Attributes;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\CatalogConfiguration;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\CategoryTrees;
+use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Families;
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
@@ -45,12 +49,16 @@ class GenerateCatalogCommand extends Command
         $this->generateAttributes($attributes);
         $output->writeln(sprintf('<info>%s attributes have been generated and imported</info>', $attributes->count()));
 
+        $families = $configuration->families();
+        $this->generateFamilies($families);
+        $output->writeln(sprintf('<info>%s families have been generated and imported</info>', $families->count()));
+
         $output->writeln(sprintf('<info>catalog %s has been generated and imported</info>', $fileName));
     }
 
     private function generateTrees(CategoryTrees $trees)
     {
-        $handler = new GenerateCategoryTreeHandler($this->getCategoryTreeGenerator(), $this->getCategoryRepository());
+        $handler = $this->categoryTreeHandler();
         foreach ($trees as $tree) {
             $command = new GenerateCategoryTree($tree->getChildren(), $tree->getLevels());
             try {
@@ -63,7 +71,7 @@ class GenerateCatalogCommand extends Command
 
     private function generateAttributes(Attributes $attributes)
     {
-        $handler = new GenerateAttributeHandler($this->getAttributeGenerator(), $this->getAttributeRepository());
+        $handler = $this->attributeHandler();
         for ($index = 0; $index < $attributes->count(); $index++) {
             $command = new GenerateAttribute(false);
             try {
@@ -74,30 +82,49 @@ class GenerateCatalogCommand extends Command
         }
     }
 
-    private function getCategoryTreeGenerator(): CategoryTreeGenerator
+    private function generateFamilies(Families $families)
     {
-        return new CategoryTreeGenerator();
+        $handler = $this->familyHandler();
+        for ($index = 0; $index < $families->count(); $index++) {
+            $command = new GenerateFamily($families->attributesCount());
+            try {
+                $handler->handle($command);
+            } catch (HttpException $e) {
+                echo $e->getMessage();
+            }
+        }
     }
 
-    private function getCategoryRepository(): CategoryRepository
+    private function attributeHandler(): GenerateAttributeHandler
     {
+        $client = $this->getClient();
+        $readRepositories = new ReadRepositories($client);
+        $generator = new AttributeGenerator($readRepositories->attributeGroupRepository());
+
+        $writeRepositories = new WriteRepositories($client);
+        $attributeRepository = $writeRepositories->attributeRepository();
+
+        return new GenerateAttributeHandler($generator, $attributeRepository);
+    }
+
+    private function categoryTreeHandler(): GenerateCategoryTreeHandler
+    {
+        $generator = new CategoryTreeGenerator();
         $writeRepositories = new WriteRepositories($this->getClient());
+        $categoryRepository = $writeRepositories->categoryRepository();
 
-        return $writeRepositories->categoryRepository();
+        return new GenerateCategoryTreeHandler($generator, $categoryRepository);
     }
 
-    private function getAttributeGenerator(): AttributeGenerator
+    private function familyHandler(): GenerateFamilyHandler
     {
         $readRepositories = new ReadRepositories($this->getClient());
+        $generator = new FamilyGenerator($readRepositories->attributeRepository(), $readRepositories->channelRepository());
 
-        return new AttributeGenerator($readRepositories->attributeGroupRepository());
-    }
-
-    private function getAttributeRepository(): AttributeRepository
-    {
         $writeRepositories = new WriteRepositories($this->getClient());
+        $familyRepository = $writeRepositories->familyRepository();
 
-        return $writeRepositories->attributeRepository();
+        return new GenerateFamilyHandler($generator, $familyRepository);
     }
 
     private function getClient(): AkeneoPimClientInterface

@@ -10,7 +10,6 @@ use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
-use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,7 +30,7 @@ class GenerateAttributesCommand extends Command
     {
         $number = $input->getArgument('number');
         $inGrid = $input->getOption('useable-in-grid');
-        $handler = new GenerateAttributeHandler($this->getAttributeGenerator(), $this->getAttributeRepository());
+        $handler = $this->attributeHandler();
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateAttribute($inGrid);
@@ -48,18 +47,16 @@ class GenerateAttributesCommand extends Command
         $output->writeln(sprintf('<info>%s attributes have been generated and imported</info>', $number));
     }
 
-    private function getAttributeGenerator(): AttributeGenerator
+    private function attributeHandler(): GenerateAttributeHandler
     {
-        $readRepositories = new ReadRepositories($this->getClient());
+        $client = $this->getClient();
+        $readRepositories = new ReadRepositories($client);
+        $generator = new AttributeGenerator($readRepositories->attributeGroupRepository());
 
-        return new AttributeGenerator($readRepositories->attributeGroupRepository());
-    }
+        $writeRepositories = new WriteRepositories($client);
+        $attributeRepository = $writeRepositories->attributeRepository();
 
-    private function getAttributeRepository(): AttributeRepository
-    {
-        $writeRepositories = new WriteRepositories($this->getClient());
-
-        return $writeRepositories->attributeRepository();
+        return new GenerateAttributeHandler($generator, $attributeRepository);
     }
 
     private function getClient(): AkeneoPimClientInterface

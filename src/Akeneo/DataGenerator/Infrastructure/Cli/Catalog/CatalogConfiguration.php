@@ -31,4 +31,11 @@ class CatalogConfiguration
 
         return new Attributes($configuration['count']);
     }
+
+    public function families(): Families
+    {
+        $configuration = $this->config['entities']['families'];
+
+        return new Families($configuration['count'], $configuration['attributes_count']);
+    }
 }
