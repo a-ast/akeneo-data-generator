@@ -3,17 +3,17 @@ catalog:
         category-trees:
             -
                 code: master
-                children: 250
+                children: 25
                 levels: 3
             -
                 code: sales
-                children: 250
+                children: 25
                 levels: 3
         attributes:
-            count: 100
-        families:
             count: 20
-            attributes_count: 50
+        families:
+            count: 3
+            attributes_count: 10
         products:
-            count: 100
+            count: 10
             with-images: true

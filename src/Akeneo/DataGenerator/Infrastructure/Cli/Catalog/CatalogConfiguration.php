@@ -24,4 +24,11 @@ class CatalogConfiguration
 
         return new CategoryTrees($trees);
     }
+
+    public function attributes(): Attributes
+    {
+        $configuration = $this->config['entities']['attributes'];
+
+        return new Attributes($configuration['count']);
+    }
 }
