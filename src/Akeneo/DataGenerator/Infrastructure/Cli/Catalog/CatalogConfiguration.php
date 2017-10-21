@@ -38,4 +38,11 @@ class CatalogConfiguration
 
         return new Families($configuration['count'], $configuration['attributes_count']);
     }
+
+    public function products(): Products
+    {
+        $configuration = $this->config['entities']['products'];
+
+        return new Products($configuration['count'], $configuration['with_images']);
+    }
 }

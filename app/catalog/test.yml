@@ -16,4 +16,4 @@ catalog:
             attributes_count: 10
         products:
             count: 10
-            with-images: true
+            with_images: true

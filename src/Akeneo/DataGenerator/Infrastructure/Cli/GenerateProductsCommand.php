@@ -9,7 +9,6 @@ use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
 use Akeneo\DataGenerator\Application\GenerateProduct;
 use Akeneo\DataGenerator\Application\GenerateProductHandler;
-use Akeneo\DataGenerator\Domain\Model\ProductRepository;
 use Akeneo\DataGenerator\Domain\ProductGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -31,7 +30,7 @@ class GenerateProductsCommand extends Command
     {
         $number = $input->getArgument('number');
         $withImages = $input->getOption('with-images');
-        $handler = new GenerateProductHandler($this->getGenerator(), $this->getProductRepository());
+        $handler = $this->productHandler();
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateProduct($withImages);
@@ -48,24 +47,21 @@ class GenerateProductsCommand extends Command
         $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $number));
     }
 
-    private function getGenerator(): ProductGenerator
+    private function productHandler(): GenerateProductHandler
     {
         $readRepositories = new ReadRepositories($this->getClient());
-
-        return new ProductGenerator(
+        $generator = new ProductGenerator(
             $readRepositories->channelRepository(),
             $readRepositories->localeRepository(),
             $readRepositories->currencyRepository(),
             $readRepositories->familyRepository(),
             $readRepositories->categoryRepository()
         );
-    }
 
-    private function getProductRepository(): ProductRepository
-    {
         $writeRepositories = new WriteRepositories($this->getClient());
+        $writeRepository = $writeRepositories->productRepository();
 
-        return $writeRepositories->productRepository();
+        return new GenerateProductHandler($generator, $writeRepository);
     }
 
     private function getClient(): AkeneoPimClientInterface
