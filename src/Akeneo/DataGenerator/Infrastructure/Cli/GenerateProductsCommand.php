@@ -2,32 +2,13 @@
 
 namespace Akeneo\DataGenerator\Infrastructure\Cli;
 
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryAttributeGroupRepository;
-use Akeneo\DataGenerator\Infrastructure\WebApi\AttributeGroupRepositoryInitializer;
+use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
 use Akeneo\DataGenerator\Application\GenerateProduct;
 use Akeneo\DataGenerator\Application\GenerateProductHandler;
 use Akeneo\DataGenerator\Domain\Model\ProductRepository;
 use Akeneo\DataGenerator\Domain\ProductGenerator;
-use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
-use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
-use Akeneo\DataGenerator\Domain\Model\ChannelRepository;
-use Akeneo\DataGenerator\Domain\Model\CurrencyRepository;
-use Akeneo\DataGenerator\Domain\Model\FamilyRepository;
-use Akeneo\DataGenerator\Domain\Model\LocaleRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryAttributeRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryCategoryRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryChannelRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryCurrencyRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryFamilyRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryLocaleRepository;
-use Akeneo\DataGenerator\Infrastructure\WebApi\AttributeRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\CategoryRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\ChannelRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\CurrencyRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\FamilyRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\LocaleRepositoryInitializer;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WebApiProductRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -68,19 +49,14 @@ class GenerateProductsCommand extends Command
 
     private function getGenerator(): ProductGenerator
     {
-        $localeRepository = $this->buildLocaleRepository();
-        $currencyRepository = $this->buildCurrencyRepository();
-        $categoryRepository = $this->buildCategoryRepository();
-        $channelRepository = $this->buildChannelRepository($localeRepository, $currencyRepository);
-        $attributeRepository = $this->buildAttributeRepository();
-        $familyRepository = $this->buildFamilyRepository($attributeRepository, $channelRepository);
+        $readRepositories = new ReadRepositories($this->getClient());
 
         return new ProductGenerator(
-            $channelRepository,
-            $localeRepository,
-            $currencyRepository,
-            $familyRepository,
-            $categoryRepository
+            $readRepositories->channelRepository(),
+            $readRepositories->localeRepository(),
+            $readRepositories->currencyRepository(),
+            $readRepositories->familyRepository(),
+            $readRepositories->categoryRepository()
         );
     }
 
@@ -89,74 +65,6 @@ class GenerateProductsCommand extends Command
         $client = $this->getClient();
 
         return new WebApiProductRepository($client);
-    }
-
-    private function buildCategoryRepository(): CategoryRepository
-    {
-        $client = $this->getClient();
-        $repository = new InMemoryCategoryRepository();
-        $initializer = new CategoryRepositoryInitializer($client);
-        $initializer->initialize($repository);
-
-        return $repository;
-    }
-
-    private function buildFamilyRepository(
-        AttributeRepository $attributeRepository,
-        ChannelRepository $channelRepository
-    ): FamilyRepository {
-        $client = $this->getClient();
-        $repository = new InMemoryFamilyRepository();
-        $initializer = new FamilyRepositoryInitializer($client, $attributeRepository, $channelRepository);
-        $initializer->initialize($repository);
-
-        return $repository;
-    }
-
-    private function buildAttributeRepository(): AttributeRepository
-    {
-        $client = $this->getClient();
-        $initializer = new AttributeGroupRepositoryInitializer($client);
-        $groupRepository = new InMemoryAttributeGroupRepository();
-        $initializer->initialize($groupRepository);
-
-        $initializer = new AttributeRepositoryInitializer($client, $groupRepository);
-        $repository = new InMemoryAttributeRepository();
-        $initializer->initialize($repository);
-
-        return $repository;
-    }
-
-    private function buildLocaleRepository(): LocaleRepository
-    {
-        $client = $this->getClient();
-        $initializer = new LocaleRepositoryInitializer($client);
-        $repository = new InMemoryLocaleRepository();
-        $initializer->initialize($repository);
-
-        return $repository;
-    }
-
-    private function buildCurrencyRepository(): CurrencyRepository
-    {
-        $client = $this->getClient();
-        $initializer = new CurrencyRepositoryInitializer($client);
-        $repository = new InMemoryCurrencyRepository();
-        $initializer->initialize($repository);
-
-        return $repository;
-    }
-
-    private function buildChannelRepository(
-        LocaleRepository $localeRepository,
-        CurrencyRepository $currencyRepository
-    ): ChannelRepository {
-        $client = $this->getClient();
-        $initializer = new ChannelRepositoryInitializer($client, $localeRepository, $currencyRepository);
-        $repository = new InMemoryChannelRepository();
-        $initializer->initialize($repository);
-
-        return $repository;
     }
 
     private function getClient(): AkeneoPimClientInterface

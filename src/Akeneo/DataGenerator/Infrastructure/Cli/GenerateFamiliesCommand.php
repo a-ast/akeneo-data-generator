@@ -6,16 +6,7 @@ use Akeneo\DataGenerator\Application\GenerateFamily;
 use Akeneo\DataGenerator\Application\GenerateFamilyHandler;
 use Akeneo\DataGenerator\Domain\FamilyGenerator;
 use Akeneo\DataGenerator\Domain\Model\FamilyRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryAttributeGroupRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryAttributeRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryChannelRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryCurrencyRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryLocaleRepository;
-use Akeneo\DataGenerator\Infrastructure\WebApi\AttributeGroupRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\AttributeRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\ChannelRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\CurrencyRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\LocaleRepositoryInitializer;
+use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WebApiFamilyRepository;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
@@ -38,7 +29,7 @@ class GenerateFamiliesCommand extends Command
     {
         $number = $input->getArgument('number');
         $attributes = $input->getArgument('attributes');
-        $handler = new GenerateFamilyHandler($this->getGenerator(), $this->getFamilyRepository());
+        $handler = new GenerateFamilyHandler($this->getFamilyGenerator(), $this->getFamilyRepository());
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateFamily($attributes);
@@ -55,31 +46,11 @@ class GenerateFamiliesCommand extends Command
         $output->writeln(sprintf('<info>%s families have been generated and imported</info>', $number));
     }
 
-    private function getGenerator(): FamilyGenerator
+    private function getFamilyGenerator(): FamilyGenerator
     {
-        $client = $this->getClient();
+        $readRepositories = new ReadRepositories($this->getClient());
 
-        $initializer = new LocaleRepositoryInitializer($client);
-        $localeRepository = new InMemoryLocaleRepository();
-        $initializer->initialize($localeRepository);
-
-        $initializer = new CurrencyRepositoryInitializer($client);
-        $currencyRepository = new InMemoryCurrencyRepository();
-        $initializer->initialize($currencyRepository);
-
-        $initializer = new ChannelRepositoryInitializer($client, $localeRepository, $currencyRepository);
-        $channelRepository = new InMemoryChannelRepository();
-        $initializer->initialize($channelRepository);
-
-        $initializer = new AttributeGroupRepositoryInitializer($client);
-        $groupRepository = new InMemoryAttributeGroupRepository();
-        $initializer->initialize($groupRepository);
-
-        $initializer = new AttributeRepositoryInitializer($client, $groupRepository);
-        $attributeRepository = new InMemoryAttributeRepository();
-        $initializer->initialize($attributeRepository);
-
-        return new FamilyGenerator($attributeRepository, $channelRepository);
+        return new FamilyGenerator($readRepositories->attributeRepository(), $readRepositories->channelRepository());
     }
 
     private function getFamilyRepository(): FamilyRepository
