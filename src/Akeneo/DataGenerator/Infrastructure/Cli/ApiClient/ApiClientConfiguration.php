@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\DataGenerator\Infrastructure\Cli;
+namespace Akeneo\DataGenerator\Infrastructure\Cli\ApiClient;
 
 use Symfony\Component\Yaml\Yaml;
 
-class ConfigProvider
+class ApiClientConfiguration
 {
     private $config;
 

@@ -5,9 +5,8 @@ namespace Akeneo\DataGenerator\Infrastructure\Cli;
 use Akeneo\DataGenerator\Application\GenerateCategoryTree;
 use Akeneo\DataGenerator\Application\GenerateCategoryTreeHandler;
 use Akeneo\DataGenerator\Domain\CategoryTreeGenerator;
-use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
-use Akeneo\DataGenerator\Infrastructure\WebApi\WebApiCategoryRepository;
-use Akeneo\Pim\AkeneoPimClientBuilder;
+use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
+use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
 use Symfony\Component\Console\Command\Command;
@@ -31,7 +30,7 @@ class GenerateCategoryTreesCommand extends Command
         $number = $input->getArgument('number');
         $children = $input->getArgument('children');
         $levels = $input->getArgument('levels');
-        $handler = new GenerateCategoryTreeHandler($this->getGenerator(), $this->getCategoryRepository());
+        $handler = $this->categoryTreeHandler();
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateCategoryTree($children, $levels);
             try {
@@ -43,33 +42,18 @@ class GenerateCategoryTreesCommand extends Command
         }
     }
 
-    private function getGenerator(): CategoryTreeGenerator
+    private function categoryTreeHandler(): GenerateCategoryTreeHandler
     {
-        return new CategoryTreeGenerator();
-    }
+        $generator = new CategoryTreeGenerator();
+        $writeRepositories = new WriteRepositories($this->getClient());
+        $categoryRepository = $writeRepositories->categoryRepository();
 
-    private function getCategoryRepository(): CategoryRepository
-    {
-        $client = $this->getClient();
-
-        return new WebApiCategoryRepository($client);
+        return new GenerateCategoryTreeHandler($generator, $categoryRepository);
     }
 
     private function getClient(): AkeneoPimClientInterface
     {
-        $config = new ConfigProvider(__DIR__.'/../../../../../app/parameters.yml');
-        $baseUri = $config->getParameter('base_uri');
-        $clientId = $config->getParameter('client_id');
-        $secret = $config->getParameter('secret');
-        $username = $config->getParameter('username');
-        $password = $config->getParameter('password');
-
-        $clientBuilder = new AkeneoPimClientBuilder($baseUri);
-        return $clientBuilder->buildAuthenticatedByPassword(
-            $clientId,
-            $secret,
-            $username,
-            $password
-        );
+        $factory = new ApiClientFactory();
+        return $factory->create();
     }
 }

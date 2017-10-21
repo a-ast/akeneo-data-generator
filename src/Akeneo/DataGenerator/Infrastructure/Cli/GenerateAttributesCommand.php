@@ -5,13 +5,11 @@ namespace Akeneo\DataGenerator\Infrastructure\Cli;
 use Akeneo\DataGenerator\Application\GenerateAttribute;
 use Akeneo\DataGenerator\Application\GenerateAttributeHandler;
 use Akeneo\DataGenerator\Domain\AttributeGenerator;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryAttributeGroupRepository;
-use Akeneo\DataGenerator\Infrastructure\WebApi\AttributeGroupRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\WebApiAttributeRepository;
-use Akeneo\Pim\AkeneoPimClientBuilder;
+use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
+use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
+use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
-use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,7 +30,7 @@ class GenerateAttributesCommand extends Command
     {
         $number = $input->getArgument('number');
         $inGrid = $input->getOption('useable-in-grid');
-        $handler = new GenerateAttributeHandler($this->getGenerator(), $this->getAttributeRepository());
+        $handler = $this->attributeHandler();
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateAttribute($inGrid);
@@ -49,37 +47,21 @@ class GenerateAttributesCommand extends Command
         $output->writeln(sprintf('<info>%s attributes have been generated and imported</info>', $number));
     }
 
-    private function getGenerator(): AttributeGenerator
-    {
-        $initializer = new AttributeGroupRepositoryInitializer($this->getClient());
-        $groupRepository = new InMemoryAttributeGroupRepository();
-        $initializer->initialize($groupRepository);
-
-        return new AttributeGenerator($groupRepository);
-    }
-
-    private function getAttributeRepository(): AttributeRepository
+    private function attributeHandler(): GenerateAttributeHandler
     {
         $client = $this->getClient();
+        $readRepositories = new ReadRepositories($client);
+        $generator = new AttributeGenerator($readRepositories->attributeGroupRepository());
 
-        return new WebApiAttributeRepository($client);
+        $writeRepositories = new WriteRepositories($client);
+        $attributeRepository = $writeRepositories->attributeRepository();
+
+        return new GenerateAttributeHandler($generator, $attributeRepository);
     }
 
     private function getClient(): AkeneoPimClientInterface
     {
-        $config = new ConfigProvider(__DIR__.'/../../../../../app/parameters.yml');
-        $baseUri = $config->getParameter('base_uri');
-        $clientId = $config->getParameter('client_id');
-        $secret = $config->getParameter('secret');
-        $username = $config->getParameter('username');
-        $password = $config->getParameter('password');
-
-        $clientBuilder = new AkeneoPimClientBuilder($baseUri);
-        return $clientBuilder->buildAuthenticatedByPassword(
-            $clientId,
-            $secret,
-            $username,
-            $password
-        );
+        $factory = new ApiClientFactory();
+        return $factory->create();
     }
 }

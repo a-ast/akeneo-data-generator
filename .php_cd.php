@@ -34,6 +34,7 @@ $rules = [
             'Akeneo\DataGenerator\Domain',
             'Akeneo\DataGenerator\Application',
             'Akeneo\DataGenerator\Infrastructure\WebApi',
+            'Akeneo\DataGenerator\Infrastructure\Database', // TODO: should be decoupled
             'Akeneo\Pim\AkeneoPimClientInterface',
         ],
         RuleInterface::TYPE_ONLY

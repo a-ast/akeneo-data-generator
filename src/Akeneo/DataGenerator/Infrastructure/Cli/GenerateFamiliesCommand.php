@@ -5,19 +5,9 @@ namespace Akeneo\DataGenerator\Infrastructure\Cli;
 use Akeneo\DataGenerator\Application\GenerateFamily;
 use Akeneo\DataGenerator\Application\GenerateFamilyHandler;
 use Akeneo\DataGenerator\Domain\FamilyGenerator;
-use Akeneo\DataGenerator\Domain\Model\FamilyRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryAttributeGroupRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryAttributeRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryChannelRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryCurrencyRepository;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryLocaleRepository;
-use Akeneo\DataGenerator\Infrastructure\WebApi\AttributeGroupRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\AttributeRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\ChannelRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\CurrencyRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\LocaleRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\WebApiFamilyRepository;
-use Akeneo\Pim\AkeneoPimClientBuilder;
+use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
+use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
+use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
 use Symfony\Component\Console\Command\Command;
@@ -39,7 +29,7 @@ class GenerateFamiliesCommand extends Command
     {
         $number = $input->getArgument('number');
         $attributes = $input->getArgument('attributes');
-        $handler = new GenerateFamilyHandler($this->getGenerator(), $this->getFamilyRepository());
+        $handler = $this->familyHandler();
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateFamily($attributes);
@@ -56,55 +46,20 @@ class GenerateFamiliesCommand extends Command
         $output->writeln(sprintf('<info>%s families have been generated and imported</info>', $number));
     }
 
-    private function getGenerator(): FamilyGenerator
+    private function familyHandler(): GenerateFamilyHandler
     {
-        $client = $this->getClient();
+        $readRepositories = new ReadRepositories($this->getClient());
+        $generator = new FamilyGenerator($readRepositories->attributeRepository(), $readRepositories->channelRepository());
 
-        $initializer = new LocaleRepositoryInitializer($client);
-        $localeRepository = new InMemoryLocaleRepository();
-        $initializer->initialize($localeRepository);
+        $writeRepositories = new WriteRepositories($this->getClient());
+        $familyRepository = $writeRepositories->familyRepository();
 
-        $initializer = new CurrencyRepositoryInitializer($client);
-        $currencyRepository = new InMemoryCurrencyRepository();
-        $initializer->initialize($currencyRepository);
-
-        $initializer = new ChannelRepositoryInitializer($client, $localeRepository, $currencyRepository);
-        $channelRepository = new InMemoryChannelRepository();
-        $initializer->initialize($channelRepository);
-
-        $initializer = new AttributeGroupRepositoryInitializer($client);
-        $groupRepository = new InMemoryAttributeGroupRepository();
-        $initializer->initialize($groupRepository);
-
-        $initializer = new AttributeRepositoryInitializer($client, $groupRepository);
-        $attributeRepository = new InMemoryAttributeRepository();
-        $initializer->initialize($attributeRepository);
-
-        return new FamilyGenerator($attributeRepository, $channelRepository);
-    }
-
-    private function getFamilyRepository(): FamilyRepository
-    {
-        $client = $this->getClient();
-
-        return new WebApiFamilyRepository($client);
+        return new GenerateFamilyHandler($generator, $familyRepository);
     }
 
     private function getClient(): AkeneoPimClientInterface
     {
-        $config = new ConfigProvider(__DIR__.'/../../../../../app/parameters.yml');
-        $baseUri = $config->getParameter('base_uri');
-        $clientId = $config->getParameter('client_id');
-        $secret = $config->getParameter('secret');
-        $username = $config->getParameter('username');
-        $password = $config->getParameter('password');
-
-        $clientBuilder = new AkeneoPimClientBuilder($baseUri);
-        return $clientBuilder->buildAuthenticatedByPassword(
-            $clientId,
-            $secret,
-            $username,
-            $password
-        );
+        $factory = new ApiClientFactory();
+        return $factory->create();
     }
 }
