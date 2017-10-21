@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\DataGenerator\Infrastructure\WebApi;
+namespace spec\Akeneo\DataGenerator\Infrastructure\WebApi\Write;
 
 use Akeneo\DataGenerator\Domain\Model\Category;
 use Akeneo\Pim\AkeneoPimClientInterface;

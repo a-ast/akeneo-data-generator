@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\DataGenerator\Infrastructure\WebApi;
+namespace Akeneo\DataGenerator\Infrastructure\WebApi\Write;
 
 use Akeneo\DataGenerator\Domain\Model\Attribute;
 use Akeneo\DataGenerator\Domain\Model\AttributeRepository;

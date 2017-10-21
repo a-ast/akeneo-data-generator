@@ -2,6 +2,7 @@
 
 namespace Akeneo\DataGenerator\Infrastructure\WebApi;
 
+use Akeneo\DataGenerator\Domain\Model\AttributeGroupRepository;
 use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
 use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
 use Akeneo\DataGenerator\Domain\Model\ChannelRepository;
@@ -44,12 +45,18 @@ class ReadRepositories
 
     public function attributeRepository(): AttributeRepository
     {
-        $initializer = new AttributeGroupRepositoryInitializer($this->client);
-        $groupRepository = new InMemoryAttributeGroupRepository();
-        $initializer->initialize($groupRepository);
-
+        $groupRepository = $this->attributeGroupRepository();
         $initializer = new AttributeRepositoryInitializer($this->client, $groupRepository);
         $repository = new InMemoryAttributeRepository();
+        $initializer->initialize($repository);
+
+        return $repository;
+    }
+
+    public function attributeGroupRepository(): AttributeGroupRepository
+    {
+        $initializer = new AttributeGroupRepositoryInitializer($this->client);
+        $repository = new InMemoryAttributeGroupRepository();
         $initializer->initialize($repository);
 
         return $repository;

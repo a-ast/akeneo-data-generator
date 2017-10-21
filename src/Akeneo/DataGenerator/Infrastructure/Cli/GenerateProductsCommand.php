@@ -3,13 +3,13 @@
 namespace Akeneo\DataGenerator\Infrastructure\Cli;
 
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
+use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
 use Akeneo\DataGenerator\Application\GenerateProduct;
 use Akeneo\DataGenerator\Application\GenerateProductHandler;
 use Akeneo\DataGenerator\Domain\Model\ProductRepository;
 use Akeneo\DataGenerator\Domain\ProductGenerator;
-use Akeneo\DataGenerator\Infrastructure\WebApi\WebApiProductRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -62,9 +62,9 @@ class GenerateProductsCommand extends Command
 
     private function getProductRepository(): ProductRepository
     {
-        $client = $this->getClient();
+        $writeRepositories = new WriteRepositories($this->getClient());
 
-        return new WebApiProductRepository($client);
+        return $writeRepositories->productRepository();
     }
 
     private function getClient(): AkeneoPimClientInterface

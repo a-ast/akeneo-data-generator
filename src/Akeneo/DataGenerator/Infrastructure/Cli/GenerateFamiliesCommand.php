@@ -7,7 +7,7 @@ use Akeneo\DataGenerator\Application\GenerateFamilyHandler;
 use Akeneo\DataGenerator\Domain\FamilyGenerator;
 use Akeneo\DataGenerator\Domain\Model\FamilyRepository;
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
-use Akeneo\DataGenerator\Infrastructure\WebApi\WebApiFamilyRepository;
+use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
 use Symfony\Component\Console\Command\Command;
@@ -55,9 +55,9 @@ class GenerateFamiliesCommand extends Command
 
     private function getFamilyRepository(): FamilyRepository
     {
-        $client = $this->getClient();
+        $writeRepositories = new WriteRepositories($this->getClient());
 
-        return new WebApiFamilyRepository($client);
+        return $writeRepositories->familyRepository();
     }
 
     private function getClient(): AkeneoPimClientInterface

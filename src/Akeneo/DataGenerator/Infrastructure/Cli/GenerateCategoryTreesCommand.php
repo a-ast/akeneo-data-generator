@@ -6,7 +6,7 @@ use Akeneo\DataGenerator\Application\GenerateCategoryTree;
 use Akeneo\DataGenerator\Application\GenerateCategoryTreeHandler;
 use Akeneo\DataGenerator\Domain\CategoryTreeGenerator;
 use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
-use Akeneo\DataGenerator\Infrastructure\WebApi\WebApiCategoryRepository;
+use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
 use Symfony\Component\Console\Command\Command;
@@ -30,7 +30,7 @@ class GenerateCategoryTreesCommand extends Command
         $number = $input->getArgument('number');
         $children = $input->getArgument('children');
         $levels = $input->getArgument('levels');
-        $handler = new GenerateCategoryTreeHandler($this->getGenerator(), $this->getCategoryRepository());
+        $handler = new GenerateCategoryTreeHandler($this->getCategoryTreeGenerator(), $this->getCategoryRepository());
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateCategoryTree($children, $levels);
             try {
@@ -42,16 +42,16 @@ class GenerateCategoryTreesCommand extends Command
         }
     }
 
-    private function getGenerator(): CategoryTreeGenerator
+    private function getCategoryTreeGenerator(): CategoryTreeGenerator
     {
         return new CategoryTreeGenerator();
     }
 
     private function getCategoryRepository(): CategoryRepository
     {
-        $client = $this->getClient();
+        $writeRepositories = new WriteRepositories($this->getClient());
 
-        return new WebApiCategoryRepository($client);
+        return $writeRepositories->categoryRepository();
     }
 
     private function getClient(): AkeneoPimClientInterface

@@ -5,9 +5,8 @@ namespace Akeneo\DataGenerator\Infrastructure\Cli;
 use Akeneo\DataGenerator\Application\GenerateAttribute;
 use Akeneo\DataGenerator\Application\GenerateAttributeHandler;
 use Akeneo\DataGenerator\Domain\AttributeGenerator;
-use Akeneo\DataGenerator\Infrastructure\Database\InMemoryAttributeGroupRepository;
-use Akeneo\DataGenerator\Infrastructure\WebApi\Read\AttributeGroupRepositoryInitializer;
-use Akeneo\DataGenerator\Infrastructure\WebApi\WebApiAttributeRepository;
+use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
+use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
 use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
@@ -31,7 +30,7 @@ class GenerateAttributesCommand extends Command
     {
         $number = $input->getArgument('number');
         $inGrid = $input->getOption('useable-in-grid');
-        $handler = new GenerateAttributeHandler($this->getGenerator(), $this->getAttributeRepository());
+        $handler = new GenerateAttributeHandler($this->getAttributeGenerator(), $this->getAttributeRepository());
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateAttribute($inGrid);
@@ -48,20 +47,18 @@ class GenerateAttributesCommand extends Command
         $output->writeln(sprintf('<info>%s attributes have been generated and imported</info>', $number));
     }
 
-    private function getGenerator(): AttributeGenerator
+    private function getAttributeGenerator(): AttributeGenerator
     {
-        $initializer = new AttributeGroupRepositoryInitializer($this->getClient());
-        $groupRepository = new InMemoryAttributeGroupRepository();
-        $initializer->initialize($groupRepository);
+        $readRepositories = new ReadRepositories($this->getClient());
 
-        return new AttributeGenerator($groupRepository);
+        return new AttributeGenerator($readRepositories->attributeGroupRepository());
     }
 
     private function getAttributeRepository(): AttributeRepository
     {
-        $client = $this->getClient();
+        $writeRepositories = new WriteRepositories($this->getClient());
 
-        return new WebApiAttributeRepository($client);
+        return $writeRepositories->attributeRepository();
     }
 
     private function getClient(): AkeneoPimClientInterface
