@@ -5,23 +5,26 @@ catalog:
                 code: print
                 locales:
                     - en_US
+                    - de_DE
+                    - fr_FR
+                    - es_ES
                 currencies:
                     - USD
                     - EUR
         category-trees:
             -
                 code: suppliers
-                children: 250
-                levels: 3
+                children: 1000
+                levels: 4
             -
                 code: sales
-                children: 250
-                levels: 3
+                children: 1000
+                levels: 4
         attributes:
-            count: 100
+            count: 400
         families:
-            count: 20
-            attributes_count: 50
+            count: 50
+            attributes_count: 100
         products:
-            count: 5000
+            count: 50000
             with_images: false
