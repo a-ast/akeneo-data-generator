@@ -28,6 +28,13 @@ use Akeneo\Pim\AkeneoPimClientInterface;
 class ReadRepositories
 {
     private $client;
+    private $localeRepository;
+    private $attributeRepository;
+    private $attributeGroupRepository;
+    private $categoryRepository;
+    private $familyRepository;
+    private $channelRepository;
+    private $currencyRepository;
 
     public function __construct(AkeneoPimClientInterface $client)
     {
@@ -36,77 +43,91 @@ class ReadRepositories
 
     public function localeRepository(): LocaleRepository
     {
-        $initializer = new LocaleRepositoryInitializer($this->client);
-        $repository = new InMemoryLocaleRepository();
-        $initializer->initialize($repository);
+        if (!$this->localeRepository) {
+            $initializer = new LocaleRepositoryInitializer($this->client);
+            $this->localeRepository = new InMemoryLocaleRepository();
+            $initializer->initialize($this->localeRepository);
+        }
 
-        return $repository;
+        return $this->localeRepository;
     }
 
     public function attributeRepository(): AttributeRepository
     {
-        $groupRepository = $this->attributeGroupRepository();
-        $initializer = new AttributeRepositoryInitializer($this->client, $groupRepository);
-        $repository = new InMemoryAttributeRepository();
-        $initializer->initialize($repository);
+        if (!$this->attributeRepository) {
+            $groupRepository = $this->attributeGroupRepository();
+            $initializer = new AttributeRepositoryInitializer($this->client, $groupRepository);
+            $this->attributeRepository = new InMemoryAttributeRepository();
+            $initializer->initialize($this->attributeRepository);
+        }
 
-        return $repository;
+        return $this->attributeRepository;
     }
 
     public function attributeGroupRepository(): AttributeGroupRepository
     {
-        $initializer = new AttributeGroupRepositoryInitializer($this->client);
-        $repository = new InMemoryAttributeGroupRepository();
-        $initializer->initialize($repository);
+        if (!$this->attributeGroupRepository) {
+            $initializer = new AttributeGroupRepositoryInitializer($this->client);
+            $this->attributeGroupRepository = new InMemoryAttributeGroupRepository();
+            $initializer->initialize($this->attributeGroupRepository);
+        }
 
-        return $repository;
+        return $this->attributeGroupRepository;
     }
 
     public function categoryRepository(): CategoryRepository
     {
-        $repository = new InMemoryCategoryRepository();
-        $initializer = new CategoryRepositoryInitializer($this->client);
-        $initializer->initialize($repository);
+        if (!$this->categoryRepository) {
+            $this->categoryRepository = new InMemoryCategoryRepository();
+            $initializer = new CategoryRepositoryInitializer($this->client);
+            $initializer->initialize($this->categoryRepository);
+        }
 
-        return $repository;
+        return $this->categoryRepository;
     }
 
     public function familyRepository(): FamilyRepository
     {
-        $attributeRepository = $this->attributeRepository();
-        $channelRepository = $this->channelRepository();
+        if (!$this->familyRepository) {
+            $attributeRepository = $this->attributeRepository();
+            $channelRepository = $this->channelRepository();
 
-        $repository = new InMemoryFamilyRepository();
-        $initializer = new FamilyRepositoryInitializer($this->client, $attributeRepository, $channelRepository);
-        $initializer->initialize($repository);
+            $this->familyRepository = new InMemoryFamilyRepository();
+            $initializer = new FamilyRepositoryInitializer($this->client, $attributeRepository, $channelRepository);
+            $initializer->initialize($this->familyRepository);
+        }
 
-        return $repository;
+        return $this->familyRepository;
     }
 
     public function channelRepository(): ChannelRepository
     {
-        $localeRepository = $this->localeRepository();
-        $currencyRepository = $this->currencyRepository();
-        $categoryRepository = $this->categoryRepository();
+        if (!$this->channelRepository) {
+            $localeRepository = $this->localeRepository();
+            $currencyRepository = $this->currencyRepository();
+            $categoryRepository = $this->categoryRepository();
 
-        $initializer = new ChannelRepositoryInitializer(
-            $this->client,
-            $localeRepository,
-            $currencyRepository,
-            $categoryRepository
-        );
-        $repository = new InMemoryChannelRepository();
-        $initializer->initialize($repository);
+            $initializer = new ChannelRepositoryInitializer(
+                $this->client,
+                $localeRepository,
+                $currencyRepository,
+                $categoryRepository
+            );
+            $this->channelRepository = new InMemoryChannelRepository();
+            $initializer->initialize($this->channelRepository);
+        }
 
-        return $repository;
+        return $this->channelRepository;
     }
 
     public function currencyRepository(): CurrencyRepository
     {
-        $initializer = new CurrencyRepositoryInitializer($this->client);
-        $repository = new InMemoryCurrencyRepository();
-        $initializer->initialize($repository);
+        if (!$this->currencyRepository) {
+            $initializer = new CurrencyRepositoryInitializer($this->client);
+            $this->currencyRepository = new InMemoryCurrencyRepository();
+            $initializer->initialize($this->currencyRepository);
+        }
 
-        return $repository;
+        return $this->currencyRepository;
     }
 }
