@@ -22,14 +22,26 @@ class WebApiProductRepository implements ProductRepository
 
     public function add(Product $product)
     {
-        $productDataWithoutImages = [
-            'identifier' => $product->identifier(),
-            'family' => $product->family()->code(),
-            'values' => $this->normalizeNonImageValues($product->values()),
-            'categories' => $this->normalizeCategories($product->categories())
-        ];
+        $productDataWithoutImages = $this->productData($product);
         $this->client->getProductApi()->upsert($product->identifier(), $productDataWithoutImages);
+        $this->createMediaFiles($product);
+    }
 
+    public function bulkAdd(array $products)
+    {
+        $productsData = [];
+        foreach ($products as $product) {
+            $productsData[] = $this->productData($product);
+        }
+        $this->client->getProductApi()->upsertList($productsData);
+
+        foreach ($products as $product) {
+            $this->createMediaFiles($product);
+        }
+    }
+
+    private function createMediaFiles(Product $product)
+    {
         $productAttributeImages = $this->normalizeImageValues($product->values());
         foreach ($productAttributeImages as $attributeCode => $productImages) {
             foreach ($productImages as $productImage) {
@@ -44,6 +56,16 @@ class WebApiProductRepository implements ProductRepository
                 );
             }
         }
+    }
+
+    private function productData(Product $product): array
+    {
+        return [
+            'identifier' => $product->identifier(),
+            'family' => $product->family()->code(),
+            'values' => $this->normalizeNonImageValues($product->values()),
+            'categories' => $this->normalizeCategories($product->categories())
+        ];
     }
 
     private function normalizeNonImageValues(Values $values)

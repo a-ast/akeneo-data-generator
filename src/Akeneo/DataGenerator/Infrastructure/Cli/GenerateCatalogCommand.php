@@ -6,20 +6,16 @@ use Akeneo\DataGenerator\Application\GenerateAttribute;
 use Akeneo\DataGenerator\Application\GenerateAttributeHandler;
 use Akeneo\DataGenerator\Application\GenerateCategoryTree;
 use Akeneo\DataGenerator\Application\GenerateCategoryTreeHandler;
-use Akeneo\DataGenerator\Application\GenerateChannelHandler;
 use Akeneo\DataGenerator\Application\GenerateChannelWithDefinedCodeAndLocalesAndCurrencies;
 use Akeneo\DataGenerator\Application\GenerateChannelWithDefinedCodeAndLocalesAndCurrenciesHandler;
 use Akeneo\DataGenerator\Application\GenerateFamily;
 use Akeneo\DataGenerator\Application\GenerateFamilyHandler;
-use Akeneo\DataGenerator\Application\GenerateProduct;
-use Akeneo\DataGenerator\Application\GenerateProductHandler;
+use Akeneo\DataGenerator\Application\GenerateProducts;
+use Akeneo\DataGenerator\Application\GenerateProductsHandler;
 use Akeneo\DataGenerator\Domain\AttributeGenerator;
 use Akeneo\DataGenerator\Domain\CategoryTreeGenerator;
 use Akeneo\DataGenerator\Domain\ChannelGenerator;
 use Akeneo\DataGenerator\Domain\FamilyGenerator;
-use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
-use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
-use Akeneo\DataGenerator\Domain\Model\Product;
 use Akeneo\DataGenerator\Domain\ProductGenerator;
 use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Attributes;
@@ -152,9 +148,22 @@ class GenerateCatalogCommand extends Command
 
     private function generateProducts(Products $products)
     {
-        $handler = $this->productHandler();
-        for ($index = 0; $index < $products->count(); $index++) {
-            $command = new GenerateProduct($products->withImages());
+        $handler = $this->productsHandler();
+        $number = $products->count();
+        $withImages = $products->withImages();
+        $bulkSize = 100;
+        $bulks = floor($number / $bulkSize);
+        for ($index = 0; $index < $bulks; $index++) {
+            $command = new GenerateProducts($bulkSize, $withImages);
+            try {
+                $handler->handle($command);
+            } catch (HttpException $e) {
+                echo $e->getMessage();
+            }
+        }
+        $lastBulk = $number % $bulkSize;
+        if ($lastBulk > 0) {
+            $command = new GenerateProducts($lastBulk, $withImages);
             try {
                 $handler->handle($command);
             } catch (HttpException $e) {
@@ -195,7 +204,7 @@ class GenerateCatalogCommand extends Command
         return new GenerateFamilyHandler($generator, $familyRepository);
     }
 
-    private function productHandler(): GenerateProductHandler
+    private function productsHandler(): GenerateProductsHandler
     {
         $readRepositories = new ReadRepositories($this->getClient());
         $generator = new ProductGenerator(
@@ -209,7 +218,7 @@ class GenerateCatalogCommand extends Command
         $writeRepositories = new WriteRepositories($this->getClient());
         $writeRepository = $writeRepositories->productRepository();
 
-        return new GenerateProductHandler($generator, $writeRepository);
+        return new GenerateProductsHandler($generator, $writeRepository);
     }
 
     private function channelHandler(): GenerateChannelWithDefinedCodeAndLocalesAndCurrenciesHandler
