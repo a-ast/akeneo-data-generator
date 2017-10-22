@@ -2,13 +2,13 @@
 
 namespace Akeneo\DataGenerator\Infrastructure\Cli;
 
+use Akeneo\DataGenerator\Application\GenerateProducts;
+use Akeneo\DataGenerator\Application\GenerateProductsHandler;
 use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Exception\HttpException;
-use Akeneo\DataGenerator\Application\GenerateProduct;
-use Akeneo\DataGenerator\Application\GenerateProductHandler;
 use Akeneo\DataGenerator\Domain\ProductGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -30,24 +30,31 @@ class GenerateProductsCommand extends Command
     {
         $number = $input->getArgument('number');
         $withImages = $input->getOption('with-images');
-        $handler = $this->productHandler();
-        $batchInfo = 100;
-        for ($index = 0; $index < $number; $index++) {
-            $command = new GenerateProduct($withImages);
-            try {
-                $handler->handle($command);
-            } catch (HttpException $e) {
-                echo $e->getMessage();
-            }
-
-            if ($index !== 0 && $index % $batchInfo === 0) {
-                $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $index));
-            }
+        $handler = $this->productsHandler();
+        $bulkSize = 100;
+        $bulks = floor($number / $bulkSize);
+        for ($index = 0; $index < $bulks; $index++) {
+            $this->generateProducts($handler, $bulkSize, $withImages);
+            $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $bulkSize));
         }
-        $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $number));
+        $lastBulk = $number % $bulkSize;
+        $this->generateProducts($handler, $lastBulk, $withImages);
+        if ($lastBulk > 0) {
+            $output->writeln(sprintf('<info>%s products have been generated and imported</info>', $lastBulk));
+        }
     }
 
-    private function productHandler(): GenerateProductHandler
+    private function generateProducts(GenerateProductsHandler $handler, int $count, bool $withImages)
+    {
+        $command = new GenerateProducts($count, $withImages);
+        try {
+            $handler->handle($command);
+        } catch (HttpException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    private function productsHandler(): GenerateProductsHandler
     {
         $readRepositories = new ReadRepositories($this->getClient());
         $generator = new ProductGenerator(
@@ -61,7 +68,7 @@ class GenerateProductsCommand extends Command
         $writeRepositories = new WriteRepositories($this->getClient());
         $writeRepository = $writeRepositories->productRepository();
 
-        return new GenerateProductHandler($generator, $writeRepository);
+        return new GenerateProductsHandler($generator, $writeRepository);
     }
 
     private function getClient(): AkeneoPimClientInterface
