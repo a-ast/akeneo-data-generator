@@ -1,0 +1,38 @@
+catalog:
+    entities:
+        channels:
+            -
+                code: print
+                locales:
+                    - en_US
+                    - de_DE
+                    - fr_FR
+                    - es_ES
+                currencies:
+                    - USD
+                    - EUR
+        category-trees:
+            -
+                code: suppliers
+                children: 1000
+                levels: 4
+            -
+                code: sales
+                children: 1000
+                levels: 4
+            -
+                code: marketing
+                children: 1000
+                levels: 4
+            -
+                code: technical
+                children: 1000
+                levels: 4
+        attributes:
+            count: 1000
+        families:
+            count: 400
+            attributes_count: 100
+        products:
+            count: 1000000
+            with_images: false

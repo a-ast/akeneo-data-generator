@@ -11,7 +11,7 @@ catalog:
                     - EUR
         category-trees:
             -
-                code: master
+                code: suppliers
                 children: 25
                 levels: 3
             -

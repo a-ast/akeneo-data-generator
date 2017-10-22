@@ -75,6 +75,8 @@ The generation is based on a configuration file that needs to be placed into `ap
 
 - Run `bin/docker/console.sh akeneo:api:generate-catalog small.yml --check-minimal-install --with-products`
 
+The tool is not optimized, it takes ~5 min to generate & import the small catalog including products.
+
 When generating & injecting large set of products, for instance, 300K products, we advise to launch several product generation commands in parallel.
 
 Troubleshooting: on Enterprise Edition, you need to give permissions on category trees before to launch the product import, this issue is known as PIM-6937 and will be fixed in a 2.0.x patch.
