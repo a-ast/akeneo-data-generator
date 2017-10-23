@@ -32,6 +32,13 @@ class CatalogConfiguration
         return new Attributes($configuration['count']);
     }
 
+    public function attributeGroups(): AttributeGroups
+    {
+        $configuration = $this->config['entities']['attribute-groups'];
+
+        return new AttributeGroups($configuration['count']);
+    }
+
     public function families(): Families
     {
         $configuration = $this->config['entities']['families'];

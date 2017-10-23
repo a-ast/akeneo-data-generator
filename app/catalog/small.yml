@@ -17,6 +17,8 @@ catalog:
                 code: sales
                 children: 250
                 levels: 3
+        attribute-groups:
+            count: 8
         attributes:
             count: 100
         families:

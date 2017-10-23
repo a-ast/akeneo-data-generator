@@ -2,11 +2,13 @@
 
 namespace Akeneo\DataGenerator\Infrastructure\WebApi;
 
+use Akeneo\DataGenerator\Domain\Model\AttributeGroupRepository;
 use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
 use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
 use Akeneo\DataGenerator\Domain\Model\ChannelRepository;
 use Akeneo\DataGenerator\Domain\Model\FamilyRepository;
 use Akeneo\DataGenerator\Domain\Model\ProductRepository;
+use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiAttributeGroupRepository;
 use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiAttributeRepository;
 use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiCategoryRepository;
 use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiChannelRepository;
@@ -46,5 +48,10 @@ class WriteRepositories
     public function productRepository(): ProductRepository
     {
         return new WebApiProductRepository($this->client);
+    }
+
+    public function attributeGroupRepository(): AttributeGroupRepository
+    {
+        return new WebApiAttributeGroupRepository($this->client);
     }
 }
