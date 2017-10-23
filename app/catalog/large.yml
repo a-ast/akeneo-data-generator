@@ -28,6 +28,8 @@ catalog:
                 code: technical
                 children: 1000
                 levels: 4
+        attribute-groups:
+            count: 20
         attributes:
             count: 1000
         families:

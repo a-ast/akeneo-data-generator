@@ -3,6 +3,8 @@
 namespace Akeneo\DataGenerator\Infrastructure\Cli;
 
 use Akeneo\DataGenerator\Application\GenerateAttribute;
+use Akeneo\DataGenerator\Application\GenerateAttributeGroup;
+use Akeneo\DataGenerator\Application\GenerateAttributeGroupHandler;
 use Akeneo\DataGenerator\Application\GenerateAttributeHandler;
 use Akeneo\DataGenerator\Application\GenerateCategoryTree;
 use Akeneo\DataGenerator\Application\GenerateCategoryTreeHandler;
@@ -13,11 +15,13 @@ use Akeneo\DataGenerator\Application\GenerateFamilyHandler;
 use Akeneo\DataGenerator\Application\GenerateProducts;
 use Akeneo\DataGenerator\Application\GenerateProductsHandler;
 use Akeneo\DataGenerator\Domain\AttributeGenerator;
+use Akeneo\DataGenerator\Domain\AttributeGroupGenerator;
 use Akeneo\DataGenerator\Domain\CategoryTreeGenerator;
 use Akeneo\DataGenerator\Domain\ChannelGenerator;
 use Akeneo\DataGenerator\Domain\FamilyGenerator;
 use Akeneo\DataGenerator\Domain\ProductGenerator;
 use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
+use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\AttributeGroups;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Attributes;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\CatalogConfiguration;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\CategoryTrees;
@@ -63,6 +67,10 @@ class GenerateCatalogCommand extends Command
         $channels = $configuration->channels();
         $this->generateChannels($channels);
         $output->writeln(sprintf('<info>%s channels have been generated and imported</info>', $channels->count()));
+
+        $attributeGroups = $configuration->attributeGroups();
+        $this->generateAttributeGroups($attributeGroups);
+        $output->writeln(sprintf('<info>%s attribute groups have been generated and imported</info>', $attributeGroups->count()));
 
         $attributes = $configuration->attributes();
         $this->generateAttributes($attributes);
@@ -133,6 +141,19 @@ class GenerateCatalogCommand extends Command
         }
     }
 
+    private function generateAttributeGroups(AttributeGroups $groups)
+    {
+        $handler = $this->attributeGroupHandler();
+        for ($index = 0; $index < $groups->count(); $index++) {
+            $command = new GenerateAttributeGroup();
+            try {
+                $handler->handle($command);
+            } catch (HttpException $e) {
+                echo $e->getMessage();
+            }
+        }
+    }
+
     private function generateFamilies(Families $families)
     {
         $handler = $this->familyHandler();
@@ -182,6 +203,16 @@ class GenerateCatalogCommand extends Command
         $attributeRepository = $writeRepositories->attributeRepository();
 
         return new GenerateAttributeHandler($generator, $attributeRepository);
+    }
+
+    private function attributeGroupHandler(): GenerateAttributeGroupHandler
+    {
+        $client = $this->getClient();
+        $generator = new AttributeGroupGenerator();
+        $writeRepositories = new WriteRepositories($client);
+        $groupRepository = $writeRepositories->attributeGroupRepository();
+
+        return new GenerateAttributeGroupHandler($generator, $groupRepository);
     }
 
     private function categoryTreeHandler(): GenerateCategoryTreeHandler

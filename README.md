@@ -49,6 +49,12 @@ For instance, to generate 2 channels.
 
 - Run `bin/docker/console.sh akeneo:api:generate-channels 2`
 
+### Generate Attribute Groups
+
+For instance, to generate 10 attribute groups.
+
+- Run `bin/docker/console.sh akeneo:api:generate-attribute-groups 10`
+
 ### Generate Attributes
 
 For instance, to generate 100 attributes.
