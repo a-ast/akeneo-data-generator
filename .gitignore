@@ -1,6 +1,7 @@
 vendor
 app/parameters.yml
 composer.lock
+docker-compose.yml
 bin/php-coupling-detector
 bin/php-cs-fixer
 bin/phpspec

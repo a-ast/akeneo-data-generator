@@ -19,8 +19,8 @@ Last Akeneo PIM 2.0.x is installed.
 - Install [Docker Engine](https://docs.docker.com/engine/installation/)
 - Install [Docker Compose](https://docs.docker.com/compose/install/)
 - Clone this repository and `cd` into it.
+- Copy `docker-compose.yml.dist` as `docker-compose.yml.dist` and set the environment variables.
 - Run `docker-compose pull`.
-- Run `docker-compose up -d`.
 - Run `bin/docker/composer.sh update --prefer-dist` to install the project's dependencies.
 
 ## Configure
