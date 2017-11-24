@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Akeneo\DataGenerator\Domain;
 
@@ -30,11 +31,13 @@ class AttributeGenerator
     }
 
     /**
-     * @param bool $useableInGrid
+     * @param bool $isUseableInGrid
+     * @param bool $isLocalizable
+     * @param bool $isScopable
      *
      * @return Attribute
      */
-    public function generate(bool $useableInGrid): Attribute
+    public function generate(bool $isUseableInGrid, bool $isLocalizable, bool $isScopable): Attribute
     {
         $types = [
             AttributeTypes::BOOLEAN,
@@ -51,149 +54,195 @@ class AttributeGenerator
         ];
         $type = $types[rand(0, count($types) - 1)];
         if ($type === AttributeTypes::TEXT) {
-            return $this->generateTextAttribute($useableInGrid);
+            return $this->generateTextAttribute($isUseableInGrid, $isLocalizable, $isScopable);
         } elseif ($type === AttributeTypes::TEXTAREA) {
-            return $this->generateTextAreaAttribute($useableInGrid);
+            return $this->generateTextAreaAttribute($isUseableInGrid, $isLocalizable, $isScopable);
         } elseif ($type === AttributeTypes::OPTION_SIMPLE_SELECT) {
-            return $this->generateSimpleSelectAttribute($useableInGrid);
+            return $this->generateSimpleSelectAttribute($isUseableInGrid, $isLocalizable, $isScopable);
         } elseif ($type === AttributeTypes::OPTION_MULTI_SELECT) {
-            return $this->generateMultiSelectAttribute($useableInGrid);
+            return $this->generateMultiSelectAttribute($isUseableInGrid, $isLocalizable, $isScopable);
         } elseif ($type === AttributeTypes::IMAGE) {
-            return $this->generateImageAttribute($useableInGrid);
+            return $this->generateImageAttribute($isUseableInGrid, $isLocalizable, $isScopable);
         } elseif ($type === AttributeTypes::DATE) {
-            return $this->generateDateAttribute($useableInGrid);
+            return $this->generateDateAttribute($isUseableInGrid, $isLocalizable, $isScopable);
         } elseif ($type === AttributeTypes::BOOLEAN) {
-            return $this->generateBooleanAttribute($useableInGrid);
+            return $this->generateBooleanAttribute($isUseableInGrid, $isLocalizable, $isScopable);
         } elseif ($type === AttributeTypes::NUMBER) {
-            return $this->generateNumberAttribute($useableInGrid);
+            return $this->generateNumberAttribute($isUseableInGrid, $isLocalizable, $isScopable);
         } elseif ($type === AttributeTypes::METRIC) {
-            return $this->generateMetricAttribute($useableInGrid);
+            return $this->generateMetricAttribute($isUseableInGrid, $isLocalizable, $isScopable);
         } elseif ($type === AttributeTypes::PRICE_COLLECTION) {
-            return $this->generatePriceCollectionAttribute($useableInGrid);
+            return $this->generatePriceCollectionAttribute($isUseableInGrid, $isLocalizable, $isScopable);
         } elseif ($type === AttributeTypes::FILE) {
-            return $this->generateFileAttribute($useableInGrid);
+            return $this->generateFileAttribute($isUseableInGrid, $isLocalizable, $isScopable);
         }
     }
 
-    private function generateTextAttribute(bool $useableInGrid): Attribute
+    /**
+     * @param bool $isUseableInGrid
+     * @param bool $isLocalizable
+     * @param bool $isScopable
+     *
+     * @return Attribute
+     */
+    private function generateTextAttribute(bool $isUseableInGrid, bool $isLocalizable, bool $isScopable): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::TEXT;
-        $localizable = (rand(0, 1) == 1);
-        $scopable = (rand(0, 1) == 1);
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => $useableInGrid,
+                'useable_as_grid_filter' => $isUseableInGrid,
             ]
         );
         $options = new Options();
         $group = $this->generateRandomGroup();
 
-        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+        return new Attribute($code, $type, $isLocalizable, $isScopable, $properties, $options, $group);
     }
 
-    private function generateTextAreaAttribute(bool $useableInGrid): Attribute
+    /**
+     * @param bool $isUseableInGrid
+     * @param bool $isLocalizable
+     * @param bool $isScopable
+     *
+     * @return Attribute
+     */
+    private function generateTextAreaAttribute(bool $isUseableInGrid, bool $isLocalizable, bool $isScopable): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::TEXTAREA;
-        $localizable = (rand(0, 1) == 1);
-        $scopable = (rand(0, 1) == 1);
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => $useableInGrid,
+                'useable_as_grid_filter' => $isUseableInGrid,
                 'wysiwyg_enabled' => true
             ]
         );
         $options = new Options();
         $group = $this->generateRandomGroup();
 
-        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+        return new Attribute($code, $type, $isLocalizable, $isScopable, $properties, $options, $group);
     }
 
-    private function generateSimpleSelectAttribute(bool $useableInGrid): Attribute
-    {
+    /**
+     * @param bool $isUseableInGrid
+     * @param bool $isLocalizable
+     * @param bool $isScopable
+     *
+     * @return Attribute
+     */
+    private function generateSimpleSelectAttribute(
+        bool $isUseableInGrid,
+        bool $isLocalizable,
+        bool $isScopable
+    ): Attribute {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::OPTION_SIMPLE_SELECT;
-        $localizable = false;
-        $scopable = false;
-        $properties = new Properties(['useable_as_grid_filter' => $useableInGrid]);
+        $properties = new Properties(['useable_as_grid_filter' => $isUseableInGrid]);
         $options = $this->generateRandomOptions();
         $group = $this->generateRandomGroup();
 
-        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+        return new Attribute($code, $type, $isLocalizable, $isScopable, $properties, $options, $group);
     }
 
-    private function generateMultiSelectAttribute(bool $useableInGrid): Attribute
-    {
+    /**
+     * @param bool $isUseableInGrid
+     * @param bool $isLocalizable
+     * @param bool $isScopable
+     *
+     * @return Attribute
+     */
+    private function generateMultiSelectAttribute(
+        bool $isUseableInGrid,
+        bool $isLocalizable,
+        bool $isScopable
+    ): Attribute {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::OPTION_MULTI_SELECT;
-        $localizable = false;
-        $scopable = false;
-        $properties = new Properties(['useable_as_grid_filter' => $useableInGrid]);
+        $properties = new Properties(['useable_as_grid_filter' => $isUseableInGrid]);
         $options = $this->generateRandomOptions();
         $group = $this->generateRandomGroup();
 
-        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+        return new Attribute($code, $type, $isLocalizable, $isScopable, $properties, $options, $group);
     }
 
-    private function generateImageAttribute(bool $useableInGrid): Attribute
+    /**
+     * @param bool $isUseableInGrid
+     * @param bool $isLocalizable
+     * @param bool $isScopable
+     *
+     * @return Attribute
+     */
+    private function generateImageAttribute(bool $isUseableInGrid, bool $isLocalizable, bool $isScopable): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::IMAGE;
-        $localizable = false;
-        $scopable = false;
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => $useableInGrid,
+                'useable_as_grid_filter' => $isUseableInGrid,
                 'allowed_extensions' => ['jpg', 'jpeg', 'gif', 'png']
             ]
         );
         $options = new Options();
         $group = $this->generateRandomGroup();
 
-        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+        return new Attribute($code, $type, $isLocalizable, $isScopable, $properties, $options, $group);
     }
 
-    private function generateFileAttribute(bool $useableInGrid): Attribute
+    /**
+     * @param bool $isUseableInGrid
+     * @param bool $isLocalizable
+     * @param bool $isScopable
+     *
+     * @return Attribute
+     */
+    private function generateFileAttribute(bool $isUseableInGrid, bool $isLocalizable, bool $isScopable): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::FILE;
-        $localizable = false;
-        $scopable = false;
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => $useableInGrid,
+                'useable_as_grid_filter' => $isUseableInGrid,
                 'allowed_extensions' => ['pdf']
             ]
         );
         $options = new Options();
         $group = $this->generateRandomGroup();
 
-        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+        return new Attribute($code, $type, $isLocalizable, $isScopable, $properties, $options, $group);
     }
 
-    private function generateDateAttribute(bool $useableInGrid): Attribute
+    /**
+     * @param bool $isUseableInGrid
+     * @param bool $isLocalizable
+     * @param bool $isScopable
+     *
+     * @return Attribute
+     */
+    private function generateDateAttribute(bool $isUseableInGrid, bool $isLocalizable, bool $isScopable): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::DATE;
-        $localizable = false;
-        $scopable = false;
-        $properties = new Properties(['useable_as_grid_filter' => $useableInGrid,]);
+        $properties = new Properties(['useable_as_grid_filter' => $isUseableInGrid,]);
         $options = new Options();
         $group = $this->generateRandomGroup();
 
-        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+        return new Attribute($code, $type, $isLocalizable, $isScopable, $properties, $options, $group);
     }
 
-    private function generateNumberAttribute(bool $useableInGrid): Attribute
+    /**
+     * @param bool $isUseableInGrid
+     * @param bool $isLocalizable
+     * @param bool $isScopable
+     *
+     * @return Attribute
+     */
+    private function generateNumberAttribute(bool $isUseableInGrid, bool $isLocalizable, bool $isScopable): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::NUMBER;
-        $localizable = false;
-        $scopable = false;
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => $useableInGrid,
+                'useable_as_grid_filter' => $isUseableInGrid,
                 'decimals_allowed' => true,
                 'negative_allowed' => false
             ]
@@ -201,49 +250,67 @@ class AttributeGenerator
         $options = new Options();
         $group = $this->generateRandomGroup();
 
-        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+        return new Attribute($code, $type, $isLocalizable, $isScopable, $properties, $options, $group);
     }
 
-    private function generateBooleanAttribute(bool $useableInGrid): Attribute
+    /**
+     * @param bool $isUseableInGrid
+     * @param bool $isLocalizable
+     * @param bool $isScopable
+     *
+     * @return Attribute
+     */
+    private function generateBooleanAttribute(bool $isUseableInGrid, bool $isLocalizable, bool $isScopable): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::BOOLEAN;
-        $localizable = false;
-        $scopable = false;
-        $properties = new Properties(['useable_as_grid_filter' => $useableInGrid,]);
+        $properties = new Properties(['useable_as_grid_filter' => $isUseableInGrid,]);
         $options = new Options();
         $group = $this->generateRandomGroup();
 
-        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+        return new Attribute($code, $type, $isLocalizable, $isScopable, $properties, $options, $group);
     }
 
-    private function generatePriceCollectionAttribute(bool $useableInGrid): Attribute
-    {
+    /**
+     * @param bool $isUseableInGrid
+     * @param bool $isLocalizable
+     * @param bool $isScopable
+     *
+     * @return Attribute
+     */
+    private function generatePriceCollectionAttribute(
+        bool $isUseableInGrid,
+        bool $isLocalizable,
+        bool $isScopable
+    ): Attribute {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::PRICE_COLLECTION;
-        $localizable = false;
-        $scopable = false;
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => $useableInGrid,
+                'useable_as_grid_filter' => $isUseableInGrid,
                 'decimals_allowed' => true,
             ]
         );
         $options = new Options();
         $group = $this->generateRandomGroup();
 
-        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+        return new Attribute($code, $type, $isLocalizable, $isScopable, $properties, $options, $group);
     }
 
-    private function generateMetricAttribute(bool $useableInGrid): Attribute
+    /**
+     * @param bool $isUseableInGrid
+     * @param bool $isLocalizable
+     * @param bool $isScopable
+     *
+     * @return Attribute
+     */
+    private function generateMetricAttribute(bool $isUseableInGrid, bool $isLocalizable, bool $isScopable): Attribute
     {
         $code = $this->generator->unique()->ean13;
         $type = AttributeTypes::METRIC;
-        $localizable = false;
-        $scopable = false;
         $properties = new Properties(
             [
-                'useable_as_grid_filter' => $useableInGrid,
+                'useable_as_grid_filter' => $isUseableInGrid,
                 'metric_family' => 'Weight',
                 'default_metric_unit' => 'KILOGRAM',
                 'decimals_allowed' => true,
@@ -253,9 +320,12 @@ class AttributeGenerator
         $options = new Options();
         $group = $this->generateRandomGroup();
 
-        return new Attribute($code, $type, $localizable, $scopable, $properties, $options, $group);
+        return new Attribute($code, $type, $isLocalizable, $isScopable, $properties, $options, $group);
     }
 
+    /**
+     * @return Options
+     */
     private function generateRandomOptions(): Options
     {
         $randomOptions = [];
@@ -266,6 +336,9 @@ class AttributeGenerator
         return new Options($randomOptions);
     }
 
+    /**
+     * @return AttributeGroup
+     */
     private function generateRandomGroup(): AttributeGroup
     {
         if ($this->groupRepository->count() === 0) {

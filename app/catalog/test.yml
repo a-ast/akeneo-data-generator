@@ -21,10 +21,14 @@ catalog:
         attribute-groups:
             count: 5
         attributes:
-            count: 20
+            count: 100
+            percentage_of_localizable: 10
+            percentage_of_scopable: 10
+            percentage_of_localizable_and_scopable: 10
+            percentage_of_useable_in_grid: 100
         families:
             count: 3
             attributes_count: 10
         products:
-            count: 10
-            with_images: true
+            count: 200
+            with_images: false

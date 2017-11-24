@@ -1,12 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\DataGenerator\Infrastructure\Cli\Catalog;
+namespace Akeneo\DataGenerator\Application;
 
-final class Attributes
+class GenerateAttributes
 {
     /** @var int */
     private $count;
+
+    /** @var int */
+    private $percentageOfUseableInGrid;
 
     /** @var int */
     private $percentageOfLocalizable;
@@ -17,28 +20,25 @@ final class Attributes
     /** @var int */
     private $percentageOfLocalizableAndScopable;
 
-    /** @var int */
-    private $percentageOfUseableInGrid;
-
     /**
      * @param int $count
+     * @param int $percentageOfUseableInGrid
      * @param int $percentageOfLocalizable
      * @param int $percentageOfScopable
      * @param int $percentageOfLocalizableAndScopable
-     * @param int $percentageOfUseableInGrid
      */
     public function __construct(
         int $count,
+        int $percentageOfUseableInGrid,
         int $percentageOfLocalizable,
         int $percentageOfScopable,
-        int $percentageOfLocalizableAndScopable,
-        int $percentageOfUseableInGrid
+        int $percentageOfLocalizableAndScopable
     ) {
         $this->count = $count;
+        $this->percentageOfUseableInGrid = $percentageOfUseableInGrid;
         $this->percentageOfLocalizable = $percentageOfLocalizable;
         $this->percentageOfScopable = $percentageOfScopable;
         $this->percentageOfLocalizableAndScopable = $percentageOfLocalizableAndScopable;
-        $this->percentageOfUseableInGrid = $percentageOfUseableInGrid;
     }
 
     /**
@@ -50,8 +50,14 @@ final class Attributes
     }
 
     /**
-     * Returns percentage of localizable wanted.
-     *
+     * @return int
+     */
+    public function percentageOfUseableInGrid(): int
+    {
+        return $this->percentageOfUseableInGrid;
+    }
+
+    /**
      * @return int
      */
     public function percentageOfLocalizable(): int
@@ -60,8 +66,6 @@ final class Attributes
     }
 
     /**
-     * Returns percentage of scopable wanted.
-     *
      * @return int
      */
     public function percentageOfScopable(): int
@@ -70,22 +74,10 @@ final class Attributes
     }
 
     /**
-     * Returns percentage of localizable and scopable wanted.
-     *
      * @return int
      */
     public function percentageOfLocalizableAndScopable(): int
     {
         return $this->percentageOfLocalizableAndScopable;
-    }
-
-    /**
-     * Returns percentage of useable in grid wanted.
-     *
-     * @return int
-     */
-    public function percentageOfUseableInGrid(): int
-    {
-        return $this->percentageOfUseableInGrid;
     }
 }

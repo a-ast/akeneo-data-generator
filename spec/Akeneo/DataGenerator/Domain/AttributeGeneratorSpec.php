@@ -15,16 +15,25 @@ class AttributeGeneratorSpec extends ObjectBehavior
         $this->beConstructedWith($groupRepository);
     }
 
-    function it_generates_a_attribute_usable_in_grid (
+    function it_generates_a_configured_attribute(
         $groupRepository,
         AttributeGroup $group
     ) {
         $groupRepository->count()->willReturn(1);
         $groupRepository->all()->willReturn([$group]);
 
-        $this->generate(true)->shouldBeAnInstanceOf(Attribute::class);
-    }
+        $attribute = $this->generate(true, true, true);
+        $attribute->shouldBeAnInstanceOf(Attribute::class);
+        $attribute->shouldBeUseableInGrid(true);
+        $attribute->shouldBeLocalized(true);
+        $attribute->shouldBeScopable(true);
 
+        $attribute = $this->generate(false, false, false);
+        $attribute->shouldBeAnInstanceOf(Attribute::class);
+        $attribute->shouldBeUseableInGrid(false);
+        $attribute->shouldBeLocalized(false);
+        $attribute->shouldBeScopable(false);
+    }
 
     function it_throws_an_exception_when_no_attribute_group_exists ($groupRepository)
     {
@@ -33,7 +42,27 @@ class AttributeGeneratorSpec extends ObjectBehavior
             new NoAttributeGroupDefinedException("At least one attribute group should exist")
         )->during(
             'generate',
-            [true]
+            [true, true, true]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMatchers(): array
+    {
+        return [
+            'beUseableInGrid' => function (Attribute $attribute, $isUseableInGrid) {
+                $properties = $attribute->properties();
+
+                return $isUseableInGrid === $properties->getProperty('useable_as_grid_filter');
+            },
+            'beLocalized' => function (Attribute $attribute, $isLocalized) {
+                return $isLocalized === $attribute->localizable();
+            },
+            'beScopable' => function (Attribute $attribute, $isScopable) {
+                return $isScopable === $attribute->scopable();
+            }
+        ];
     }
 }
