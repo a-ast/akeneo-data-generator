@@ -4,7 +4,9 @@ namespace spec\Akeneo\DataGenerator\Infrastructure\WebApi\Write;
 
 use Akeneo\DataGenerator\Domain\Model\Attribute;
 use Akeneo\DataGenerator\Domain\Model\AttributeGroup;
+use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
 use Akeneo\DataGenerator\Domain\Model\AttributeTypes;
+use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiAttributeRepository;
 use Akeneo\Pim\AkeneoPimClientInterface;
 use Akeneo\Pim\Api\AttributeApi;
 use Akeneo\Pim\Api\AttributeOptionApi;
@@ -14,6 +16,12 @@ class WebApiAttributeRepositorySpec extends ObjectBehavior
 {
     function let(AkeneoPimClientInterface $client) {
         $this->beConstructedWith($client);
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldBeAnInstanceOf(WebApiAttributeRepository::class);
+        $this->shouldImplement(AttributeRepository::class);
     }
 
     function it_stores_a_text_attribute (

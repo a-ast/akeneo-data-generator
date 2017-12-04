@@ -2,10 +2,10 @@
 
 namespace Akeneo\DataGenerator\Infrastructure\Cli;
 
-use Akeneo\DataGenerator\Application\GenerateAttribute;
 use Akeneo\DataGenerator\Application\GenerateAttributeGroup;
 use Akeneo\DataGenerator\Application\GenerateAttributeGroupHandler;
-use Akeneo\DataGenerator\Application\GenerateAttributeHandler;
+use Akeneo\DataGenerator\Application\GenerateAttributes;
+use Akeneo\DataGenerator\Application\GenerateAttributesHandler;
 use Akeneo\DataGenerator\Application\GenerateCategoryTree;
 use Akeneo\DataGenerator\Application\GenerateCategoryTreeHandler;
 use Akeneo\DataGenerator\Application\GenerateChannelWithDefinedCodeAndLocalesAndCurrencies;
@@ -41,6 +41,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateCatalogCommand extends Command
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this->setName('akeneo:api:generate-catalog')
@@ -50,6 +53,9 @@ class GenerateCatalogCommand extends Command
             ->addOption('check-minimal-install', null, InputOption::VALUE_NONE, 'Check PIM has been installed with minimal set');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fileName = $input->getArgument('file-name');
@@ -90,6 +96,9 @@ class GenerateCatalogCommand extends Command
         $output->writeln(sprintf('<info>catalog %s has been generated and imported</info>', $fileName));
     }
 
+    /**
+     * @return PimDataset
+     */
     private function dataset(): PimDataset
     {
         $client = $this->getClient();
@@ -98,6 +107,9 @@ class GenerateCatalogCommand extends Command
         return new PimDataset($readRepositories->channelRepository(), $readRepositories->attributeRepository());
     }
 
+    /**
+     * @param CategoryTrees $trees
+     */
     private function generateTrees(CategoryTrees $trees)
     {
         $handler = $this->categoryTreeHandler();
@@ -111,6 +123,9 @@ class GenerateCatalogCommand extends Command
         }
     }
 
+    /**
+     * @param Channels $channels
+     */
     private function generateChannels(Channels $channels)
     {
         $handler = $this->channelHandler();
@@ -128,19 +143,29 @@ class GenerateCatalogCommand extends Command
         }
     }
 
+    /**
+     * @param Attributes $attributes
+     */
     private function generateAttributes(Attributes $attributes)
     {
-        $handler = $this->attributeHandler();
-        for ($index = 0; $index < $attributes->count(); $index++) {
-            $command = new GenerateAttribute(false);
-            try {
-                $handler->handle($command);
-            } catch (HttpException $e) {
-                echo $e->getMessage();
-            }
+        $handler = $this->attributesHandler();
+        $generateAttributes = new GenerateAttributes(
+            $attributes->count(),
+            $attributes->percentageOfUseableInGrid(),
+            $attributes->percentageOfLocalizable(),
+            $attributes->percentageOfScopable(),
+            $attributes->percentageOfLocalizableAndScopable()
+        );
+        try {
+            $handler->handle($generateAttributes);
+        } catch (HttpException $e) {
+            echo $e->getMessage();
         }
     }
 
+    /**
+     * @param AttributeGroups $groups
+     */
     private function generateAttributeGroups(AttributeGroups $groups)
     {
         $handler = $this->attributeGroupHandler();
@@ -154,6 +179,9 @@ class GenerateCatalogCommand extends Command
         }
     }
 
+    /**
+     * @param Families $families
+     */
     private function generateFamilies(Families $families)
     {
         $handler = $this->familyHandler();
@@ -167,6 +195,9 @@ class GenerateCatalogCommand extends Command
         }
     }
 
+    /**
+     * @param Products $products
+     */
     private function generateProducts(Products $products)
     {
         $handler = $this->productsHandler();
@@ -193,7 +224,10 @@ class GenerateCatalogCommand extends Command
         }
     }
 
-    private function attributeHandler(): GenerateAttributeHandler
+    /**
+     * @return GenerateAttributesHandler
+     */
+    private function attributesHandler(): GenerateAttributesHandler
     {
         $client = $this->getClient();
         $readRepositories = new ReadRepositories($client);
@@ -202,9 +236,12 @@ class GenerateCatalogCommand extends Command
         $writeRepositories = new WriteRepositories($client);
         $attributeRepository = $writeRepositories->attributeRepository();
 
-        return new GenerateAttributeHandler($generator, $attributeRepository);
+        return new GenerateAttributesHandler($generator, $attributeRepository);
     }
 
+    /**
+     * @return GenerateAttributeGroupHandler
+     */
     private function attributeGroupHandler(): GenerateAttributeGroupHandler
     {
         $client = $this->getClient();
@@ -215,6 +252,9 @@ class GenerateCatalogCommand extends Command
         return new GenerateAttributeGroupHandler($generator, $groupRepository);
     }
 
+    /**
+     * @return GenerateCategoryTreeHandler
+     */
     private function categoryTreeHandler(): GenerateCategoryTreeHandler
     {
         $generator = new CategoryTreeGenerator();
@@ -224,6 +264,9 @@ class GenerateCatalogCommand extends Command
         return new GenerateCategoryTreeHandler($generator, $categoryRepository);
     }
 
+    /**
+     * @return GenerateFamilyHandler
+     */
     private function familyHandler(): GenerateFamilyHandler
     {
         $readRepositories = new ReadRepositories($this->getClient());
@@ -235,6 +278,9 @@ class GenerateCatalogCommand extends Command
         return new GenerateFamilyHandler($generator, $familyRepository);
     }
 
+    /**
+     * @return GenerateProductsHandler
+     */
     private function productsHandler(): GenerateProductsHandler
     {
         $readRepositories = new ReadRepositories($this->getClient());
@@ -252,6 +298,9 @@ class GenerateCatalogCommand extends Command
         return new GenerateProductsHandler($generator, $writeRepository);
     }
 
+    /**
+     * @return GenerateChannelWithDefinedCodeAndLocalesAndCurrenciesHandler
+     */
     private function channelHandler(): GenerateChannelWithDefinedCodeAndLocalesAndCurrenciesHandler
     {
         $readRepositories = new ReadRepositories($this->getClient());
@@ -267,6 +316,9 @@ class GenerateCatalogCommand extends Command
         return new GenerateChannelWithDefinedCodeAndLocalesAndCurrenciesHandler($generator, $channelRepository);
     }
 
+    /**
+     * @return AkeneoPimClientInterface
+     */
     private function getClient(): AkeneoPimClientInterface
     {
         $factory = new ApiClientFactory();

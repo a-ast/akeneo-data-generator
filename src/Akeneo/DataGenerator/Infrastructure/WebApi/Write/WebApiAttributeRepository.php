@@ -38,6 +38,32 @@ class WebApiAttributeRepository implements AttributeRepository
         }
     }
 
+    public function addAll(array $attributes)
+    {
+        $attributesData = [];
+        foreach ($attributes as $attribute) {
+            $attributeData = [
+                'code' => $attribute->code(),
+                'type' => $attribute->type(),
+                'localizable' => $attribute->localizable(),
+                'scopable' => $attribute->scopable(),
+                'group' => $attribute->group()->code()
+            ];
+            foreach ($attribute->properties()->all() as $propertyCode => $propertyValue) {
+                $attributeData[$propertyCode]= $propertyValue;
+            }
+            $attributesData[] = $attributeData;
+        }
+
+        $this->client->getAttributeApi()->upsertList($attributesData);
+
+        foreach ($attributes as $attribute) {
+            foreach ($attribute->options()->getCodes() as $optionCode) {
+                $this->client->getAttributeOptionApi()->create($attribute->code(), $optionCode);
+            }
+        }
+    }
+
     public function count(): int
     {
         throw new \LogicException('not implemented yet');
