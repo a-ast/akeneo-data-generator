@@ -32,7 +32,6 @@ use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Products;
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Akeneo\Pim\Exception\HttpException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -115,11 +114,7 @@ class GenerateCatalogCommand extends Command
         $handler = $this->categoryTreeHandler();
         foreach ($trees as $tree) {
             $command = new GenerateCategoryTree($tree->getChildren(), $tree->getLevels());
-            try {
-                $handler->handle($command);
-            } catch (HttpException $e) {
-                echo $e->getMessage();
-            }
+            $handler->handle($command);
         }
     }
 
@@ -135,11 +130,7 @@ class GenerateCatalogCommand extends Command
                 $channel->locales(),
                 $channel->currencies()
             );
-            try {
-                $handler->handle($command);
-            } catch (HttpException $e) {
-                echo $e->getMessage();
-            }
+            $handler->handle($command);
         }
     }
 
@@ -156,11 +147,7 @@ class GenerateCatalogCommand extends Command
             $attributes->percentageOfScopable(),
             $attributes->percentageOfLocalizableAndScopable()
         );
-        try {
-            $handler->handle($generateAttributes);
-        } catch (HttpException $e) {
-            echo $e->getMessage();
-        }
+        $handler->handle($generateAttributes);
     }
 
     /**
@@ -171,11 +158,7 @@ class GenerateCatalogCommand extends Command
         $handler = $this->attributeGroupHandler();
         for ($index = 0; $index < $groups->count(); $index++) {
             $command = new GenerateAttributeGroup();
-            try {
-                $handler->handle($command);
-            } catch (HttpException $e) {
-                echo $e->getMessage();
-            }
+            $handler->handle($command);
         }
     }
 
@@ -187,11 +170,7 @@ class GenerateCatalogCommand extends Command
         $handler = $this->familyHandler();
         for ($index = 0; $index < $families->count(); $index++) {
             $command = new GenerateFamily($families->attributesCount());
-            try {
-                $handler->handle($command);
-            } catch (HttpException $e) {
-                echo $e->getMessage();
-            }
+            $handler->handle($command);
         }
     }
 
@@ -207,20 +186,12 @@ class GenerateCatalogCommand extends Command
         $bulks = floor($number / $bulkSize);
         for ($index = 0; $index < $bulks; $index++) {
             $command = new GenerateProducts($bulkSize, $withImages);
-            try {
-                $handler->handle($command);
-            } catch (HttpException $e) {
-                echo $e->getMessage();
-            }
+            $handler->handle($command);
         }
         $lastBulk = $number % $bulkSize;
         if ($lastBulk > 0) {
             $command = new GenerateProducts($lastBulk, $withImages);
-            try {
-                $handler->handle($command);
-            } catch (HttpException $e) {
-                echo $e->getMessage();
-            }
+            $handler->handle($command);
         }
     }
 

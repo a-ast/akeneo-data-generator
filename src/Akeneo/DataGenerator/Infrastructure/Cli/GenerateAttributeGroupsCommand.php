@@ -8,7 +8,6 @@ use Akeneo\DataGenerator\Domain\AttributeGroupGenerator;
 use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Akeneo\Pim\Exception\HttpException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,11 +28,7 @@ class GenerateAttributeGroupsCommand extends Command
         $handler = $this->attributeGroupHandler();
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateAttributeGroup();
-            try {
-                $handler->handle($command);
-            } catch (HttpException $e) {
-                echo $e->getMessage();
-            }
+            $handler->handle($command);
             $output->writeln(sprintf('<info>%s attribute groups have been generated and imported</info>', $index+1));
         }
     }

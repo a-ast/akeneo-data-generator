@@ -10,7 +10,6 @@ use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Akeneo\Pim\Exception\HttpException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -54,11 +53,7 @@ class GenerateAttributesCommand extends Command
             (int) $input->getOption('localizable-scopable')
         );
 
-        try {
-            $handler->handle($generateAttributes);
-        } catch (HttpException $e) {
-            echo $e->getMessage();
-        }
+        $handler->handle($generateAttributes);
 
         $output->writeln(
             sprintf('<info>%s attributes have been generated and imported</info>', $input->getArgument('number'))

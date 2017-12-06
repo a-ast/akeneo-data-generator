@@ -8,7 +8,6 @@ use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Akeneo\Pim\Exception\HttpException;
 use Akeneo\DataGenerator\Domain\ProductGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -47,11 +46,7 @@ class GenerateProductsCommand extends Command
     private function generateProducts(GenerateProductsHandler $handler, int $count, bool $withImages)
     {
         $command = new GenerateProducts($count, $withImages);
-        try {
-            $handler->handle($command);
-        } catch (HttpException $e) {
-            echo $e->getMessage();
-        }
+        $handler->handle($command);
     }
 
     private function productsHandler(): GenerateProductsHandler
