@@ -47,11 +47,11 @@ class GenerateAttributesCommand extends Command
         $number = $input->getArgument('number');
         $handler = $this->getNewAttributeHandler();
         $generateAttributes = new GenerateAttributes(
-            $number,
-            $input->getOption('useable-in-grid'),
-            $input->getOption('localizable'),
-            $input->getOption('scopable'),
-            $input->getOption('localizable-scopable')
+            (int) $number,
+            (int) $input->getOption('useable-in-grid'),
+            (int) $input->getOption('localizable'),
+            (int) $input->getOption('scopable'),
+            (int) $input->getOption('localizable-scopable')
         );
 
         try {
