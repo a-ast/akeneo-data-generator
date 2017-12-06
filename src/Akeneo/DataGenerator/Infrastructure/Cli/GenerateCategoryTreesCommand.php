@@ -8,7 +8,6 @@ use Akeneo\DataGenerator\Domain\CategoryTreeGenerator;
 use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
 use Akeneo\Pim\AkeneoPimClientInterface;
-use Akeneo\Pim\Exception\HttpException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,11 +32,8 @@ class GenerateCategoryTreesCommand extends Command
         $handler = $this->categoryTreeHandler();
         for ($index = 0; $index < $number; $index++) {
             $command = new GenerateCategoryTree($children, $levels);
-            try {
-                $handler->handle($command);
-            } catch (HttpException $e) {
-                echo $e->getMessage();
-            }
+            $handler->handle($command);
+
             $output->writeln(sprintf('<info>%s trees have been generated and imported</info>', $index+1));
         }
     }
