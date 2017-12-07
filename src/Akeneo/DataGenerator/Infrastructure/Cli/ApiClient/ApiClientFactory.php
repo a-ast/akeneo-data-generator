@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Akeneo\DataGenerator\Infrastructure\Cli\ApiClient;
 
@@ -18,6 +19,7 @@ class ApiClientFactory
         $password = $config->getParameter('password');
 
         $clientBuilder = new AkeneoPimClientBuilder($baseUri);
+
         return $clientBuilder->buildAuthenticatedByPassword(
             $clientId,
             $secret,

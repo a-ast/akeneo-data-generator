@@ -5,6 +5,7 @@ namespace Akeneo\DataGenerator\Infrastructure\WebApi\Write;
 use Akeneo\DataGenerator\Domain\Model\Channel;
 use Akeneo\DataGenerator\Domain\Model\ChannelRepository;
 use Akeneo\DataGenerator\Domain\Model\Currency;
+use Akeneo\DataGenerator\Domain\Model\Locale;
 use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 
 class WebApiChannelRepository implements ChannelRepository
