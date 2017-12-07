@@ -45,19 +45,38 @@ class GenerateAttributesCommand extends Command
     {
         $number = $input->getArgument('number');
         $handler = $this->getNewAttributeHandler();
-        $generateAttributes = new GenerateAttributes(
-            (int) $number,
-            (int) $input->getOption('useable-in-grid'),
-            (int) $input->getOption('localizable'),
-            (int) $input->getOption('scopable'),
-            (int) $input->getOption('localizable-scopable')
-        );
 
-        $handler->handle($generateAttributes);
+        $bulkSize = 100;
+        $bulks = floor($number / $bulkSize);
+        for ($index = 0; $index < $bulks; $index++) {
+            $generateAttributes = new GenerateAttributes(
+                (int) $bulkSize,
+                (int) $input->getOption('useable-in-grid'),
+                (int) $input->getOption('localizable'),
+                (int) $input->getOption('scopable'),
+                (int) $input->getOption('localizable-scopable')
+            );
 
-        $output->writeln(
-            sprintf('<info>%s attributes have been generated and imported</info>', $input->getArgument('number'))
-        );
+            $handler->handle($generateAttributes);
+
+            $output->writeln(
+                sprintf('<info>%s attributes have been generated and imported</info>', $bulkSize)
+            );
+        }
+        $lastBulk = $number % $bulkSize;
+        if ($lastBulk > 0) {
+            $generateAttributes = new GenerateAttributes(
+                (int) $lastBulk,
+                (int) $input->getOption('useable-in-grid'),
+                (int) $input->getOption('localizable'),
+                (int) $input->getOption('scopable'),
+                (int) $input->getOption('localizable-scopable')
+            );
+            $handler->handle($generateAttributes);
+            $output->writeln(
+                sprintf('<info>%s attributes have been generated and imported</info>', $lastBulk)
+            );
+        }
     }
 
     /**
