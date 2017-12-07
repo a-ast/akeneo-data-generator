@@ -8,7 +8,7 @@ use Akeneo\DataGenerator\Domain\ChannelGenerator;
 use Akeneo\DataGenerator\Infrastructure\Cli\ApiClient\ApiClientFactory;
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
-use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

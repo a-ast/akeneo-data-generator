@@ -3,7 +3,7 @@
 namespace Akeneo\DataGenerator\Infrastructure\WebApi\Read;
 
 use Akeneo\DataGenerator\Domain\Model\AttributeGroupRepository;
-use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use Akeneo\DataGenerator\Domain\Model\Attribute;
 use Akeneo\DataGenerator\Domain\Model\Attribute\Option;
 use Akeneo\DataGenerator\Domain\Model\Attribute\Options;

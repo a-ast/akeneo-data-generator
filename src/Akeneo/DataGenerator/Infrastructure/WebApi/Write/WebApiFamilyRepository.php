@@ -4,7 +4,7 @@ namespace Akeneo\DataGenerator\Infrastructure\WebApi\Write;
 
 use Akeneo\DataGenerator\Domain\Model\Family;
 use Akeneo\DataGenerator\Domain\Model\FamilyRepository;
-use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 
 class WebApiFamilyRepository implements FamilyRepository
 {

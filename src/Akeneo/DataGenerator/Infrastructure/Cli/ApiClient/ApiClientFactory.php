@@ -2,8 +2,8 @@
 
 namespace Akeneo\DataGenerator\Infrastructure\Cli\ApiClient;
 
-use Akeneo\Pim\AkeneoPimClientBuilder;
-use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientBuilder;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 
 class ApiClientFactory
 {

@@ -2,7 +2,7 @@
 
 namespace Akeneo\DataGenerator\Infrastructure\WebApi\Read;
 
-use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use Akeneo\DataGenerator\Domain\Model\Currency;
 use Akeneo\DataGenerator\Domain\Model\CurrencyRepository;
 

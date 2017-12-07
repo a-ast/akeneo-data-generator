@@ -4,7 +4,7 @@ namespace Akeneo\DataGenerator\Infrastructure\WebApi\Write;
 
 use Akeneo\DataGenerator\Domain\Model\Category;
 use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
-use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 
 class WebApiCategoryRepository implements CategoryRepository
 {

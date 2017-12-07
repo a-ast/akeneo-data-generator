@@ -2,7 +2,7 @@
 
 namespace Akeneo\DataGenerator\Infrastructure\WebApi\Read;
 
-use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
 use Akeneo\DataGenerator\Domain\Model\Channel;
 use Akeneo\DataGenerator\Domain\Model\ChannelRepository;
