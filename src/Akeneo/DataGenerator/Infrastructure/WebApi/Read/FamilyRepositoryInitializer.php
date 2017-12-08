@@ -6,7 +6,7 @@ use Akeneo\DataGenerator\Domain\Model\ChannelRepository;
 use Akeneo\DataGenerator\Domain\Model\Family\AttributeRequirement;
 use Akeneo\DataGenerator\Domain\Model\Family\AttributeRequirements;
 use Akeneo\DataGenerator\Domain\Model\Family\Attributes;
-use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
 use Akeneo\DataGenerator\Domain\Model\Family;
 use Akeneo\DataGenerator\Domain\Model\FamilyRepository;

@@ -4,7 +4,7 @@ namespace Akeneo\DataGenerator\Infrastructure\WebApi\Write;
 
 use Akeneo\DataGenerator\Domain\Model\Attribute;
 use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
-use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 
 class WebApiAttributeRepository implements AttributeRepository
 {

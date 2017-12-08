@@ -14,7 +14,7 @@ use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiCategoryRepository;
 use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiChannelRepository;
 use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiFamilyRepository;
 use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiProductRepository;
-use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 
 class WriteRepositories
 {

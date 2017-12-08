@@ -31,7 +31,7 @@ use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\PimDataset;
 use Akeneo\DataGenerator\Infrastructure\Cli\Catalog\Products;
 use Akeneo\DataGenerator\Infrastructure\WebApi\ReadRepositories;
 use Akeneo\DataGenerator\Infrastructure\WebApi\WriteRepositories;
-use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

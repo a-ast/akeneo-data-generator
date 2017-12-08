@@ -23,7 +23,7 @@ use Akeneo\DataGenerator\Infrastructure\WebApi\Read\CategoryRepositoryInitialize
 use Akeneo\DataGenerator\Infrastructure\WebApi\Read\ChannelRepositoryInitializer;
 use Akeneo\DataGenerator\Infrastructure\WebApi\Read\CurrencyRepositoryInitializer;
 use Akeneo\DataGenerator\Infrastructure\WebApi\Read\FamilyRepositoryInitializer;
-use Akeneo\Pim\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 
 class ReadRepositories
 {
