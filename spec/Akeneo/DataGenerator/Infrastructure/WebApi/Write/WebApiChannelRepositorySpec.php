@@ -6,8 +6,8 @@ use Akeneo\DataGenerator\Domain\Model\Category;
 use Akeneo\DataGenerator\Domain\Model\Channel;
 use Akeneo\DataGenerator\Domain\Model\Currency;
 use Akeneo\DataGenerator\Domain\Model\Locale;
-use Akeneo\Pim\AkeneoPimClientInterface;
-use Akeneo\Pim\Api\ChannelApi;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\Api\ChannelApi;
 use PhpSpec\ObjectBehavior;
 
 class WebApiChannelRepositorySpec extends ObjectBehavior

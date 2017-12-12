@@ -5,8 +5,8 @@ namespace spec\Akeneo\DataGenerator\Infrastructure\WebApi\Write;
 use Akeneo\DataGenerator\Domain\Model\Family;
 use Akeneo\DataGenerator\Domain\Model\Family\AttributeRequirements;
 use Akeneo\DataGenerator\Domain\Model\Family\Attributes;
-use Akeneo\Pim\AkeneoPimClientInterface;
-use Akeneo\Pim\Api\FamilyApi;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\Api\FamilyApi;
 use PhpSpec\ObjectBehavior;
 
 class WebApiFamilyRepositorySpec extends ObjectBehavior

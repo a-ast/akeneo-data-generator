@@ -3,8 +3,8 @@
 namespace spec\Akeneo\DataGenerator\Infrastructure\WebApi\Write;
 
 use Akeneo\DataGenerator\Domain\Model\AttributeGroup;
-use Akeneo\Pim\AkeneoPimClientInterface;
-use Akeneo\Pim\Api\AttributeGroupApi;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\Api\AttributeGroupApi;
 use PhpSpec\ObjectBehavior;
 
 class WebApiAttributeGroupRepositorySpec extends ObjectBehavior

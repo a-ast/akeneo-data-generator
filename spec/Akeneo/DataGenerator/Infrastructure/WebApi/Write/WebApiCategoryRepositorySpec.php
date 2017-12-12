@@ -3,8 +3,8 @@
 namespace spec\Akeneo\DataGenerator\Infrastructure\WebApi\Write;
 
 use Akeneo\DataGenerator\Domain\Model\Category;
-use Akeneo\Pim\AkeneoPimClientInterface;
-use Akeneo\Pim\Api\CategoryApi;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\Api\CategoryApi;
 use PhpSpec\ObjectBehavior;
 
 class WebApiCategoryRepositorySpec extends ObjectBehavior
