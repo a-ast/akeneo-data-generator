@@ -52,6 +52,6 @@ class ChannelGeneratorSpec extends ObjectBehavior
         $locale->code()->willReturn('en_US');
         $currency->code()->willReturn('EUR');
 
-        $this->generate()->shouldBeAnInstanceOf(Channel::class);
+        $this->generate(2, 2)->shouldBeAnInstanceOf(Channel::class);
     }
 }
