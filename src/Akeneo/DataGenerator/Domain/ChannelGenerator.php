@@ -10,6 +10,7 @@ use Akeneo\DataGenerator\Domain\Model\CurrencyRepository;
 use Akeneo\DataGenerator\Domain\Model\Locale;
 use Akeneo\DataGenerator\Domain\Model\LocaleRepository;
 use Faker\Factory;
+use Faker\Generator;
 
 class ChannelGenerator
 {
@@ -34,13 +35,16 @@ class ChannelGenerator
     }
 
     /**
+     * @param int $localesNumber
+     * @param int $currenciesNumber
+     *
      * @return Channel
      */
-    public function generate(): Channel
+    public function generate(int $localesNumber, int $currenciesNumber): Channel
     {
         $code = $this->generator->unique()->ean13;
-        $locales = $this->randomLocales();
-        $currencies = $this->randomCurrencies();
+        $locales = $this->randomLocales($localesNumber);
+        $currencies = $this->randomCurrencies($currenciesNumber);
         $tree = $this->randomTree();
 
         return new Channel($code, $locales, $currencies, $tree);
@@ -78,14 +82,15 @@ class ChannelGenerator
     }
 
     /**
+     * @param int $localesNumber
+     *
      * @return array
      */
-    private function randomLocales(): array
+    private function randomLocales(int $localesNumber): array
     {
-        $numberLocales = 2;
         $locales = $this->localeRepository->all();
         $randomLocales = [];
-        for ($ind = 0; $ind < $numberLocales; $ind++) {
+        for ($ind = 0; $ind < $localesNumber; $ind++) {
             /** @var Locale $locale */
             $locale = $locales[rand(0, count($locales) - 1)];
             if (!in_array($locale->code(), $randomLocales)) {
@@ -97,14 +102,15 @@ class ChannelGenerator
     }
 
     /**
+     * @param int $currenciesNumber
+     *
      * @return array
      */
-    private function randomCurrencies(): array
+    private function randomCurrencies(int $currenciesNumber): array
     {
-        $numberCurrencies = 2;
         $currencies = $this->currencyRepository->all();
         $randomCurrencies = [];
-        for ($ind = 0; $ind < $numberCurrencies; $ind++) {
+        for ($ind = 0; $ind < $currenciesNumber; $ind++) {
             /** @var Currency $currency */
             $currency = $currencies[rand(0, count($currencies) - 1)];
             if (!in_array($currency->code(), $randomCurrencies)) {

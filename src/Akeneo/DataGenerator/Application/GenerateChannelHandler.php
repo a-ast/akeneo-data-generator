@@ -18,7 +18,7 @@ class GenerateChannelHandler
 
     public function handle(GenerateChannel $command)
     {
-        $channel = $this->generator->generate();
+        $channel = $this->generator->generate($command->getLocalesNumber(), $command->getCurrenciesNumber());
         $this->repository->add($channel);
     }
 }
