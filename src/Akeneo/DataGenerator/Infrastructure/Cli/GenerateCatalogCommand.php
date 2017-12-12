@@ -140,14 +140,32 @@ class GenerateCatalogCommand extends Command
     private function generateAttributes(Attributes $attributes)
     {
         $handler = $this->attributesHandler();
-        $generateAttributes = new GenerateAttributes(
-            $attributes->count(),
-            $attributes->percentageOfUseableInGrid(),
-            $attributes->percentageOfLocalizable(),
-            $attributes->percentageOfScopable(),
-            $attributes->percentageOfLocalizableAndScopable()
-        );
-        $handler->handle($generateAttributes);
+
+        $numberOfAttributes = $attributes->count();
+        $bulkSize = 100;
+        $bulks = floor($numberOfAttributes / $bulkSize);
+        for ($index = 0; $index < $bulks; $index++) {
+            $generateAttributes = new GenerateAttributes(
+                $bulkSize,
+                $attributes->percentageOfUseableInGrid(),
+                $attributes->percentageOfLocalizable(),
+                $attributes->percentageOfScopable(),
+                $attributes->percentageOfLocalizableAndScopable()
+            );
+            $handler->handle($generateAttributes);
+        }
+
+        $lastBulkSize = $numberOfAttributes % $bulkSize;
+        if ($lastBulkSize > 0) {
+            $generateAttributes = new GenerateAttributes(
+                $lastBulkSize,
+                $attributes->percentageOfUseableInGrid(),
+                $attributes->percentageOfLocalizable(),
+                $attributes->percentageOfScopable(),
+                $attributes->percentageOfLocalizableAndScopable()
+            );
+            $handler->handle($generateAttributes);
+        }
     }
 
     /**
