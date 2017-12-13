@@ -91,10 +91,13 @@ class ChannelGenerator
         $locales = $this->localeRepository->all();
         $randomLocales = [];
         for ($ind = 0; $ind < $localesNumber; $ind++) {
+            $randomNumber = rand(0, count($locales) - 1);
             /** @var Locale $locale */
-            $locale = $locales[rand(0, count($locales) - 1)];
+            $locale = $locales[$randomNumber];
             if (!in_array($locale->code(), $randomLocales)) {
                 $randomLocales[$locale->code()] = $locale;
+                unset($locales[$randomNumber]);
+                $locales = array_values($locales);
             }
         }
 
@@ -111,10 +114,13 @@ class ChannelGenerator
         $currencies = $this->currencyRepository->all();
         $randomCurrencies = [];
         for ($ind = 0; $ind < $currenciesNumber; $ind++) {
+            $randomNumber = rand(0, count($currencies) - 1);
             /** @var Currency $currency */
-            $currency = $currencies[rand(0, count($currencies) - 1)];
+            $currency = $currencies[$randomNumber];
             if (!in_array($currency->code(), $randomCurrencies)) {
                 $randomCurrencies[$currency->code()] = $currency;
+                unset($currencies[$randomNumber]);
+                $currencies = array_values($currencies);
             }
         }
 
