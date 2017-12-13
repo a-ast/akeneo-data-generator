@@ -7,9 +7,9 @@ use Akeneo\DataGenerator\Domain\Model\AttributeGroup;
 use Akeneo\DataGenerator\Domain\Model\AttributeRepository;
 use Akeneo\DataGenerator\Domain\Model\AttributeTypes;
 use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiAttributeRepository;
-use Akeneo\Pim\AkeneoPimClientInterface;
-use Akeneo\Pim\Api\AttributeApi;
-use Akeneo\Pim\Api\AttributeOptionApi;
+use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
+use Akeneo\Pim\ApiClient\Api\AttributeApi;
+use Akeneo\Pim\ApiClient\Api\AttributeOptionApi;
 use PhpSpec\ObjectBehavior;
 
 class WebApiAttributeRepositorySpec extends ObjectBehavior

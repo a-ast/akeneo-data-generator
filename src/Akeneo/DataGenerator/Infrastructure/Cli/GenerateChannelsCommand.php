@@ -12,6 +12,7 @@ use Akeneo\Pim\ApiClient\AkeneoPimClientInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateChannelsCommand extends Command
@@ -20,16 +21,20 @@ class GenerateChannelsCommand extends Command
     {
         $this->setName('akeneo:api:generate-channels')
             ->setDescription('Import generated channels through the Akeneo PIM Web API')
-            ->addArgument('number', InputArgument::REQUIRED, 'Number of channels to generate');
+            ->addArgument('number', InputArgument::REQUIRED, 'Number of channels to generate')
+            ->addOption('locales-number', null, InputOption::VALUE_OPTIONAL, 'Number of locales per channel', 2)
+            ->addOption('currencies-number', null, InputOption::VALUE_OPTIONAL, 'Number of currencies per channel', 2);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $number = $input->getArgument('number');
+        $localesNumber = $input->getOption('locales-number');
+        $currenciesNumber = $input->getOption('currencies-number');
         $handler = $this->channelHandler();
         $batchInfo = 100;
         for ($index = 0; $index < $number; $index++) {
-            $command = new GenerateChannel();
+            $command = new GenerateChannel($localesNumber, $currenciesNumber);
             $handler->handle($command);
 
             if ($index !== 0 && $index % $batchInfo === 0) {
