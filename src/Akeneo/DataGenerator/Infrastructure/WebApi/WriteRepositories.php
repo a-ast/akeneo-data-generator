@@ -8,6 +8,8 @@ use Akeneo\DataGenerator\Domain\Model\CategoryRepository;
 use Akeneo\DataGenerator\Domain\Model\ChannelRepository;
 use Akeneo\DataGenerator\Domain\Model\FamilyRepository;
 use Akeneo\DataGenerator\Domain\Model\ProductRepository;
+use Akeneo\DataGenerator\Domain\ProductMediaNormalizer;
+use Akeneo\DataGenerator\Domain\ProductNormalizer;
 use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiAttributeGroupRepository;
 use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiAttributeRepository;
 use Akeneo\DataGenerator\Infrastructure\WebApi\Write\WebApiCategoryRepository;
@@ -47,7 +49,10 @@ class WriteRepositories
 
     public function productRepository(): ProductRepository
     {
-        return new WebApiProductRepository($this->client);
+        $productNormalizer = new ProductNormalizer();
+        $mediaNormalizer = new ProductMediaNormalizer();
+
+        return new WebApiProductRepository($this->client, $productNormalizer, $mediaNormalizer);
     }
 
     public function attributeGroupRepository(): AttributeGroupRepository

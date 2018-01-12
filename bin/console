@@ -12,10 +12,6 @@ use Akeneo\DataGenerator\Infrastructure\Cli\GenerateCategoryTreesCommand;
 use Akeneo\DataGenerator\Infrastructure\Cli\GenerateFamiliesCommand;
 use Akeneo\DataGenerator\Infrastructure\Cli\GenerateProductsCommand;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 $application = new Application('akeneo-data-generator', '1.0.0');
 $command = new GetFirstProductCommand();
