@@ -33,10 +33,6 @@ class ProductMediaNormalizer
             }
         }
 
-        if (empty($data)) {
-            return null;
-        }
-
         return $data;
     }
 }

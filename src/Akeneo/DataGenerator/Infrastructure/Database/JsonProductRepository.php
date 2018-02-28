@@ -53,7 +53,9 @@ class JsonProductRepository implements ProductRepository
         $this->writeAllProducts([$normalizedProduct]);
 
         $normalizedMedia = $this->mediaNormalizer->normalize($product);
-        $this->writeAllMedia([$normalizedMedia]);
+        if (!empty($normalizedMedia)) {
+            $this->writeAllMedia([$normalizedMedia]);
+        }
     }
 
     public function bulkAdd(array $products): void
