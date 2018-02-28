@@ -6,8 +6,8 @@ use Akeneo\DataGenerator\Application\GenerateAttributeGroup;
 use Akeneo\DataGenerator\Application\GenerateAttributeGroupHandler;
 use Akeneo\DataGenerator\Application\GenerateAttributes;
 use Akeneo\DataGenerator\Application\GenerateAttributesHandler;
-use Akeneo\DataGenerator\Application\GenerateCategoryTree;
-use Akeneo\DataGenerator\Application\GenerateCategoryTreeHandler;
+use Akeneo\DataGenerator\Application\GenerateCategoryTreeWithDefinedTree;
+use Akeneo\DataGenerator\Application\GenerateCategoryTreeWithDefinedTreeHandler;
 use Akeneo\DataGenerator\Application\GenerateChannelWithDefinedCodeAndLocalesAndCurrencies;
 use Akeneo\DataGenerator\Application\GenerateChannelWithDefinedCodeAndLocalesAndCurrenciesHandler;
 use Akeneo\DataGenerator\Application\GenerateFamily;
@@ -113,7 +113,11 @@ class GenerateCatalogCommand extends Command
     {
         $handler = $this->categoryTreeHandler();
         foreach ($trees as $tree) {
-            $command = new GenerateCategoryTree($tree->getChildren(), $tree->getLevels());
+            $command = new GenerateCategoryTreeWithDefinedTree(
+                $tree->getCode(),
+                $tree->getChildren(),
+                $tree->getLevels()
+            );
             $handler->handle($command);
         }
     }
@@ -242,15 +246,15 @@ class GenerateCatalogCommand extends Command
     }
 
     /**
-     * @return GenerateCategoryTreeHandler
+     * @return GenerateCategoryTreeWithDefinedTreeHandler
      */
-    private function categoryTreeHandler(): GenerateCategoryTreeHandler
+    private function categoryTreeHandler(): GenerateCategoryTreeWithDefinedTreeHandler
     {
         $generator = new CategoryTreeGenerator();
         $writeRepositories = new WriteRepositories($this->getClient());
         $categoryRepository = $writeRepositories->categoryRepository();
 
-        return new GenerateCategoryTreeHandler($generator, $categoryRepository);
+        return new GenerateCategoryTreeWithDefinedTreeHandler($generator, $categoryRepository);
     }
 
     /**

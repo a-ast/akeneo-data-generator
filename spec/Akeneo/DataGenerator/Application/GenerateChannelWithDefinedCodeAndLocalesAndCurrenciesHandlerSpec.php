@@ -25,7 +25,7 @@ class GenerateChannelWithDefinedCodeAndLocalesAndCurrenciesHandlerSpec extends O
         $command->locales()->willReturn(['en_US']);
         $command->currencies()->willReturn(['EUR']);
         $generator->generateWithCode('ecommerce', ['en_US'], ['EUR'])->willReturn($channel);
-        $repository->add($channel)->shouldBeCalled();
+        $repository->upsert($channel)->shouldBeCalled();
         $this->handle($command);
     }
 }

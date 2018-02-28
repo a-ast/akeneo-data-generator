@@ -29,6 +29,11 @@ class InMemoryChannelRepository implements ChannelRepository
         $this->items[$item->code()] = $item;
     }
 
+    public function upsert(Channel $item)
+    {
+        $this->items[$item->code()] = $item;
+    }
+
     public function count(): int
     {
         return count($this->items);

@@ -13,24 +13,15 @@ class WebApiCategoryRepositorySpec extends ObjectBehavior
         $this->beConstructedWith($client);
     }
 
-    function it_stores_categories (
+    function it_adds_a_category(
         $client,
-        Category $tree,
-        Category $child,
-        Category $granChild,
         CategoryApi $api
     ) {
-        $tree->code()->willReturn('MyTreeCode');
-        $tree->parent()->willReturn(null);
-        $tree->children()->willReturn([$child]);
-
-        $child->code()->willReturn('MyChildCode');
-        $child->parent()->willReturn($tree);
-        $child->children()->willReturn([$granChild]);
-
-        $granChild->code()->willReturn('MyGranChildCode');
-        $granChild->parent()->willReturn($child);
-        $granChild->children()->willReturn([]);
+        $tree = new Category('MyTreeCode', null);
+        $child = new Category('MyChildCode', $tree);
+        $granChild = new Category('MyGranChildCode', $child);
+        $tree->addChild($child);
+        $child->addChild($granChild);
 
         $client->getCategoryApi()->willReturn($api);
 
@@ -41,5 +32,51 @@ class WebApiCategoryRepositorySpec extends ObjectBehavior
         $this->add($tree);
         $this->add($child);
         $this->add($granChild);
+    }
+
+    function it_upserts_a_category(
+        $client,
+        CategoryApi $api
+    ) {
+        $tree = new Category('MyTreeCode', null);
+        $child = new Category('MyChildCode', $tree);
+        $granChild = new Category('MyGranChildCode', $child);
+        $tree->addChild($child);
+        $child->addChild($granChild);
+
+        $client->getCategoryApi()->willReturn($api);
+
+        $api->upsert('MyTreeCode', ['parent' => null])->shouldBeCalled();
+        $api->upsert('MyChildCode', ['parent' => 'MyTreeCode'])->shouldBeCalled();
+        $api->upsert('MyGranChildCode', ['parent' => 'MyChildCode'])->shouldBeCalled();
+
+        $this->upsert($tree);
+        $this->upsert($child);
+        $this->upsert($granChild);
+    }
+
+    function it_upserts_several_categories(
+        $client,
+        Category $master,
+        Category $sales,
+        CategoryApi $api
+    ) {
+        $master = new Category('master', null);
+        $sales = new Category('sales', $master);
+
+        $client->getCategoryApi()->willReturn($api);
+
+        $api->upsertList([
+            [
+                'code' => 'master',
+                'parent' => null,
+            ],
+            [
+                'code' => 'sales',
+                'parent' => null,
+            ]
+        ]);
+
+        $this->upsertMany([$master, $sales]);
     }
 }

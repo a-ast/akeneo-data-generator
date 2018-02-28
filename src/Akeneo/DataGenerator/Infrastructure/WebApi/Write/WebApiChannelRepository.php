@@ -46,6 +46,24 @@ class WebApiChannelRepository implements ChannelRepository
         $this->client->getChannelApi()->create($channel->code(), $channelData);
     }
 
+    public function upsert(Channel $channel)
+    {
+        $localeCodes = [];
+        foreach ($channel->locales() as $locale) {
+            $localeCodes[]= $locale->code();
+        }
+        $currencyCodes = [];
+        foreach ($channel->currencies() as $currency) {
+            $currencyCodes[]= $currency->code();
+        }
+        $channelData = [
+            'locales' => $localeCodes,
+            'currencies' => $currencyCodes,
+            'category_tree' => $channel->tree()->code()
+        ];
+        $this->client->getChannelApi()->upsert($channel->code(), $channelData);
+    }
+
     public function count(): int
     {
         throw new \LogicException('not implemented yet');

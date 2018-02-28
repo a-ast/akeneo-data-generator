@@ -29,6 +29,18 @@ class InMemoryCategoryRepository implements CategoryRepository
         $this->items[$item->code()] = $item;
     }
 
+    public function upsert(Category $item): void
+    {
+        $this->items[$item->code()] = $item;
+    }
+
+    public function upsertMany(array $items): void
+    {
+        foreach ($items as $item) {
+            $this->items[$item->code()] = $item;
+        }
+    }
+
     public function count(): int
     {
         return count($this->items);

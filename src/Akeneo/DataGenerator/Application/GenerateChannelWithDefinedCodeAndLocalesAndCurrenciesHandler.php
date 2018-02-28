@@ -19,6 +19,6 @@ class GenerateChannelWithDefinedCodeAndLocalesAndCurrenciesHandler
     public function handle(GenerateChannelWithDefinedCodeAndLocalesAndCurrencies $command)
     {
         $channel = $this->generator->generateWithCode($command->code(), $command->locales(), $command->currencies());
-        $this->repository->add($channel);
+        $this->repository->upsert($channel);
     }
 }
