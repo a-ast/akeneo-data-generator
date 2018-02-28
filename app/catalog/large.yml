@@ -32,6 +32,10 @@ catalog:
             count: 20
         attributes:
             count: 1000
+            percentage_of_localizable: 2
+            percentage_of_scopable: 2
+            percentage_of_localizable_and_scopable: 1
+            percentage_of_useable_in_grid: 100
         families:
             count: 400
             attributes_count: 100

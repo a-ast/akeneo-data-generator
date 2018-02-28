@@ -21,9 +21,13 @@ catalog:
             count: 8
         attributes:
             count: 100
+            percentage_of_localizable: 10
+            percentage_of_scopable: 5
+            percentage_of_localizable_and_scopable: 2
+            percentage_of_useable_in_grid: 100
         families:
             count: 20
             attributes_count: 50
         products:
-            count: 5000
+            count: 100
             with_images: false
