@@ -24,7 +24,7 @@ class AttributeRepositoryInitializer
 
     public function initialize(AttributeRepository $repository)
     {
-        $cursor = $this->client->getAttributeApi()->all();
+        $cursor = $this->client->getAttributeApi()->all(100);
         foreach ($cursor as $attributeData) {
             $properties = $this->buildProperties($attributeData);
             $options = $this->buildAttributeOptions($attributeData);
