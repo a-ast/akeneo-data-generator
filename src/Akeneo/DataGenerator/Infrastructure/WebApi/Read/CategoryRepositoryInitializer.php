@@ -17,7 +17,7 @@ class CategoryRepositoryInitializer
 
     public function initialize(CategoryRepository $repository)
     {
-        $cursor = $this->client->getCategoryApi()->all();
+        $cursor = $this->client->getCategoryApi()->all(100);
         foreach ($cursor as $itemData) {
             $parent = null;
             if ($itemData['parent'] !== null) {

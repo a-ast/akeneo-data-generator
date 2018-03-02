@@ -17,7 +17,7 @@ class AttributeGroupRepositoryInitializer
 
     public function initialize(AttributeGroupRepository $repository)
     {
-        $cursor = $this->client->getAttributeGroupApi()->all();
+        $cursor = $this->client->getAttributeGroupApi()->all(100);
         foreach ($cursor as $itemData) {
             $repository->add(new AttributeGroup($itemData['code']));
         }

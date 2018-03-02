@@ -17,7 +17,7 @@ class LocaleRepositoryInitializer
 
     public function initialize(LocaleRepository $repository)
     {
-        $cursor = $this->client->getLocaleApi()->all();
+        $cursor = $this->client->getLocaleApi()->all(100);
         foreach ($cursor as $itemData) {
             $repository->add(new Locale($itemData['code'], $itemData['enabled']));
         }

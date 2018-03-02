@@ -15,19 +15,18 @@ class CategoryTree
         $this->levels = $levels;
     }
 
-    /**
-     * @return int
-     */
     public function getChildren(): int
     {
         return $this->children;
     }
 
-    /**
-     * @return int
-     */
     public function getLevels(): int
     {
         return $this->levels;
+    }
+
+    public function getCode(): string
+    {
+        return $this->code;
     }
 }

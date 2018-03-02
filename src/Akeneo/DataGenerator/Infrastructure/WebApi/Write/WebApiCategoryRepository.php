@@ -10,6 +10,8 @@ class WebApiCategoryRepository implements CategoryRepository
 {
     private $client;
 
+    private const BATCH_SIZE = 100;
+
     public function __construct(AkeneoPimClientInterface $client)
     {
         $this->client = $client;
@@ -23,9 +25,38 @@ class WebApiCategoryRepository implements CategoryRepository
     public function add(Category $category)
     {
         $categoryData = [
-            'parent' => $category->parent() !== null ? $category->parent()->code() : null,
+            'parent' => $category->isRoot() ?  null : $category->parent()->code()
         ];
         $this->client->getCategoryApi()->create($category->code(), $categoryData);
+    }
+
+    public function upsert(Category $category): void
+    {
+        $categoryData = [
+            'parent' => $category->isRoot() ?  null : $category->parent()->code()
+        ];
+        $this->client->getCategoryApi()->upsert($category->code(), $categoryData);
+    }
+
+    public function upsertMany(array $categories): void
+    {
+        if (empty($categories)) {
+            return;
+        }
+
+        $categoriesData = [];
+        foreach ($categories as $category) {
+            $categoriesData[] = [
+                'code' => $category->code(),
+                'parent' => $category->isRoot() ? null : $category->parent()->code(),
+            ];
+        }
+
+        $chunkedCategoriesData = array_chunk($categoriesData, self::BATCH_SIZE);
+        foreach ($chunkedCategoriesData as $chunk) {
+            $this->client->getCategoryApi()->upsertList($chunk);
+        }
+
     }
 
     public function count(): int

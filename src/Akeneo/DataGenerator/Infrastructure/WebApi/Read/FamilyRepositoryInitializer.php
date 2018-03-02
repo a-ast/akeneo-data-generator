@@ -29,7 +29,7 @@ class FamilyRepositoryInitializer
 
     public function initialize(FamilyRepository $repository)
     {
-        $cursor = $this->client->getFamilyApi()->all();
+        $cursor = $this->client->getFamilyApi()->all(100);
         foreach ($cursor as $familyData) {
             $attributeCodes = $familyData['attributes'];
             $attributeRequirements = $familyData['attribute_requirements'];

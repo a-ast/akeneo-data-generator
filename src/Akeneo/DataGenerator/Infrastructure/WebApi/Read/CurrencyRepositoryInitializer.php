@@ -17,7 +17,7 @@ class CurrencyRepositoryInitializer
 
     public function initialize(CurrencyRepository $repository)
     {
-        $cursor = $this->client->getCurrencyApi()->all();
+        $cursor = $this->client->getCurrencyApi()->all(100);
         foreach ($cursor as $itemData) {
             if ($itemData['enabled']) {
                 $repository->add(new Currency($itemData['code']));

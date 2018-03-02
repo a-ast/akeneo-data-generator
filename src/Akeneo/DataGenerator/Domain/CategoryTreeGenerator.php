@@ -17,6 +17,32 @@ class CategoryTreeGenerator
     }
 
     /**
+     * @param string $treeCode
+     * @param int    $children
+     * @param int    $levels
+     *
+     * @return Category
+     */
+    public function generateWithDefinedTree(string $treeCode, int $children, int $levels): Category
+    {
+        $tree = new Category($treeCode);
+
+        $countByLevel = $this->calculateNodeCountPerLevel($levels, $children);
+        $this->generateChildrenCategories($tree, 1, $countByLevel, $levels);
+        $totalCount = $this->countCategories($tree);
+
+        while ($totalCount < $children) {
+            $categoryCode = $this->generator->unique()->ean13;
+            $category = new Category($categoryCode, $tree);
+
+            $tree->addChild($category);
+            $totalCount++;
+        }
+
+        return $tree;
+    }
+
+    /**
      * @param int $children
      * @param int $levels
      *
@@ -25,11 +51,8 @@ class CategoryTreeGenerator
     public function generate(int $children, int $levels): Category
     {
         $code = $this->generator->unique()->ean13;
-        $tree = new Category($code);
-        $countByLevel = $this->calculateNodeCountPerLevel($levels, $children);
-        $this->generateChildrenCategories($tree, 1, $countByLevel, $levels);
 
-        return $tree;
+        return $this->generateWithDefinedTree($code, $children, $levels);
     }
 
     /**
@@ -100,5 +123,22 @@ class CategoryTreeGenerator
             $totalNodeCount += pow($avgNodeCount, $level);
         }
         return $totalNodeCount;
+    }
+
+    /**
+     * Count number of categories including the children.
+     *
+     * @param Category $category
+     *
+     * @return int
+     */
+    private function countCategories(Category $category)
+    {
+        $count = 1;
+        foreach ($category->children() as $child) {
+            $count += $this->countCategories($child) ;
+        }
+
+        return $count;
     }
 }

@@ -17,7 +17,7 @@ class MeasureFamilyRepositoryInitializer
 
     public function initialize(MeasureFamilyRepository $repository)
     {
-        $cursor = $this->client->getMeasureFamilyApi()->all();
+        $cursor = $this->client->getMeasureFamilyApi()->all(100);
         foreach ($cursor as $itemData) {
             $repository->add(new MeasureFamily($itemData['code'], $itemData['standard'], $itemData['units']));
         }
