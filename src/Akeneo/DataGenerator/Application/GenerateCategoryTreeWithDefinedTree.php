@@ -2,7 +2,7 @@
 
 namespace Akeneo\DataGenerator\Application;
 
-class GenerateCategoryTreeWithDefinedTree
+final class GenerateCategoryTreeWithDefinedTree
 {
     private $tree;
 

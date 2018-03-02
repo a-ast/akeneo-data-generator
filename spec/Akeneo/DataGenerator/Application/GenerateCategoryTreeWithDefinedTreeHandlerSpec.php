@@ -34,6 +34,8 @@ class GenerateCategoryTreeWithDefinedTreeHandlerSpec extends ObjectBehavior
         $child1->children()->willReturn([]);
         $child2->children()->willReturn([]);
 
+        $repository->upsertMany([])->shouldBeCalled();
+
         $this->handle($command);
     }
 }

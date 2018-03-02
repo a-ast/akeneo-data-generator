@@ -30,7 +30,7 @@ class WebApiCategoryRepository implements CategoryRepository
         $this->client->getCategoryApi()->create($category->code(), $categoryData);
     }
 
-    public function upsert(Category $category)
+    public function upsert(Category $category): void
     {
         $categoryData = [
             'parent' => $category->isRoot() ?  null : $category->parent()->code()

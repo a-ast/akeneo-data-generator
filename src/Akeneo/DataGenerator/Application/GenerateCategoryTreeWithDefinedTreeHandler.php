@@ -38,9 +38,7 @@ class GenerateCategoryTreeWithDefinedTreeHandler
         $this->repository->upsertMany($categories);
 
         foreach ($categories as $child) {
-            if (!empty($child->children())) {
-                $this->addChildren($child->children());
-            }
+            $this->addChildren($child->children());
         }
     }
 }
