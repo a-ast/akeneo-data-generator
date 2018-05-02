@@ -85,8 +85,6 @@ The tool is not optimized, it takes ~5 min to generate & import the small catalo
 
 When generating & injecting large set of products, for instance, 300K products, we advise to launch several product generation commands in parallel.
 
-Troubleshooting: on Enterprise Edition, you need to give permissions on category trees before to launch the product import, this issue is known as PIM-6937 and will be fixed in a 2.0.x patch.
-
 ## Credits
 
 Thanks @fzaninotto for Faker!
