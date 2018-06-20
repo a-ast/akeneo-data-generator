@@ -65,7 +65,7 @@ For instance, to generate 100 attributes.
 
 For instance, to generate 100 families.
 
-- Run `bin/docker/console.sh akeneo:api:generate-family 100`
+- Run `bin/docker/console.sh akeneo:api:generate-families 100 50`
 
 ### Generate Complete Products
 
